@@ -1,0 +1,15 @@
+options:
+    no-resources:
+        description: Somethings
+        mode: roan a|o a|r
+        default: null
+    dir:
+        description: somethings
+        mode: r
+        default: test
+
+arguments:
+  name:
+    shortcut: shortcut
+    mode: r|o
+    default: default
