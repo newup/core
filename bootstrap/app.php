@@ -1,7 +1,8 @@
 <?php
 
 $app = new NewUp\Foundation\Application(realpath(__DIR__ . '/../'));
-$app->useStoragePathForOptimizations();
+$app->useStoragePathForOptimizations(true);
+
 $app->useStoragePath(realpath(__DIR__ . '/../storage/'));
 
 $app->singleton(
