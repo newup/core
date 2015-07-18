@@ -1,7 +1,6 @@
 <?php namespace NewUp\Console\Input;
 
-use NewUp\Exceptions\InvalidPathException;
-use NewUp\Exceptions\NewUpException;
+use NewUp\Exceptions\InvalidPackageTemplateException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -92,8 +91,7 @@ class GeneratorInput extends ArgvInput
     /**
      * Binds the current Input instance with the given arguments and options.
      *
-     * @throws InvalidPathException
-     * @throws NewUpException
+     * @throws InvalidPackageTemplateException
      * @param InputDefinition $definition A InputDefinition instance
      */
     public function bind(InputDefinition $definition)
@@ -105,7 +103,7 @@ class GeneratorInput extends ArgvInput
         $includePath = $this->getPackageClassPath();
 
         if (!file_exists($includePath)) {
-            throw new InvalidPathException("{$includePath} does not exist.");
+            throw new InvalidPackageTemplateException("{$includePath} does not exist.");
         }
 
         include $includePath;
@@ -113,7 +111,7 @@ class GeneratorInput extends ArgvInput
         $packageClass = $this->getNamespacedPackageName();
 
         if (!class_exists($packageClass)) {
-            throw new NewUpException("{$packageClass} class does not exist.");
+            throw new InvalidPackageTemplateException("{$packageClass} class does not exist.");
         }
 
         $options = $packageClass::getOptions();
