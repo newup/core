@@ -1,8 +1,5 @@
 <?php namespace NewUp\Console;
 
-
-use Symfony\Component\Console\Input\InputDefinition;
-
 class Kernel extends BaseKernel
 {
 
@@ -16,6 +13,7 @@ class Kernel extends BaseKernel
 
     protected $commands = [
         'NewUp\Console\Commands\About',
+        'NewUp\Console\Commands\Init',
     ];
 
     /**
