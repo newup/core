@@ -13,9 +13,13 @@
 |
 */
 
-require __DIR__ . '/bootstrap/autoload.php';
+use NewUp\Foundation\Application;
+
+$autoLoader = require __DIR__ . '/bootstrap/autoload.php';
 
 $app = require_once __DIR__ . '/bootstrap/app.php';
+
+Application::$loader = &$autoLoader;
 
 /*
 |--------------------------------------------------------------------------

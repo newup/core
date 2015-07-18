@@ -31,13 +31,13 @@ class PackageTest extends PHPUnit_Framework_TestCase
 
     public function testPackageLoadsFromFile()
     {
-        $package = Package::fromFile(__DIR__ . '/stubs/composer.json');
+        $package = Package::fromFile(__DIR__ . '/fixtures/composer.json');
         $this->assertInstanceOf('NewUp\Contracts\Packages\Package', $package);
     }
 
     public function testPackageFromFileSetsDataCorrectly()
     {
-        $package = Package::fromFile(__DIR__ . '/stubs/composer.json');
+        $package = Package::fromFile(__DIR__ . '/fixtures/composer.json');
         $this->assertEquals($package->getVendor(), 'vendor');
         $this->assertEquals($package->getPackage(), 'package');
         $this->assertEquals($package->getDescription(), 'An example');

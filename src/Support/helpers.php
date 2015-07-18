@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Str;
+use NewUp\Foundation\Application;
+
 if (!function_exists('array_remove_value')) {
     /**
      * Removes the given value from the array.
@@ -62,5 +65,47 @@ if (!function_exists('load_core_template')) {
         }
 
         return null;
+    }
+}
+
+
+if (!function_exists('package_vendor_namespace')) {
+    /**
+     * Returns a PHP namespace version of composer's package/vendor strings.
+     *
+     * @param  $vendor
+     * @param  $package
+     * @param  $forAutoload
+     * @return string
+     */
+    function package_vendor_namespace($vendor, $package, $forAutoload = false)
+    {
+        $end = ($forAutoload ? '\\' : '');
+
+        return Str::studly($vendor) . '\\' . Str::studly($package) . $end;
+    }
+}
+
+if (!function_exists('get_composer_loader')) {
+    /**
+     * Gets the Composer loader.
+     *
+     * @return Composer\Autoload\ClassLoader
+     */
+    function &get_composer_loader()
+    {
+        return Application::getLoader();
+    }
+}
+
+if (!function_exists('add_psr4')) {
+    /**
+     * Registers a PSR-4 Namespace and directory.
+     *
+     * @param $namespace
+     * @param $directory
+     */
+    function add_psr4($namespace, $directory) {
+        get_composer_loader()->setPsr4($namespace, $directory);
     }
 }
