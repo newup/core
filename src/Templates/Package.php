@@ -149,6 +149,7 @@ class Package implements PackageContract, PackageFactory
      *
      * @param $value
      * @param $message
+     *
      * @throws \InvalidArgumentException
      */
     public static function throwInvalidArgumentException($value, $message)
@@ -162,6 +163,7 @@ class Package implements PackageContract, PackageFactory
      * Parses the package and vendor names.
      *
      * @param  $templateName
+     *
      * @return array
      * @throws \InvalidArgumentException
      */
@@ -178,24 +180,25 @@ class Package implements PackageContract, PackageFactory
         }
 
         throw new InvalidArgumentException('The package name "' . $templateName .
-                                           '" is invalid. Expected format "vendor/package".');
+            '" is invalid. Expected format "vendor/package".');
     }
 
     /**
      * Returns a new package instance from the provided array.
      *
      * @param array $array
+     *
      * @return PackageContract
      * @throws \InvalidArgumentException
      */
     public static function fromArray(array $array)
     {
-        $details            = (object)$array;
+        $details = (object)$array;
         $packageNameDetails = self::parseVendorAndPackage(object_get($details, 'name', null));
 
         $description = object_get($details, 'description', null);
-        $license     = object_get($details, 'license', null);
-        $authors     = object_get($details, 'authors', null);
+        $license = object_get($details, 'license', null);
+        $authors = object_get($details, 'authors', null);
 
         self::throwInvalidArgumentException($description, 'Invalid package description.');
         self::throwInvalidArgumentException($license, 'Invalid package license.');
@@ -217,6 +220,7 @@ class Package implements PackageContract, PackageFactory
      * The file must be valid JSON.
      *
      * @param $path
+     *
      * @return PackageContract
      */
     public static function fromFile($path)
@@ -241,13 +245,28 @@ class Package implements PackageContract, PackageFactory
      */
     public function toJson()
     {
-        $packageDetails              = new \stdClass;
-        $packageDetails->name        = $this->getName();
+        $packageDetails = new \stdClass;
+        $packageDetails->name = $this->getName();
         $packageDetails->description = $this->getDescription();
-        $packageDetails->license     = $this->getLicense();
-        $packageDetails->authors     = $this->getAuthors();
+        $packageDetails->license = $this->getLicense();
+        $packageDetails->authors = $this->getAuthors();
 
         return json_encode($packageDetails, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * Converts the package details to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'license' => $this->getLicense(),
+            'authors' => $this->getAuthors()
+        ];
     }
 
 }

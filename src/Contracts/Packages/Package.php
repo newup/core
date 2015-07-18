@@ -88,4 +88,11 @@ interface Package
      */
     public function toJson();
 
+    /**
+     * Converts the package details to an array.
+     *
+     * @return array
+     */
+    public function toArray();
+
 }
