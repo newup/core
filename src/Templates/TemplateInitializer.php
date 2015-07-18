@@ -2,7 +2,9 @@
 
 namespace NewUp\Templates;
 
+use NewUp\Configuration\ConfigurationWriter;
 use NewUp\Contracts\Filesystem\Filesystem;
+use NewUp\Contracts\Templates\Renderer;
 use NewUp\Exceptions\InvalidPathException;
 
 class TemplateInitializer
@@ -15,15 +17,24 @@ class TemplateInitializer
      */
     protected $files;
 
-    public function __construct(Filesystem $files)
+    /**
+     * The Renderer implementation.
+     *
+     * @var Renderer
+     */
+    protected $renderer;
+
+    public function __construct(Filesystem $files, Renderer $renderer)
     {
-        $this->files = $files;
+        $this->files    = $files;
+        $this->renderer = $renderer;
     }
 
     /**
      * Initializes a package template in the provided directory.
      *
      * @throws InvalidPathException
+     *
      * @param $vendor
      * @param $package
      * @param $directory
@@ -34,14 +45,16 @@ class TemplateInitializer
             throw new InvalidPathException("{$directory} does not exist or is not a valid directory.");
         }
 
-        $package = new Package;
-        $package->setVendor($vendor);
-        $package->setPackage($package);
-        $package->setDescription('Give your package template a good description');
-        $package->setLicense(config('user.configuration.license', ''));
-        $package->setAuthors(config('user.configuration.authors', []));
+        $packageComposer = new Package;
+        $packageComposer->setVendor($vendor);
+        $packageComposer->setPackage($package);
+        $packageComposer->setDescription('Give your package template a good description');
+        $packageComposer->setLicense(config('user.configuration.license', ''));
+        $packageComposer->setAuthors(config('user.configuration.authors', []));
 
+        $writer = new ConfigurationWriter($packageComposer->toArray());
 
+        $writer->save($directory.'/composer.json');
     }
 
 
