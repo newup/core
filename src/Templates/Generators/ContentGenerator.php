@@ -55,7 +55,7 @@ class ContentGenerator
      */
     public function getRenderer()
     {
-        return $this->templateRenderer;
+        return $this->pathManager->getRenderer();
     }
 
     /**
