@@ -65,6 +65,7 @@ class TemplateInitializer
             $this->files->makeDirectory($directory.'/_newup/');
         }
 
+        $this->files->makeDirectory($directory.'/_template');
         $this->files->put($directory.'/_newup/Package.php', $packageClass);
     }
 
