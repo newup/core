@@ -55,6 +55,12 @@ class TemplateInitializer
         $writer = new ConfigurationWriter($packageComposer->toArray());
 
         $writer->save($directory.'/composer.json');
+        $this->renderer->setData('package', $package);
+        $this->renderer->setData('vendor', $vendor);
+
+        $packageClass = $this->renderer->render('template');
+        $this->files->makeDirectory($directory.'/_newup/');
+        $this->files->put($directory.'/_newup/Package.php', $packageClass);
     }
 
 
