@@ -133,6 +133,22 @@ class Package implements PackageContract, PackageFactory
     }
 
     /**
+     * Gets the package authors as an array of arrays.
+     *
+     * @return array
+     */
+    protected function getAuthorsArray()
+    {
+        $authors = [];
+
+        foreach ($this->authors as $author) {
+            $authors[] = (array)$author;
+        }
+
+        return $authors;
+    }
+
+    /**
      * Sets the package authors.
      *
      * @param array $authors
@@ -265,7 +281,7 @@ class Package implements PackageContract, PackageFactory
             'name' => $this->getName(),
             'description' => $this->getDescription(),
             'license' => $this->getLicense(),
-            'authors' => $this->getAuthors()
+            'authors' => $this->getAuthorsArray()
         ];
     }
 
