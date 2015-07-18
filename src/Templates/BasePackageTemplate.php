@@ -82,7 +82,7 @@ abstract class BasePackageTemplate
 
     /**
      * Get the console command arguments.
-     * 
+     *
      * @return array
      */
     public function getArguments()
