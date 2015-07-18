@@ -80,4 +80,10 @@ class PackageTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($package, Package::fromArray(json_decode($package->toJson(), true)));
     }
 
+    public function testPackageExportsCorrectArray()
+    {
+        $package = $this->getPackageFromArray();
+        $this->assertEquals($this->getPackageDetails(), $package->toArray());
+    }
+
 }
