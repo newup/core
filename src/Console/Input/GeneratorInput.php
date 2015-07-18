@@ -1,6 +1,7 @@
 <?php namespace NewUp\Console\Input;
 
-use NewUp\Templates\Parsers\YAMLParser;
+use NewUp\Exceptions\InvalidPathException;
+use NewUp\Exceptions\NewUpException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -28,9 +29,6 @@ class GeneratorInput extends ArgvInput
 {
 
     private $tokens;
-    private $parsed;
-
-    private $yamlParser;
 
     /**
      * The template name.
@@ -54,8 +52,6 @@ class GeneratorInput extends ArgvInput
 
         array_shift($argv);
         $this->tokens = $argv;
-
-        $this->yamlParser = new YAMLParser;
 
         $this->getTemplateName();
         $this->initializeTemplatePath();
@@ -96,30 +92,66 @@ class GeneratorInput extends ArgvInput
     /**
      * Binds the current Input instance with the given arguments and options.
      *
+     * @throws InvalidPathException
+     * @throws NewUpException
      * @param InputDefinition $definition A InputDefinition instance
      */
     public function bind(InputDefinition $definition)
     {
-        $this->arguments  = array();
-        $this->options    = array();
+        $this->arguments = array();
+        $this->options = array();
         $this->definition = $definition;
 
-        $this->bindTemplateArgumentsAndOptions($this->getTemplateArgumentPath());
+        $includePath = $this->getPackageClassPath();
+
+        if (!file_exists($includePath)) {
+            throw new InvalidPathException("{$includePath} does not exist.");
+        }
+
+        include $includePath;
+
+        $packageClass = $this->getNamespacedPackageName();
+
+        if (!class_exists($packageClass)) {
+            throw new NewUpException("{$packageClass} class does not exist.");
+        }
+
+        $options = $packageClass::getOptions();
+        $arguments = $packageClass::getArguments();
+
+        foreach ($options as $option) {
+            $this->definition->addOption(new InputOption(
+                $option[0],
+                $option[1],
+                $option[2],
+                $option[3],
+                $option[4]
+            ));
+        }
+
+        foreach ($arguments as $argument) {
+            $this->definition->addArgument(new InputArgument(
+                $argument[0],
+                $argument[1],
+                $argument[2],
+                $argument[3]
+            ));
+        }
+
         $this->parse();
     }
 
-    /**
-     * Binds the template arguments and options.
-     *
-     * @param $path
-     */
-    private function bindTemplateArgumentsAndOptions($path)
+    private function getPackageClassPath()
     {
-        if (file_exists($path)) {
-            $customInputs = $this->yamlParser->parseFile($path);
-            $this->processOptions($customInputs);
-            $this->processArguments($customInputs);
-        }
+        return $this->getTemplateArgumentPath() . '_newup/Package.php';
+    }
+
+    private function getNamespacedPackageName()
+    {
+        $path = $this->getTemplateArgumentPath();
+        $templateName = json_decode(file_get_contents($path . 'composer.json'))->name;
+        $parts = explode('/', $templateName);
+        return package_vendor_namespace($parts[0], $parts[1]) . '\Package';
     }
 
     /**
@@ -130,223 +162,10 @@ class GeneratorInput extends ArgvInput
     private function getTemplateArgumentPath()
     {
         if ($this->customTemplatePath !== null) {
-            return str_finish($this->customTemplatePath, '/') . '_newup/argv.yaml';
+            return str_finish($this->customTemplatePath, '/');
         }
 
         // TODO: Return the path from a template in the template storage. Currently only supports direct paths.
-    }
-
-    /**
-     * Gathers all custom options and adds them to the command definition.
-     *
-     * @param $inputs
-     */
-    private function processOptions($inputs)
-    {
-        $options = array_get($inputs, 'options', []);
-
-        foreach ($options as $option) {
-            $this->addCustomOption($option);
-        }
-    }
-
-    /**
-     * Gathers all custom arguments and adds them to the command definition.
-     *
-     * @param $inputs
-     */
-    private function processArguments($inputs)
-    {
-        $arguments = array_get($inputs, 'arguments', []);
-
-        foreach ($arguments as $argument) {
-            $this->addCustomArgument($argument);
-        }
-    }
-
-    /**
-     * Gets the Symfony option mode integer for the given string.
-     *
-     * @param  $optionModeString
-     * @return int
-     */
-    private function getOptionMode($optionModeString)
-    {
-        if ($optionModeString == null) {
-            return InputOption::VALUE_NONE;
-        }
-
-        $optionModeString = str_replace(' ', '', $optionModeString);
-        $chars            = str_split($optionModeString);
-
-        $mode = null;
-
-        foreach ($chars as $char) {
-            switch ($char) {
-                case 'r':
-                    $mode = $mode | InputOption::VALUE_REQUIRED;
-                    break;
-                case 'o':
-                    $mode = $mode | InputOption::VALUE_OPTIONAL;
-                    break;
-                case 'a':
-                    $mode = $mode | InputOption::VALUE_IS_ARRAY;
-                    break;
-                case 'n':
-                    $mode = $mode | InputOption::VALUE_NONE;
-                    break;
-            }
-        }
-
-        return $mode;
-    }
-
-    /**
-     * Gets the Symfony argument mode integer for the given string.
-     *
-     * @param  $argumentModeString
-     * @return int
-     */
-    private function getArgumentMode($argumentModeString)
-    {
-        if ($argumentModeString == null) {
-            return InputArgument::OPTIONAL;
-        }
-
-        $argumentModeString = str_replace(' ', '', $argumentModeString);
-        $chars              = str_split($argumentModeString);
-
-        $mode = null;
-
-        foreach ($chars as $char) {
-            switch ($char) {
-                case 'r':
-                    $mode = $mode | InputArgument::REQUIRED;
-                    break;
-                case 'o':
-                    $mode = $mode | InputArgument::OPTIONAL;
-                    break;
-                case 'a':
-                    $mode = $mode | InputArgument::IS_ARRAY;
-                    break;
-            }
-        }
-
-        return $mode;
-    }
-
-    /**
-     * Gets a command/option mode.
-     *
-     * @param $data
-     * @return mixed
-     */
-    private function getCustomMode($data)
-    {
-        return array_get($data, 'mode', null);
-    }
-
-    /**
-     * Gets a command/option description.
-     *
-     * @param $data
-     * @return mixed
-     */
-    private function getCustomDescription($data)
-    {
-        return array_get($data, 'description', '');
-    }
-
-    /**
-     * Gets an option shortcut.
-     *
-     * @param $data
-     * @return mixed
-     */
-    private function getCustomShortcut($data)
-    {
-        return array_get($data, 'shortcut', null);
-    }
-
-    /**
-     * Gets a command/option default value.
-     *
-     * @param $data
-     * @return mixed
-     */
-    private function getCustomDefault($data)
-    {
-        $defaultValue = array_get($data, 'default', null);
-
-        if ($defaultValue !== null)
-        {
-            if ($defaultValue == 'null')
-            {
-                return null;
-            }
-        }
-
-        return $defaultValue;
-    }
-
-    /**
-     * Gets a command/option name.
-     *
-     * @throws \RuntimeException
-     * @param  $data
-     * @return mixed
-     */
-    private function getCustomName($data)
-    {
-        $name = array_get($data, 'name', null);
-
-        if ($name == null) {
-            throw new \RuntimeException('Custom arguments and options must have a name.');
-        }
-
-        return $name;
-    }
-
-    /**
-     * Adds a custom option to the input.
-     *
-     * @param $optionData
-     */
-    private function addCustomOption($optionData)
-    {
-        $name        = $this->getCustomName($optionData);
-        $shortcut    = $this->getCustomShortcut($optionData);
-        $mode        = $this->getOptionMode($this->getCustomMode($optionData));
-        $description = $this->getCustomDescription($optionData);
-        $default     = $this->getCustomDefault($optionData);
-
-        $this->definition->addOption(new InputOption(
-            $name,
-            $shortcut,
-            $mode,
-            $description,
-            $default
-        ));
-    }
-
-    /**
-     * Adds a custom argument to the input.
-     *
-     * @param $argumentData
-     */
-    private function addCustomArgument($argumentData)
-    {
-        $name        = $this->getCustomName($argumentData);
-        $mode        = $this->getArgumentMode($this->getCustomMode($argumentData));
-        $description = $this->getCustomDescription($argumentData);
-        $default     = $this->getCustomDefault($argumentData);
-
-        $this->definition->addArgument(new InputArgument(
-            $name,
-            $mode,
-            $description,
-            $default
-        ));
     }
 
 }
