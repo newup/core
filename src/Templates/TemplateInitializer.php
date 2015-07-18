@@ -59,7 +59,11 @@ class TemplateInitializer
         $this->renderer->setData('vendor', $vendor);
 
         $packageClass = $this->renderer->render('template');
-        $this->files->makeDirectory($directory.'/_newup/');
+
+        if (!$this->files->exists($directory.'/_newup/')) {
+            $this->files->makeDirectory($directory.'/_newup/');
+        }
+
         $this->files->put($directory.'/_newup/Package.php', $packageClass);
     }
 
