@@ -24,6 +24,7 @@ class DirectoryAnalyzer implements DirectoryAnalyzerContract
      * files and nested directories that might exist.
      *
      * @param  $directory
+     *
      * @return array
      * @throws InvalidPathException
      */
@@ -38,8 +39,12 @@ class DirectoryAnalyzer implements DirectoryAnalyzerContract
         $newStructure = [];
 
         foreach ($structure as $path) {
-            $type           = ($this->fileSystem->isFile($path)) ? 'file' : 'dir';
-            $newStructure[] = ['path' => $this->normalizePath($path->getRelativePathName()), 'type' => $type];
+            $type = ($this->fileSystem->isFile($path)) ? 'file' : 'dir';
+            $newStructure[] = [
+                'path' => $this->normalizePath($path->getRelativePathName()),
+                'type' => $type,
+                'origin' => $this->normalizePath($path->getRealPath())
+            ];
         }
 
         return $newStructure;
