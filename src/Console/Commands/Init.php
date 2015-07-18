@@ -1,6 +1,7 @@
 <?php namespace NewUp\Console\Commands;
 
 use Illuminate\Console\Command;
+use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Exceptions\InvalidArgumentException;
 use NewUp\Exceptions\InvalidPathException;
 use NewUp\Templates\Package;
@@ -11,6 +12,8 @@ class Init extends Command
 {
 
     protected $templateInitializer;
+
+    protected $files;
 
     /**
      * The console command name.
@@ -26,10 +29,11 @@ class Init extends Command
      */
     protected $description = 'Initializes a new NewUp package template';
 
-    public function __construct(TemplateInitializer $initializer)
+    public function __construct(TemplateInitializer $initializer, Filesystem $files)
     {
         parent::__construct();
         $this->templateInitializer = $initializer;
+        $this->files = $files;
     }
 
     /**
@@ -40,8 +44,18 @@ class Init extends Command
     public function handle()
     {
         try {
+            $directory = $this->argument('directory');
+
+            if (!$this->files->exists($directory)) {
+                $createDirectory = $this->confirm("{$directory} does not exist. Would you like to create it? [yes|no]", true);
+
+                if ($createDirectory) {
+                    $this->files->makeDirectory($directory);
+                }
+            }
+
             $packageVendor = Package::parseVendorAndPackage($this->argument('name'));
-            $this->templateInitializer->initialize($packageVendor[0], $packageVendor[1], $this->argument('directory'));
+            $this->templateInitializer->initialize($packageVendor[0], $packageVendor[1], $directory);
         } catch (InvalidPathException $invalidPath) {
             $this->error($invalidPath->getMessage());
         } catch (InvalidArgumentException $invalidVendorPackage) {
