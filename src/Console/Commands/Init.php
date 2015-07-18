@@ -54,6 +54,18 @@ class Init extends Command
                 }
             }
 
+            if ($this->files->exists($directory) && $this->files->isDirectory($directory)) {
+                $fileCount = count($this->files->allFiles($directory));
+
+                if ($fileCount > 0) {
+                    $removeFiles = $this->confirm("{$directory} is not empty. Would you like to remove the contents? [yes|no]", false);
+
+                    if ($removeFiles) {
+                        $this->files->deleteDirectory($directory, true);
+                    }
+                }
+            }
+
             $packageVendor = Package::parseVendorAndPackage($this->argument('name'));
             $this->templateInitializer->initialize($packageVendor[0], $packageVendor[1], $directory);
         } catch (InvalidPathException $invalidPath) {
