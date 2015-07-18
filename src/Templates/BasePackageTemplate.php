@@ -27,20 +27,6 @@ abstract class BasePackageTemplate
     protected $pathsToProcess = [];
 
     /**
-     * A collection of CLI arguments the package can accept.
-     *
-     * @var array
-     */
-    protected $packageArguments = [];
-
-    /**
-     * A collection of CLI options the package can accept.
-     *
-     * @var array
-     */
-    protected $packageOptions = [];
-
-    /**
      * Returns the paths that NewUp should ignore.
      *
      * @return array
@@ -75,9 +61,11 @@ abstract class BasePackageTemplate
      *
      * @return array
      */
-    public function getOptions()
+    public static function getOptions()
     {
-        return $this->packageOptions;
+        return [
+
+        ];
     }
 
     /**
@@ -85,9 +73,11 @@ abstract class BasePackageTemplate
      *
      * @return array
      */
-    public function getArguments()
+    public static function getArguments()
     {
-        return $this->packageArguments;
+        return [
+
+        ];
     }
 
 }

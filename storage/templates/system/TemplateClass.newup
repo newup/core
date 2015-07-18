@@ -42,9 +42,11 @@ class Package extends BasePackageTemplate
      *
      * @return array
      */
-    public function getOptions()
+    public static function getOptions()
     {
-        return $this->packageOptions;
+        return [
+
+        ];
     }
 
     /**
@@ -52,9 +54,11 @@ class Package extends BasePackageTemplate
      *
      * @return array
      */
-    public function getArguments()
+    public static function getArguments()
     {
-        return $this->packageArguments;
+        return [
+
+        ];
     }
 
 }
