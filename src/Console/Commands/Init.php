@@ -7,6 +7,7 @@ use NewUp\Exceptions\InvalidPathException;
 use NewUp\Templates\Package;
 use NewUp\Templates\TemplateInitializer;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class Init extends Command
 {
@@ -66,6 +67,8 @@ class Init extends Command
                 }
             }
 
+            $this->templateInitializer->setShouldCreateTemplateDirectory($this->option('template-dir'));
+
             $packageVendor = Package::parseVendorAndPackage($this->argument('name'));
             $this->templateInitializer->initialize($packageVendor[0], $packageVendor[1], $directory);
         } catch (InvalidPathException $invalidPath) {
@@ -80,6 +83,13 @@ class Init extends Command
         return [
             ['name', InputArgument::REQUIRED, 'The vendor/package name of the new package template', null],
             ['directory', InputArgument::REQUIRED, 'The directory to initialize the package template', null]
+        ];
+    }
+
+    protected function getOptions()
+    {
+        return [
+          ['template-dir', 't', InputOption::VALUE_NONE, 'If set, a "_template" directory will be created', null]
         ];
     }
 
