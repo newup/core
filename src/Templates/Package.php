@@ -12,35 +12,35 @@ class Package implements PackageContract, PackageFactory
      *
      * @var string
      */
-    protected $vendor;
+    protected $vendor = '';
 
     /**
      * The package name.
      *
      * @var string
      */
-    protected $package;
+    protected $package = '';
 
     /**
      * The package description.
      *
      * @var string
      */
-    protected $description;
+    protected $description = '';
 
     /**
      * The package license.
      *
      * @var string
      */
-    protected $license;
+    protected $license = '';
 
     /**
      * The package authors.
      *
      * @var string
      */
-    protected $authors;
+    protected $authors = [];
 
     /**
      * Gets the vendor.
@@ -155,6 +155,8 @@ class Package implements PackageContract, PackageFactory
      */
     public function setAuthors(array $authors)
     {
+        if (count($authors) == 0) { return; }
+
         foreach ($authors as $author) {
             $this->authors[] = (object)$author;
         }
