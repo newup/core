@@ -3,6 +3,8 @@
 namespace {{ vendor|studly}}\{{ package|studly }};
 
 use NewUp\Templates\BasePackageTemplate;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class Package extends BasePackageTemplate
 {
