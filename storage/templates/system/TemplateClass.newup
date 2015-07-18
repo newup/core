@@ -1,82 +1,60 @@
 <?php
 
-/**
- * {{ package|studly }} Template Processor
- *
- * {{ description }}
- *
- * This file contains additional processing instructions for building the {{ package|studly }} package template.
- *
- * @package {{ package }}
- * @license {{ license }}
- */
-class {{ package|studly }}Template {
+namespace {{ vendor|studly}}\{{ package|studly }};
+
+use NewUp\Templates\BasePackageTemplate;
+
+class Package extends BasePackageTemplate
+{
 
     /**
-     * An array containing all the information the package template requires to build.
+     * Returns the paths that NewUp should ignore.
      *
      * @return array
      */
-    public function gatherInformation()
+    public function getIgnoredPaths()
     {
-        return [
-            'v1' => [
-
-            ]
-        ];
+        return $this->ignoredPaths;
     }
 
     /**
-     * An array of the possible variations included with the template.
+     * Returns the paths that NewUp should remove.
      *
      * @return array
      */
-    public function variations()
+    public function getPathsToRemove()
     {
-        return [
-            'v1' => ['v1', 'The main variation description']
-        ];
+        return $this->ignoredPaths;
     }
 
     /**
-     * An array of templates that should be built before the current template.
+     * Returns the paths that NewUp should process.
      *
      * @return array
      */
-    public function loadTemplatesBeforeBuild()
+    public function getPathsToProcess()
     {
-        return [];
+        return $this->pathsToProcess;
     }
 
     /**
-     * An array of templates that should be built after the current template.
+     * Get the console command options.
      *
      * @return array
      */
-    public function loadTemplatesAfterBuild()
+    public function getOptions()
     {
-        return [];
+        return $this->packageOptions;
     }
 
     /**
-     * An array of tasks that should be performed before the template is built.
+     * Get the console command arguments.
      *
      * @return array
      */
-    public function performTasksBeforeBuild()
+    public function getArguments()
     {
-        return [];
-    }
-
-
-    /**
-     * An array of tasks that should be performed after the template is built.
-     *
-     * @return array
-     */
-    public function performTasksAfterBuild()
-    {
-        return [];
+        return $this->packageArguments;
     }
 
 }
