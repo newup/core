@@ -24,10 +24,29 @@ class TemplateInitializer
      */
     protected $renderer;
 
+    /**
+     * Determines whether or not the initializer should create
+     * the '_template' directory.
+     *
+     * @var bool
+     */
+    protected $shouldCreateTemplateDirectory = false;
+
     public function __construct(Filesystem $files, Renderer $renderer)
     {
         $this->files    = $files;
         $this->renderer = $renderer;
+    }
+
+    /**
+     * Sets whether or not the initializer should create the
+     * '_template' directory.
+     *
+     * @param $create
+     */
+    public function setShouldCreateTemplateDirectory($create)
+    {
+        $this->shouldCreateTemplateDirectory = $create;
     }
 
     /**
@@ -65,7 +84,10 @@ class TemplateInitializer
             $this->files->makeDirectory($directory.'/_newup/');
         }
 
-        $this->files->makeDirectory($directory.'/_template');
+        if ($this->shouldCreateTemplateDirectory) {
+            $this->files->makeDirectory($directory.'/_template');
+        }
+
         $this->files->put($directory.'/_newup/Package.php', $packageClass);
     }
 
