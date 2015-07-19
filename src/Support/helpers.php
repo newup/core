@@ -109,3 +109,9 @@ if (!function_exists('add_psr4')) {
         get_composer_loader()->setPsr4($namespace, $directory);
     }
 }
+
+if (!function_exists('scope_include')) {
+    function scope_include($include) {
+        include $include;
+    }
+}

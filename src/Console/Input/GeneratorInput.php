@@ -106,7 +106,7 @@ class GeneratorInput extends ArgvInput
             throw new InvalidPackageTemplateException("{$includePath} does not exist.");
         }
 
-        include $includePath;
+        scope_include($includePath);
 
         $packageClass = $this->getNamespacedPackageName();
 
