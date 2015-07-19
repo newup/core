@@ -43,7 +43,8 @@ class DirectoryAnalyzer implements DirectoryAnalyzerContract
             $newStructure[] = [
                 'path' => $this->normalizePath($path->getRelativePathName()),
                 'type' => $type,
-                'origin' => $this->normalizePath($path->getRealPath())
+                'origin' => $this->normalizePath($path->getRealPath()),
+                'home' => $this->normalizePath(substr($path->getRealPath(), 0, (-1 * strlen($path->getRelativePathName()))))
             ];
         }
 
