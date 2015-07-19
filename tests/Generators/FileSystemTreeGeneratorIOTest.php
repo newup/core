@@ -29,11 +29,11 @@ class FileSystemTreeGeneratorIOTest extends \PHPUnit_Framework_TestCase
         $generator  = new FileSystemTreeGenerator($fileSystem);
 
         $generator->addPaths([
-            'someKey'    => ['path' => 'some/file.txt', 'type' => 'file'],
-            'anotherKey' => ['path' => 'some/nested/file.txt', 'type' => 'file'],
-            'thirdKey'   => ['path' => 'some/dir', 'type' => 'dir'],
-            'fourthKey'  => ['path' => 'root.txt', 'type' => 'file'],
-            'ignore'     => ['path' => '.gitignore', 'type' => 'file'],
+            'someKey'    => ['path' => 'some/file.txt', 'type' => 'file', 'home' => 'some/'],
+            'anotherKey' => ['path' => 'some/nested/file.txt', 'type' => 'file', 'home' => 'some/nested/'],
+            'thirdKey'   => ['path' => 'some/dir', 'type' => 'dir', 'home' => 'some/'],
+            'fourthKey'  => ['path' => 'root.txt', 'type' => 'file', 'home' => '/'],
+            'ignore'     => ['path' => '.gitignore', 'type' => 'file', 'home' => '/'],
         ]);
 
         return $generator;
