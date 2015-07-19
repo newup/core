@@ -9,11 +9,13 @@ class Kernel extends BaseKernel
      * @var array
      */
     protected $commandInputOverrides = [
+        'build' => '\NewUp\Console\Input\GeneratorInput'
     ];
 
     protected $commands = [
         'NewUp\Console\Commands\About',
         'NewUp\Console\Commands\Init',
+        'NewUp\Console\Commands\Build',
     ];
 
     /**
