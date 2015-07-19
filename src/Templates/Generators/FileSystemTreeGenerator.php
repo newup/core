@@ -51,6 +51,13 @@ class FileSystemTreeGenerator implements FileTreeGenerator
     protected $automaticallyResolvedIgnoredPaths = [];
 
     /**
+     * Determines if the generator is inside a '_template' directory.
+     *
+     * @var bool
+     */
+    protected $insideTemplateDirectory = false;
+
+    /**
      * An array of paths that should be automatically removed by the generator.
      *
      * @var array
@@ -219,10 +226,12 @@ class FileSystemTreeGenerator implements FileTreeGenerator
     private function isAutomaticallyIgnored($path)
     {
 
-        // Determine if the provided file is a composer.json file
-        // that should be ignored automatically.
-        if (!Str::startsWith('_template', $path) && $path == 'composer.json') {
-            return true;
+        if (!$this->insideTemplateDirectory) {
+            // Determine if the provided file is a composer.json file
+            // that should be ignored automatically.
+            if (!Str::startsWith('_template', $path) && $path == 'composer.json') {
+                return true;
+            }
         }
 
         foreach ($this->automaticallyResolvedIgnoredPaths as $ignoredPath) {
@@ -353,6 +362,17 @@ class FileSystemTreeGenerator implements FileTreeGenerator
     {
         array_remove_value($this->automaticallyRemovedPaths, $path);
         $this->automaticallyRemovedPaths = array_values($this->automaticallyRemovedPaths);
+    }
+
+    /**
+     * Sets whether or not the tree generator is inside
+     * a template directory.
+     *
+     * @param $inside
+     */
+    public function setInsideTemplateDirectory($inside)
+    {
+        $this->insideTemplateDirectory = $inside;
     }
 
 

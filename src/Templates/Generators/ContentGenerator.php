@@ -32,10 +32,28 @@ class ContentGenerator
      */
     protected $fileSystem = null;
 
+    /**
+     * Determines if the engine is running inside the template directory.
+     *
+     * @var bool
+     */
+    protected $insideTemplateDirectory = false;
+
     public function __construct(PathManager $pathManager, Filesystem $fileSystem)
     {
         $this->pathManager = $pathManager;
         $this->fileSystem  = $fileSystem;
+    }
+
+    /**
+     * Sets whether or not the engine is running inside a '_template' directory.
+     *
+     * @param $inside
+     */
+    public function setInsideTemplateDirectory($inside)
+    {
+        $this->insideTemplateDirectory = $inside;
+        $this->getPathManager()->getGenerator()->setInsideTemplateDirectory($inside);
     }
 
     /**

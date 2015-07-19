@@ -77,4 +77,12 @@ interface FileTreeGenerator
      */
     public function generate($destinationDirectory);
 
+    /**
+     * Sets whether or not the tree generator is inside
+     * a template directory.
+     *
+     * @param $inside
+     */
+    public function setInsideTemplateDirectory($inside);
+
 }

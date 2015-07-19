@@ -96,6 +96,7 @@ class Builder
         $templateDirectory = realpath($this->templateDirectory.'/_template');
 
         if ($this->files->exists($templateDirectory) && $this->files->isDirectory($templateDirectory)) {
+            $this->generator->setInsideTemplateDirectory(true);
             return $templateDirectory;
         }
 
