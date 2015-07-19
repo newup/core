@@ -41,6 +41,16 @@ class FileSystemTreeGenerator implements FileTreeGenerator
     protected $ignoredPaths = [];
 
     /**
+     * An array of paths that are always ignored by the generator.
+     *
+     * This array is automatically generated and is not generally
+     * modified by end users.
+     *
+     * @var array
+     */
+    protected $automaticallyResolvedIgnoredPaths = [];
+
+    /**
      * An array of paths that should be automatically removed by the generator.
      *
      * @var array
@@ -91,7 +101,7 @@ class FileSystemTreeGenerator implements FileTreeGenerator
             }
 
             return (substr_count($a['path'], DIRECTORY_SEPARATOR) >
-                    substr_count($b['path'], DIRECTORY_SEPARATOR)) ? -1 : 1;
+                substr_count($b['path'], DIRECTORY_SEPARATOR)) ? -1 : 1;
         });
 
         return $this->paths;
@@ -150,7 +160,11 @@ class FileSystemTreeGenerator implements FileTreeGenerator
      */
     public function generate($destinationDirectory)
     {
+        $destinationDirectory = $destinationDirectory;
+
         $generatedPaths = [];
+
+        $this->resolveAutomaticallyIgnoredPaths($destinationDirectory);
 
         foreach ($this->getPaths() as $pathKey => $path) {
             $fullPath = $destinationDirectory . DIRECTORY_SEPARATOR . $path['path'];
@@ -176,6 +190,51 @@ class FileSystemTreeGenerator implements FileTreeGenerator
     }
 
     /**
+     * Resolves the automatically ignored paths.
+     */
+    private function resolveAutomaticallyIgnoredPaths()
+    {
+        foreach ($this->paths as $path) {
+                if (is_array($path)) {
+                    $path = $path['home'];
+                }
+                if (!Str::endsWith($path, $this->normalizePath('_template/'))) {
+                    $ignoredPath = $this->normalizePath(realpath($path.'/composer.json'));
+
+                    if (!in_array($ignoredPath, $this->automaticallyResolvedIgnoredPaths)) {
+                        $this->automaticallyResolvedIgnoredPaths[] = $ignoredPath;
+                    }
+                }
+        }
+
+        // Add the '_newup' directory.
+        $this->automaticallyResolvedIgnoredPaths[] = $this->normalizePath('_newup\*');
+    }
+
+    /**
+     * @param $path
+     *
+     * @return bool
+     */
+    private function isAutomaticallyIgnored($path)
+    {
+
+        // Determine if the provided file is a composer.json file
+        // that should be ignored automatically.
+        if (!Str::startsWith('_template', $path) && $path == 'composer.json') {
+            return true;
+        }
+
+        foreach ($this->automaticallyResolvedIgnoredPaths as $ignoredPath) {
+            if (Str::is($this->normalizePath($ignoredPath), $path)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Determines if a path should be ignored.
      *
      * @param  $path
@@ -184,6 +243,10 @@ class FileSystemTreeGenerator implements FileTreeGenerator
     private function shouldBeIgnored($path)
     {
         $path = $this->normalizePath($path);
+
+        if ($this->isAutomaticallyIgnored($path)) {
+            return true;
+        }
 
         foreach ($this->ignoredPaths as $ignoredPath) {
             if (Str::is($this->normalizePath($ignoredPath), $path)) {
