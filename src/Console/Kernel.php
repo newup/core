@@ -16,6 +16,8 @@ class Kernel extends BaseKernel
         'NewUp\Console\Commands\About',
         'NewUp\Console\Commands\Init',
         'NewUp\Console\Commands\Build',
+        'NewUp\Console\Commands\Aliases\BuildAAlias',
+        'NewUp\Console\Commands\Aliases\BuildAnAlias',
     ];
 
     /**
