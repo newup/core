@@ -4,6 +4,7 @@ namespace NewUp\Templates;
 
 use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Templates\Generators\ContentGenerator;
+use NewUp\Templates\Loaders\PackageLoader;
 
 class Builder
 {
@@ -43,10 +44,32 @@ class Builder
      */
     protected $files;
 
-    public function __construct(ContentGenerator $contentGenerator, Filesystem $files)
+    /**
+     * The PackageLoader instance.
+     *
+     * @var PackageLoader
+     */
+    protected $packageLoader;
+
+    /**
+     * The full-qualified name of the package template class.
+     *
+     * @var string
+     */
+    protected $packageClassName = '';
+
+    /**
+     * The package template instance.
+     *
+     * @var BasePackageTemplate
+     */
+    protected $package;
+
+    public function __construct(ContentGenerator $contentGenerator, Filesystem $files, PackageLoader $loader)
     {
         $this->generator = $contentGenerator;
         $this->files = $files;
+        $this->packageLoader = $loader;
     }
 
     /**
@@ -61,6 +84,9 @@ class Builder
         } else {
             $this->templateDirectory = realpath($directory);
         }
+
+        // Load the actual package template.
+        $this->loadPackageTemplate(realpath($directory));
     }
 
     /**
@@ -130,6 +156,17 @@ class Builder
 
         $this->generator->addPaths((array)$this->getTemplateDirectory());
         $this->generator->generateContent($this->outputDirectory);
+    }
+
+    /**
+     * This method will load the package template instance.
+     *
+     * @param $directory
+     */
+    private function loadPackageTemplate($directory)
+    {
+        $namespacedPackageClass = $this->packageLoader->loadPackage(realpath($directory));
+        $this->package = app($namespacedPackageClass);
     }
 
 }
