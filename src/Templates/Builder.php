@@ -154,6 +154,10 @@ class Builder
             $this->generator->getRenderer()->addPath($this->getCommonTemplateDirectory());
         }
 
+        foreach ($this->package->getPathsToProcess() as $pathKey => $processPath) {
+           $this->generator->getPathManager()->getCollector()->addFileNames([$pathKey => $processPath]);
+        }
+
         $this->generator->addPaths((array)$this->getTemplateDirectory());
         $this->generator->generateContent($this->outputDirectory);
     }
