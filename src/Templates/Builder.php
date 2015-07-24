@@ -169,4 +169,24 @@ class Builder
         $this->package = app($namespacedPackageClass);
     }
 
+    /**
+     * Sets the command options with their values.
+     *
+     * @param $options
+     */
+    public function setOptions($options)
+    {
+        $this->package->setParsedOptions($options);
+    }
+
+    /**
+     * Sets the command arguments with their values.
+     *
+     * @param $arguments
+     */
+    public function setArguments($arguments)
+    {
+        $this->package->setParsedArguments($arguments);
+    }
+
 }

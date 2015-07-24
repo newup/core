@@ -44,6 +44,10 @@ class Build extends Command
     {
 
         try {
+            // Set the arguments and options for the package builder, etc.
+            $this->templateBuilder->setOptions($this->input->getOptions());
+            $this->templateBuilder->setArguments($this->input->getArguments());
+
             $this->templateBuilder->setTemplateName($this->argument('template'));
             $this->templateBuilder->setTemplateDirectory($this->option('newup-directory'));
             $this->templateBuilder->setOutputDirectory($this->argument('output-directory'));
