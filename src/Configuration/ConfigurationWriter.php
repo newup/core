@@ -1,4 +1,6 @@
-<?php namespace NewUp\Configuration;
+<?php
+
+namespace NewUp\Configuration;
 
 use Illuminate\Support\Collection;
 use NewUp\Templates\Parsers\YAMLParser;

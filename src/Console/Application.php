@@ -1,4 +1,6 @@
-<?php namespace NewUp\Console;
+<?php
+
+namespace NewUp\Console;
 
 use Illuminate\Console\Application as LaravelConsoleApplication;
 use Illuminate\Contracts\Events\Dispatcher;

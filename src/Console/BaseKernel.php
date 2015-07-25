@@ -1,4 +1,6 @@
-<?php namespace NewUp\Console;
+<?php
+
+namespace NewUp\Console;
 
 use Illuminate\Foundation\Console\Kernel as LaravelKernel;
 use NewUp\Console\Application as NewUpApplication;

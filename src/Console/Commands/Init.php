@@ -1,4 +1,6 @@
-<?php namespace NewUp\Console\Commands;
+<?php
+
+namespace NewUp\Console\Commands;
 
 use Illuminate\Console\Command;
 use NewUp\Contracts\Filesystem\Filesystem;

@@ -1,4 +1,6 @@
-<?php namespace NewUp\Console;
+<?php
+
+namespace NewUp\Console;
 
 class Kernel extends BaseKernel
 {
