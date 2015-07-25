@@ -13,7 +13,7 @@ interface Filter
     public function getName();
 
     /**
-     * Gets the function that is passed to the Twig environment.
+     * Gets the function that is passed to the rendering environment.
      *
      * @return \Closure
      */
