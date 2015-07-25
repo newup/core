@@ -69,7 +69,7 @@ class Init extends Command
                 }
             }
 
-            $this->templateInitializer->setShouldCreateTemplateDirectory($this->option('template-dir'));
+            $this->templateInitializer->setShouldCreateTemplateDirectory(!$this->option('no-template-dir'));
 
             $packageVendor = Package::parseVendorAndPackage($this->argument('name'));
             $this->templateInitializer->initialize($packageVendor[0], $packageVendor[1], $directory);
@@ -91,7 +91,7 @@ class Init extends Command
     protected function getOptions()
     {
         return [
-          ['template-dir', 't', InputOption::VALUE_NONE, 'If set, a "_template" directory will be created', null]
+          ['no-template-dir', 't', InputOption::VALUE_NONE, 'If set, a "_template" directory will be not created', null]
         ];
     }
 
