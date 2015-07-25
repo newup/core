@@ -1,6 +1,6 @@
 {
   "name": "newup/core",
-  "description": "PHP Package Generator",
+  "description": "PHP Package Generator (core framework)",
   "license": "MIT",
   "homepage": "http://newup.io",
   "support": {
