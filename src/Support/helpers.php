@@ -30,6 +30,17 @@ if (!function_exists('core_templates_path')) {
     }
 }
 
+if (!function_exists('template_storage_path')) {
+    /**
+     * Gets the template storage path.
+     *
+     * @return string
+     */
+    function template_storage_path() {
+        return storage_path('templates/store/');
+    }
+}
+
 if (!function_exists('load_system_template')) {
     /**
      * Get the contents of a system template by name.
