@@ -121,20 +121,20 @@ class GeneratorInput extends ArgvInput
 
         foreach ($options as $option) {
             $this->definition->addOption(new InputOption(
-                $option[0],
-                $option[1],
-                $option[2],
-                $option[3],
-                $option[4]
+                array_get($option, 0, null),
+                array_get($option, 1, null),
+                array_get($option, 2, null),
+                array_get($option, 3, null),
+                array_get($option, 4, null)
             ));
         }
 
         foreach ($arguments as $argument) {
             $this->definition->addArgument(new InputArgument(
-                $argument[0],
-                $argument[1],
-                $argument[2],
-                $argument[3]
+                array_get($argument, 0, null),
+                array_get($argument, 1, null),
+                array_get($argument, 2, null),
+                array_get($argument, 3, null)
             ));
         }
 
