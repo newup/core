@@ -41,6 +41,21 @@ abstract class BasePackageTemplate
     protected $copyVerbatim = [];
 
     /**
+     * A collection of files and patterns to process anyway.
+     *
+     * The $copyVerbatim collection allows template authors
+     * to simply copy files to the output directory based
+     * on a given pattern. However, sometimes it might
+     * be necessary to process a given file that
+     * could be matched by one of the patterns.
+     * Add those files/patterns to this list
+     * to have them processed anyways.
+     *
+     * @var array
+     */
+    protected $copyVerbatimExclude = [];
+
+    /**
      * Get the value of a command option.
      *
      * @param      $name
@@ -112,6 +127,16 @@ abstract class BasePackageTemplate
     public function getVerbatimPatterns()
     {
         return $this->copyVerbatim;
+    }
+
+    /**
+     * Gets the patterns that NewUp should process anyways.
+     *
+     * @return array
+     */
+    public function getVerbatimExcludePatterns()
+    {
+        return $this->copyVerbatimExclude;
     }
 
     /**

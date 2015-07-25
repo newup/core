@@ -163,6 +163,7 @@ class Builder
             $this->generator->getRenderer()->addPath($this->getCommonTemplateDirectory());
         }
 
+        $this->generator->setVerbatimExcludePatterns($this->package->getVerbatimExcludePatterns());
         $this->generator->setVerbatimPatterns($this->package->getVerbatimPatterns());
 
         foreach ($this->package->getIgnoredPaths() as $ignoredPath) {

@@ -49,6 +49,21 @@ class ContentGenerator
      */
     protected $copyVerbatimPatterns = [];
 
+    /**
+     * A collection of files and patterns to process anyway.
+     *
+     * The $copyVerbatim collection allows template authors
+     * to simply copy files to the output directory based
+     * on a given pattern. However, sometimes it might
+     * be necessary to process a given file that
+     * could be matched by one of the patterns.
+     * Add those files/patterns to this list
+     * to have them processed anyways.
+     *
+     * @var array
+     */
+    protected $copyVerbatimExcludePatterns = [];
+
     public function __construct(PathManager $pathManager, Filesystem $fileSystem)
     {
         $this->pathManager = $pathManager;
@@ -138,6 +153,33 @@ class ContentGenerator
     }
 
     /**
+     * Sets the verbatim exclude patterns.
+     *
+     * @param $patterns
+     */
+    public function setVerbatimExcludePatterns($patterns)
+    {
+        $this->copyVerbatimExcludePatterns = $patterns;
+    }
+
+    /**
+     * Determines if a file should be excluded copying.
+     *
+     * @param  $file
+     * @return bool
+     */
+    private function isExcludedFromVerbatim($file)
+    {
+        foreach ($this->copyVerbatimExcludePatterns as $pattern) {
+            if (Str::is($pattern, $file)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Determines if a file should simply be copied.
      *
      * @param $file
@@ -145,6 +187,11 @@ class ContentGenerator
      */
     private function shouldCopyFileInstead($file)
     {
+        // Check if it should not be processed.
+        if ($this->isExcludedFromVerbatim($file)) {
+            return false;
+        }
+
         foreach ($this->copyVerbatimPatterns as $pattern) {
             if (Str::is($pattern, $file)) {
                 return true;
