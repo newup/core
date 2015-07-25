@@ -111,7 +111,43 @@ if (!function_exists('add_psr4')) {
 }
 
 if (!function_exists('scope_include')) {
+    /**
+     * Safely includes a file at runtime.
+     *
+     * Prevents access access to a class's
+     * context from within the file.
+     *
+     * @param $include
+     */
     function scope_include($include) {
         include $include;
+    }
+}
+
+if (!function_exists('option')) {
+    /**
+     * Gets a command option by name.
+     *
+     * @param      $option
+     * @param null $default
+     *
+     * @return mixed
+     */
+    function option($option, $default = null) {
+        return array_get(app('NewUp\Templates\Renderers\Collectors\InputCollector')->collect(), 'user_options.'.$option, $default);
+    }
+}
+
+if (!function_exists('argument')) {
+    /**
+     * Gets a command argument by name.
+     *
+     * @param      $argument
+     * @param null $default
+     *
+     * @return mixed
+     */
+    function argument($argument, $default = null) {
+        return array_get(app('NewUp\Templates\Renderers\Collectors\InputCollector')->collect(), 'user_options.'.$argument, $default);
     }
 }
