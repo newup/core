@@ -11,7 +11,7 @@ interface RendererFunction
      * @param $context
      * @return mixed
      */
-    public function setContext($context);
+    public function setContext(&$context);
 
     /**
      * Gets the name of the function.
