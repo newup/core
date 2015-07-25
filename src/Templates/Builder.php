@@ -163,6 +163,10 @@ class Builder
             $this->generator->getRenderer()->addPath($this->getCommonTemplateDirectory());
         }
 
+        foreach ($this->package->getIgnoredPaths() as $ignoredPath) {
+            $this->generator->getPathManager()->getGenerator()->addIgnoredPath($ignoredPath);
+        }
+
         foreach ($this->package->getPathsToProcess() as $pathKey => $processPath) {
            $this->generator->getPathManager()->getCollector()->addFileNames([$pathKey => $processPath]);
         }
