@@ -1,4 +1,6 @@
-<?php namespace NewUp\Templates\Renderers\Collectors;
+<?php
+
+namespace NewUp\Templates\Renderers\Collectors;
 
 use NewUp\Contracts\DataCollector;
 
@@ -21,6 +23,5 @@ class FileNameCollector implements DataCollector
     {
         return ['sys_pathNames' => $this->fileNames];
     }
-
 
 }
