@@ -12,8 +12,6 @@ use NewUp\Foundation\Application;
 
 class TemplateRenderer implements Renderer
 {
-    use CorePathNameFunctionTrait;
-
     /**
      * Twig file system loader instance.
      *
