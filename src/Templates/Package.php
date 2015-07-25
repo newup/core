@@ -1,4 +1,6 @@
-<?php namespace NewUp\Templates;
+<?php
+
+namespace NewUp\Templates;
 
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use NewUp\Contracts\Packages\Package as PackageContract;

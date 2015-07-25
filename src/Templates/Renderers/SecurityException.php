@@ -1,4 +1,6 @@
-<?php namespace NewUp\Templates\Renderers;
+<?php
+
+namespace NewUp\Templates\Renderers;
 
 use NewUp\Exceptions\NewUpException;
 
