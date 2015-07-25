@@ -34,6 +34,13 @@ abstract class BasePackageTemplate
     protected $parsedArguments = [];
 
     /**
+     * A collection of patterns to simply copy.
+     *
+     * @var array
+     */
+    protected $copyVerbatim = [];
+
+    /**
      * Get the value of a command option.
      *
      * @param      $name
@@ -95,6 +102,16 @@ abstract class BasePackageTemplate
     public function getPathsToRemove()
     {
         return $this->pathsToRemove;
+    }
+
+    /**
+     * Gets the patterns that NewUp should simply copy.
+     *
+     * @return array
+     */
+    public function getVerbatimPatterns()
+    {
+        return $this->copyVerbatim;
     }
 
     /**

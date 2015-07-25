@@ -10,6 +10,13 @@ class Package extends BasePackageTemplate
 {
 
     /**
+     * A collection of patterns to simply copy.
+     *
+     * @var array
+     */
+    protected $copyVerbatim = [];
+
+    /**
      * Returns the paths that NewUp should process.
      *
      * @return array

@@ -2,6 +2,7 @@
 
 namespace NewUp\Templates\Generators;
 
+use Illuminate\Support\Str;
 use NewUp\Contracts\Templates\Renderer;
 use NewUp\Filesystem\Filesystem;
 
@@ -40,6 +41,13 @@ class ContentGenerator
      * @var bool
      */
     protected $insideTemplateDirectory = false;
+
+    /**
+     * A collection of patterns to match to determine if NewUp should simply copy a file.
+     *
+     * @var array
+     */
+    protected $copyVerbatimPatterns = [];
 
     public function __construct(PathManager $pathManager, Filesystem $fileSystem)
     {
@@ -100,19 +108,50 @@ class ContentGenerator
 
         foreach ($packageStructure as $packageFile) {
             if ($this->fileSystem->exists($packageFile['full'])) {
-                $packageFileContents = $this->pathManager->getRenderer()->render($packageFile['original']);
+                if (!$this->shouldCopyFileInstead($packageFile['original'])) {
+                    $packageFileContents = $this->pathManager->getRenderer()->render($packageFile['original']);
 
-                if ($packageFileContents != null && strlen($packageFileContents) > 0) {
-                    $this->fileSystem->put($packageFile['full'], $packageFileContents);
-                    $pathsWrittenTo[] = $packageFile;
+                    if ($packageFileContents != null && strlen($packageFileContents) > 0) {
+                        $this->fileSystem->put($packageFile['full'], $packageFileContents);
+                        $pathsWrittenTo[] = $packageFile;
+                    }
+                } else {
+                    // Copy the file instead.
+                    $this->fileSystem->copy($packageFile['origin'], $packageFile['full']);
                 }
-
             }
         }
 
         $this->pathManager->getRenderer()->setIgnoreUnloadedTemplateErrors(false);
 
         return $pathsWrittenTo;
+    }
+
+    /**
+     * Sets the verbatim patterns.
+     *
+     * @param $patterns
+     */
+    public function setVerbatimPatterns($patterns)
+    {
+        $this->copyVerbatimPatterns = $patterns;
+    }
+
+    /**
+     * Determines if a file should simply be copied.
+     *
+     * @param $file
+     * @return bool
+     */
+    private function shouldCopyFileInstead($file)
+    {
+        foreach ($this->copyVerbatimPatterns as $pattern) {
+            if (Str::is($pattern, $file)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
