@@ -20,14 +20,6 @@ abstract class BasePackageTemplate
     protected $pathsToRemove = [];
 
     /**
-     * A list of paths that NewUp should expand and process.
-     *
-     * @var array
-     */
-    protected $pathsToProcess = [];
-
-
-    /**
      * A collection of the parsed options.
      *
      * @var array
@@ -112,7 +104,9 @@ abstract class BasePackageTemplate
      */
     public function getPathsToProcess()
     {
-        return $this->pathsToProcess;
+        return [
+
+        ];
     }
 
     /**
