@@ -10,33 +10,15 @@ class Package extends BasePackageTemplate
 {
 
     /**
-     * Returns the paths that NewUp should ignore.
-     *
-     * @return array
-     */
-    public function getIgnoredPaths()
-    {
-        return $this->ignoredPaths;
-    }
-
-    /**
-     * Returns the paths that NewUp should remove.
-     *
-     * @return array
-     */
-    public function getPathsToRemove()
-    {
-        return $this->ignoredPaths;
-    }
-
-    /**
      * Returns the paths that NewUp should process.
      *
      * @return array
      */
     public function getPathsToProcess()
     {
-        return $this->pathsToProcess;
+        return [
+
+        ];
     }
 
     /**
