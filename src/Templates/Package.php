@@ -207,11 +207,12 @@ class Package implements PackageContract, PackageFactory
      * Returns a new package instance from the provided array.
      *
      * @param array $array
+     * @param bool  $strict
      *
      * @return PackageContract
      * @throws \InvalidArgumentException
      */
-    public static function fromArray(array $array)
+    public static function fromArray(array $array, $strict = true)
     {
         $details = (object)$array;
         $packageNameDetails = self::parseVendorAndPackage(object_get($details, 'name', null));
@@ -220,9 +221,12 @@ class Package implements PackageContract, PackageFactory
         $license = object_get($details, 'license', null);
         $authors = object_get($details, 'authors', null);
 
-        self::throwInvalidArgumentException($description, 'Invalid package description.');
-        self::throwInvalidArgumentException($license, 'Invalid package license.');
-        self::throwInvalidArgumentException($authors, 'Invalid package authors.');
+        // Throw exceptions if the developer wants us to be super strict.
+        if ($strict) {
+            self::throwInvalidArgumentException($description, 'Invalid package description.');
+            self::throwInvalidArgumentException($license, 'Invalid package license.');
+            self::throwInvalidArgumentException($authors, 'Invalid package authors.');
+        }
 
         $package = new Package;
         $package->setAuthors($authors);
@@ -239,13 +243,13 @@ class Package implements PackageContract, PackageFactory
      *
      * The file must be valid JSON.
      *
-     * @param $path
-     *
+     * @param string $path
+     * @param bool   $strict
      * @return PackageContract
      */
-    public static function fromFile($path)
+    public static function fromFile($path, $strict = true)
     {
-        return self::fromArray(json_decode(file_get_contents($path), true));
+        return self::fromArray(json_decode(file_get_contents($path), true), $strict);
     }
 
     /**
