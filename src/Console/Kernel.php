@@ -51,16 +51,11 @@ class Kernel extends BaseKernel
         {
             $inputClass = $this->commandInputOverrides[$commandName];
             $input = new $inputClass;
-
-            if ($input instanceof GeneratorInput && $input->requestingHelpInformation()) {
-                // TODO: Handle help request.
-            }
         }
 
         try
         {
             $this->bootstrap();
-
             return $this->getArtisan()->run($input, $output);
         }
         catch (Exception $e)
