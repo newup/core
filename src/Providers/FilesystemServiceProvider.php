@@ -1,4 +1,6 @@
-<?php namespace NewUp\Providers;
+<?php
+
+namespace NewUp\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

@@ -1,4 +1,6 @@
-<?php namespace NewUp\Contracts\Packages;
+<?php
+
+namespace NewUp\Contracts\Packages;
 
 interface PackageFactory
 {

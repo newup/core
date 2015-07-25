@@ -1,4 +1,6 @@
-<?php namespace NewUp\Templates\Parsers;
+<?php
+
+namespace NewUp\Templates\Parsers;
 
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;

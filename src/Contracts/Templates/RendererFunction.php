@@ -1,4 +1,6 @@
-<?php namespace NewUp\Contracts\Templates;
+<?php
+
+namespace NewUp\Contracts\Templates;
 
 interface RendererFunction
 {

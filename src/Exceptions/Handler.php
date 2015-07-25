@@ -1,4 +1,6 @@
-<?php namespace NewUp\Exceptions;
+<?php
+
+namespace NewUp\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as LaravelExceptionHandler;

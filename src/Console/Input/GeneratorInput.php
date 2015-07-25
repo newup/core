@@ -1,4 +1,6 @@
-<?php namespace NewUp\Console\Input;
+<?php
+
+namespace NewUp\Console\Input;
 
 use NewUp\Exceptions\InvalidPackageTemplateException;
 use Symfony\Component\Console\Input\ArgvInput;

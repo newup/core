@@ -1,4 +1,6 @@
-<?php namespace NewUp\Contracts\Filesystem;
+<?php
+
+namespace NewUp\Contracts\Filesystem;
 
 interface Filesystem
 {

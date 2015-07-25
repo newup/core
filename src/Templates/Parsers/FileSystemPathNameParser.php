@@ -1,4 +1,6 @@
-<?php namespace NewUp\Templates\Parsers;
+<?php
+
+namespace NewUp\Templates\Parsers;
 
 use NewUp\Contracts\Templates\PathNameParser;
 use NewUp\Contracts\Templates\Renderer;

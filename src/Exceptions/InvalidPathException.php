@@ -1,4 +1,6 @@
-<?php namespace NewUp\Exceptions;
+<?php
+
+namespace NewUp\Exceptions;
 
 class InvalidPathException extends NewUpException
 {

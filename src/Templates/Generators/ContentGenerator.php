@@ -1,4 +1,6 @@
-<?php namespace NewUp\Templates\Generators;
+<?php
+
+namespace NewUp\Templates\Generators;
 
 use NewUp\Contracts\Templates\Renderer;
 use NewUp\Filesystem\Filesystem;

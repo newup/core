@@ -1,4 +1,6 @@
-<?php namespace NewUp\Foundation\Bootstrap;
+<?php
+
+namespace NewUp\Foundation\Bootstrap;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Bootstrap\ConfigureLogging as LaravelConfigureLogging;

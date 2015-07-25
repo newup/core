@@ -1,4 +1,6 @@
-<?php namespace NewUp\Filesystem;
+<?php
+
+namespace NewUp\Filesystem;
 
 use Illuminate\Filesystem\Filesystem as LaravelFileSystem;
 use NewUp\Contracts\Filesystem\Filesystem as FileSystemContract;

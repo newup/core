@@ -1,4 +1,6 @@
-<?php namespace NewUp\Templates\Generators;
+<?php
+
+namespace NewUp\Templates\Generators;
 
 use Illuminate\Support\Str;
 use NewUp\Contracts\Filesystem\Filesystem;

@@ -2,4 +2,6 @@
 
 namespace NewUp\Exceptions;
 
-class InvalidPackageTemplateException extends NewUpException {}
+class InvalidPackageTemplateException extends NewUpException
+{
+}

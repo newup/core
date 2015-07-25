@@ -1,4 +1,6 @@
-<?php namespace NewUp\Contracts\IO;
+<?php
+
+namespace NewUp\Contracts\IO;
 
 interface FileTreeGenerator
 {
