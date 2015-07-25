@@ -94,7 +94,7 @@ class ContentGenerator
         // PathManager's file name collector to the template renderer so that the
         // 'path' (and other) functions work as expected.
         $this->getRenderer()->addCollector($this->getPathManager()->getCollector());
-        $this->getRenderer()->addCollector(app('Newup\Templates\Renderers\Collectors\InputCollectors'));
+        $this->getRenderer()->addCollector(app('NewUp\Templates\Renderers\Collectors\InputCollector'));
         
         $this->pathManager->getRenderer()->setIgnoreUnloadedTemplateErrors(true);
 

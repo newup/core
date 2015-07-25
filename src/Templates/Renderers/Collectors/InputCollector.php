@@ -1,6 +1,6 @@
 <?php
 
-namespace Newup\Templates\Renderers\Collectors;
+namespace NewUp\Templates\Renderers\Collectors;
 
 use NewUp\Contracts\DataCollector;
 

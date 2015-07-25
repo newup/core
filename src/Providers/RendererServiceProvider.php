@@ -3,7 +3,7 @@
 namespace NewUp\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Newup\Templates\Renderers\Collectors\InputCollector;
+use NewUp\Templates\Renderers\Collectors\InputCollector;
 
 class RendererServiceProvider extends ServiceProvider
 {

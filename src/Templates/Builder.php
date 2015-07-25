@@ -5,7 +5,7 @@ namespace NewUp\Templates;
 use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Templates\Generators\ContentGenerator;
 use NewUp\Templates\Loaders\PackageLoader;
-use Newup\Templates\Renderers\Collectors\InputCollector;
+use NewUp\Templates\Renderers\Collectors\InputCollector;
 
 class Builder
 {
@@ -69,7 +69,7 @@ class Builder
     /**
      * The InputCollector instance.
      *
-     * @var \Newup\Templates\Renderers\Collectors\InputCollector
+     * @var \NewUp\Templates\Renderers\Collectors\InputCollector
      */
     protected $inputCollector;
 
