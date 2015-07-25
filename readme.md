@@ -8,9 +8,9 @@
 
 NewUp is a command line utility that makes creating packages quick, easy and universal. NewUp attempts to make creating packages for every programming language, framework, platform, etc as painless as possible. Just because NewUp is written in PHP, does not mean generated packages have to be PHP.
 
-## Where is everything?
+## What Is This Repository?
 
-NewUp is in heavy active development, and things will appear here soon. If you're interested, watch this repository.
+This repository contains the core framework and utilities for the [NewUp Command Line Utility](https://github.com/newup/newup). This is where you want to be if you are interested in how NewUp works under the hood. If you simply want to install NewUp for general usage you should head on over to [https://github.com/newup/newup](https://github.com/newup/newup) where you will find installation and configuration instructions.
 
 ## License
 
