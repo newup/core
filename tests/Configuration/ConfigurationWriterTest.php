@@ -1,4 +1,6 @@
-<?php namespace NewUp\Tests\Configuration;
+<?php
+
+namespace NewUp\Tests\Configuration;
 
 use NewUp\Configuration\ConfigurationWriter;
 use NewUp\Templates\Parsers\YAMLParser;

@@ -1,4 +1,6 @@
-<?php namespace NewUp\Tests\Generators;
+<?php
+
+namespace NewUp\Tests\Generators;
 
 use NewUp\Filesystem\Filesystem;
 use NewUp\Templates\Generators\FileSystemTreeGenerator;
