@@ -87,6 +87,12 @@ class ContentGenerator
         $pathsWrittenTo = [];
 
         $packageStructure = $this->pathManager->emitStructure($destination);
+
+        // At this point, since the file structure has been emitted we can add the
+        // PathManager's file name collector to the template renderer so that the
+        // 'path' (and other) functions work as expected.
+        $this->getRenderer()->addCollector($this->getPathManager()->getCollector());
+
         $this->pathManager->getRenderer()->setIgnoreUnloadedTemplateErrors(true);
 
         foreach ($packageStructure as $packageFile) {
