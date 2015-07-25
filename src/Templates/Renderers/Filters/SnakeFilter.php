@@ -14,6 +14,11 @@ class SnakeFilter extends Filter
      */
     protected $name = 'snake';
 
+    /**
+     * Gets the function that is passed to the Twig environment.
+     *
+     * @return \Closure
+     */
     public function getOperator()
     {
         return function ($string, $delimiter = '_') {

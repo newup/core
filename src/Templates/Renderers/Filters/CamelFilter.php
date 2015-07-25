@@ -14,6 +14,11 @@ class CamelFilter extends Filter
      */
     protected $name = 'camel';
 
+    /**
+     * Gets the function that is passed to the Twig environment.
+     *
+     * @return \Closure
+     */
     public function getOperator()
     {
         return function ($string) {

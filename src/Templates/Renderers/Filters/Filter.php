@@ -14,7 +14,11 @@ abstract class Filter implements FilterContract
      */
     protected $name;
 
-
+    /**
+     * Gets the function that is passed to the Twig environment.
+     *
+     * @return \Closure
+     */
     public function getName()
     {
         return $this->name;

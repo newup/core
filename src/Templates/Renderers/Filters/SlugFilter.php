@@ -14,6 +14,11 @@ class SlugFilter extends Filter
      */
     protected $name = 'slug';
 
+    /**
+     * Gets the function that is passed to the Twig environment.
+     *
+     * @return \Closure
+     */
     public function getOperator()
     {
         return function ($string, $separator = '-') {

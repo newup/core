@@ -14,6 +14,11 @@ class LowerFilter extends Filter
      */
     protected $name = 'lower';
 
+    /**
+     * Gets the function that is passed to the Twig environment.
+     *
+     * @return \Closure
+     */
     public function getOperator()
     {
         return function ($string) {

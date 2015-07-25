@@ -14,6 +14,11 @@ class StudlyFilter extends Filter
      */
     protected $name = 'studly';
 
+    /**
+     * Gets the function that is passed to the Twig environment.
+     *
+     * @return \Closure
+     */
     public function getOperator()
     {
         return function ($string) {

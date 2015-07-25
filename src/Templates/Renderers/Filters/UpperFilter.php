@@ -14,6 +14,11 @@ class UpperFilter extends Filter
      */
     protected $name = 'upper';
 
+    /**
+     * Gets the function that is passed to the Twig environment.
+     *
+     * @return \Closure
+     */
     public function getOperator()
     {
         return function ($string) {
