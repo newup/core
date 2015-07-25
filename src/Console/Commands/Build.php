@@ -34,6 +34,7 @@ class Build extends Command
     public function __construct(Builder $templateBuilder)
     {
         parent::__construct();
+        $this->setAliases(['a', 'an']);
         $this->templateBuilder = $templateBuilder;
     }
 
@@ -44,7 +45,6 @@ class Build extends Command
      */
     public function handle()
     {
-
         try {
             $this->templateBuilder->setTemplateName($this->argument('template'));
             $this->templateBuilder->setTemplateDirectory($this->option('newup-directory'));
