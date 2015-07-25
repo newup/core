@@ -3,6 +3,7 @@
 namespace NewUp\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Newup\Templates\Renderers\Collectors\InputCollector;
 
 class RendererServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,10 @@ class RendererServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton('NewUp\Templates\Renderers\Collectors\InputCollector', function() {
+            return new InputCollector;
+        });
+
         $this->app->singleton('NewUp\Contracts\Templates\Renderer', function () {
             return $this->app->make('NewUp\Templates\Renderers\TemplateRenderer');
         });
