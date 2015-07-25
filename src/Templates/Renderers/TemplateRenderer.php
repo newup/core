@@ -8,9 +8,11 @@ use NewUp\Contracts\Templates\Filter as FilterContract;
 use NewUp\Contracts\Templates\Renderer;
 use NewUp\Exceptions\InvalidPathException;
 use NewUp\Foundation\Application;
+use NewUp\Templates\Renderers\CoreFunctions\CorePathNameFunctionTrait;
 
 class TemplateRenderer implements Renderer
 {
+    use CorePathNameFunctionTrait;
 
     /**
      * Twig file system loader instance.
@@ -128,24 +130,6 @@ class TemplateRenderer implements Renderer
     {
         $this->twigEnvironment->addFunction($this->getCorePathNameFunction());
         $this->twigStringEnvironment->addFunction($this->getCorePathNameFunction());
-    }
-
-    private function getCorePathNameFunction()
-    {
-        return new \Twig_SimpleFunction('path', function ($pathName) {
-
-            $data = $this->getData();
-
-            if (array_key_exists('sys_pathNames', $data)) {
-                if (array_key_exists($pathName, $data['sys_pathNames'])) {
-                    return $this->renderString($data['sys_pathNames'][$pathName]);
-                }
-
-                return '';
-            }
-
-            return '';
-        });
     }
 
     /**
