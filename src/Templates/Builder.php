@@ -167,6 +167,10 @@ class Builder
             $this->generator->getPathManager()->getGenerator()->addIgnoredPath($ignoredPath);
         }
 
+        foreach ($this->package->getPathsToRemove() as $pathToRemove) {
+            $this->generator->getPathManager()->getGenerator()->addAutomaticallyRemovedPath($pathToRemove);
+        }
+
         foreach ($this->package->getPathsToProcess() as $pathKey => $processPath) {
            $this->generator->getPathManager()->getCollector()->addFileNames([$pathKey => $processPath]);
         }
