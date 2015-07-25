@@ -41,6 +41,8 @@ return [
 
     'render_functions' => [
         'NewUp\Templates\Renderers\Functions\PathNameFunction',
+        'NewUp\Templates\Renderers\Functions\ArgumentFunction',
+        'NewUp\Templates\Renderers\Functions\OptionFunction',
     ],
 
 ];
