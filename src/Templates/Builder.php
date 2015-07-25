@@ -5,6 +5,7 @@ namespace NewUp\Templates;
 use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Templates\Generators\ContentGenerator;
 use NewUp\Templates\Loaders\PackageLoader;
+use Newup\Templates\Renderers\Collectors\InputCollector;
 
 class Builder
 {
@@ -65,11 +66,19 @@ class Builder
      */
     protected $package;
 
-    public function __construct(ContentGenerator $contentGenerator, Filesystem $files, PackageLoader $loader)
+    /**
+     * The InputCollector instance.
+     *
+     * @var \Newup\Templates\Renderers\Collectors\InputCollector
+     */
+    protected $inputCollector;
+
+    public function __construct(ContentGenerator $contentGenerator, Filesystem $files, PackageLoader $loader, InputCollector $inputCollector)
     {
         $this->generator = $contentGenerator;
         $this->files = $files;
         $this->packageLoader = $loader;
+        $this->inputCollector = $inputCollector;
     }
 
     /**
@@ -181,6 +190,7 @@ class Builder
     public function setOptions($options)
     {
         $this->package->setParsedOptions($options);
+        $this->inputCollector->setOptions($options);
     }
 
     /**
@@ -191,6 +201,7 @@ class Builder
     public function setArguments($arguments)
     {
         $this->package->setParsedArguments($arguments);
+        $this->inputCollector->setArguments($arguments);
     }
 
 }
