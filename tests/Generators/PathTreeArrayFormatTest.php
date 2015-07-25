@@ -1,4 +1,6 @@
-<?php namespace NewUp\Tests\Generators;
+<?php
+
+namespace NewUp\Tests\Generators;
 
 use NewUp\Templates\Generators\PathTreeArrayFormat;
 

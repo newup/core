@@ -1,4 +1,6 @@
-<?php namespace NewUp\Tests\Renderer;
+<?php
+
+namespace NewUp\Tests\Renderer;
 
 class FilterTest extends RenderTestBase
 {

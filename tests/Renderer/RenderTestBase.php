@@ -1,4 +1,6 @@
-<?php namespace NewUp\Tests\Renderer;
+<?php
+
+namespace NewUp\Tests\Renderer;
 
 use NewUp\Templates\Renderers\TemplateRenderer;
 

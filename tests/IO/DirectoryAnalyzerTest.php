@@ -1,4 +1,6 @@
-<?php namespace NewUp\Contracts\IO;
+<?php
+
+namespace NewUp\Contracts\IO;
 
 use Illuminate\Filesystem\Filesystem;
 use NewUp\Templates\Analyzers\DirectoryAnalyzer;

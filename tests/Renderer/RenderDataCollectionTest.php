@@ -1,4 +1,6 @@
-<?php namespace NewUp\Tests\Renderer;
+<?php
+
+namespace NewUp\Tests\Renderer;
 
 use NewUp\Contracts\DataCollector;
 use NewUp\Templates\Renderers\Collectors\FileNameCollector;

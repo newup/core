@@ -1,4 +1,6 @@
-<?php namespace NewUp\Tests\IO;
+<?php
+
+namespace NewUp\Tests\IO;
 
 use NewUp\Templates\Parsers\FileSystemPathNameParser;
 use NewUp\Templates\Renderers\TemplateRenderer;

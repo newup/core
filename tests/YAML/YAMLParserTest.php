@@ -1,4 +1,6 @@
-<?php namespace NewUp\Tests;
+<?php
+
+namespace NewUp\Tests;
 
 use NewUp\Templates\Parsers\YAMLParser;
 use NewUp\Tests\Renderer\RenderTestBase;
