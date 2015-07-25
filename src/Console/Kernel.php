@@ -2,6 +2,8 @@
 
 namespace NewUp\Console;
 
+use NewUp\Console\Input\GeneratorInput;
+
 class Kernel extends BaseKernel
 {
 
@@ -49,6 +51,10 @@ class Kernel extends BaseKernel
         {
             $inputClass = $this->commandInputOverrides[$commandName];
             $input = new $inputClass;
+
+            if ($input instanceof GeneratorInput && $input->requestingHelpInformation()) {
+                // TODO: Handle help request.
+            }
         }
 
         try

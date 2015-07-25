@@ -61,6 +61,30 @@ class GeneratorInput extends ArgvInput
     }
 
     /**
+     * Determines if a user is requesting help information.
+     *
+     * This is required because we cannot rely on Symfony's
+     * help system for the build command. We want to be
+     * able to show users help information dynamically
+     * because package templates can define their
+     * own options and arguments.
+     *
+     * @return bool
+     */
+    public function requestingHelpInformation()
+    {
+        $validHelpTokens = ['-h', '--help'];
+
+        foreach ($this->tokens as $token) {
+            if (in_array($token, $validHelpTokens)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Gets the template name from the input tokens.
      *
      * @return string
