@@ -37,6 +37,10 @@ return [
         'NewUp\Templates\Renderers\Filters\SnakeFilter',
         'NewUp\Templates\Renderers\Filters\StudlyFilter',
         'NewUp\Templates\Renderers\Filters\UpperFilter',
-    ]
+    ],
+
+    'render_functions' => [
+        'NewUp\Templates\Renderers\Functions\PathNameFunction',
+    ],
 
 ];

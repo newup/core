@@ -6,9 +6,9 @@ use Illuminate\Support\Str;
 use NewUp\Contracts\DataCollector;
 use NewUp\Contracts\Templates\Filter as FilterContract;
 use NewUp\Contracts\Templates\Renderer;
+use NewUp\Contracts\Templates\RendererFunction;
 use NewUp\Exceptions\InvalidPathException;
 use NewUp\Foundation\Application;
-use NewUp\Templates\Renderers\CoreFunctions\CorePathNameFunctionTrait;
 
 class TemplateRenderer implements Renderer
 {
@@ -128,8 +128,17 @@ class TemplateRenderer implements Renderer
 
     private function registerFunctions()
     {
-        $this->twigEnvironment->addFunction($this->getCorePathNameFunction());
-        $this->twigStringEnvironment->addFunction($this->getCorePathNameFunction());
+        $functions = config('app.render_functions', []);
+
+        foreach ($functions as $function) {
+            $function = app($function);
+
+            if ($function instanceof RendererFunction) {
+                $function->setContext($this);
+                $this->twigEnvironment->addFunction($function->getFunction());
+                $this->twigStringEnvironment->addFunction($function->getFunction());
+            }
+        }
     }
 
     /**
