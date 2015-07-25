@@ -94,7 +94,7 @@ abstract class BasePackageTemplate
      */
     public function getPathsToRemove()
     {
-        return $this->ignoredPaths;
+        return $this->pathsToRemove;
     }
 
     /**
