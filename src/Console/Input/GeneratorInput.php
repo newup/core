@@ -192,4 +192,9 @@ class GeneratorInput extends ArgvInput
         // TODO: Return the path from a template in the template storage. Currently only supports direct paths.
     }
 
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
+
 }
