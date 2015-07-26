@@ -89,7 +89,7 @@ class TemplateStorageEngine implements StorageEngine
     {
         $packageParts = explode(':', $packageName);
 
-        if (strlen($packageName) > 0 && !Str::contains($packageName)) {
+        if (strlen($packageName) > 0 && !Str::contains($packageName, ':')) {
             return $packageName;
         }
 
