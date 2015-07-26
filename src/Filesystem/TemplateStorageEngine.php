@@ -2,7 +2,7 @@
 
 namespace NewUp\Filesystem;
 
-use NewUp\Contracts\Filesystem\Filesystem;
+use NewUp\Contracts\Filesystem\Filesystem as FileSystemContract;
 use NewUp\Contracts\Templates\StorageEngine;
 use NewUp\Templates\Generators\PathNormalizer;
 
@@ -14,7 +14,7 @@ class TemplateStorageEngine implements StorageEngine
     /**
      * The Filesystem implementation.
      *
-     * @var Filesystem
+     * @var FileSystemContract
      */
     protected $files = null;
 
@@ -25,7 +25,7 @@ class TemplateStorageEngine implements StorageEngine
      */
     protected $templateStoragePath = '';
 
-    public function __construct(Filesystem $filesystem, $templateStoragePath)
+    public function __construct(FileSystemContract $filesystem, $templateStoragePath)
     {
         $this->files = $filesystem;
         $this->templateStoragePath = $this->normalizePath($templateStoragePath);
