@@ -77,6 +77,25 @@ class TemplateStorageEngine implements StorageEngine
     }
 
     /**
+     * Gets the package name without any version string.
+     *
+     * @param $packageName
+     *
+     * @return mixed
+     * @throws \NewUp\Exceptions\InvalidArgumentException
+     */
+    private function getPackageWithoutVersionString($packageName)
+    {
+        $packageParts = explode(':', $packageName);
+
+        if (count($packageParts) > 0) {
+            return $packageParts[0];
+        }
+
+        throw new InvalidArgumentException("Supplied package name is invalid: {$packageName}.");
+    }
+
+    /**
      * Gets the path to a stored package.
      *
      * @param $packageName
