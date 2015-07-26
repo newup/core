@@ -75,5 +75,11 @@ interface StorageEngine {
      */
     public function getPackagesLike($pattern);
 
+    /**
+     * Gets the storage path.
+     *
+     * @return string
+     */
+    public function getStoragePath();
 
 }

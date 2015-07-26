@@ -4,9 +4,12 @@ namespace NewUp\Filesystem;
 
 use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Contracts\Templates\StorageEngine;
+use NewUp\Templates\Generators\PathNormalizer;
 
 class TemplateStorageEngine implements StorageEngine
 {
+
+    use PathNormalizer;
 
     /**
      * The Filesystem implementation.
@@ -25,7 +28,7 @@ class TemplateStorageEngine implements StorageEngine
     public function __construct(Filesystem $filesystem, $templateStoragePath)
     {
         $this->files = $filesystem;
-        $this->templateStoragePath = $templateStoragePath;
+        $this->templateStoragePath = $this->normalizePath($templateStoragePath);
     }
 
     /**
@@ -132,6 +135,16 @@ class TemplateStorageEngine implements StorageEngine
     public function getPackagesLike($pattern)
     {
         // TODO: Implement getPackagesLike() method.
+    }
+
+    /**
+     * Gets the storage path.
+     *
+     * @return string
+     */
+    public function getStoragePath()
+    {
+        return $this->templateStoragePath;
     }
 
 
