@@ -45,4 +45,29 @@ class TemplateStorageEngineTest extends \PHPUnit_Framework_TestCase
         $engine->getPackageVersion('test/test:2.4.2:bad');
     }
 
+    public function testEngineParsesPackageNameWithoutVersion()
+    {
+        $engine = $this->getEngine();
+        $reflectionEngine = new \ReflectionClass(get_class($engine));
+        $method = $reflectionEngine->getMethod('getPackageWithoutVersionString');
+        $method->setAccessible(true);
+
+        $this->assertEquals('test/test', $method->invokeArgs($engine, ['test/test']));
+        $this->assertEquals('test/test', $method->invokeArgs($engine, ['test/test:23.23']));
+        $this->assertEquals('test/test', $method->invokeArgs($engine, ['test/test:4.2.1']));
+    }
+
+    /**
+     * @expectedException NewUp\Exceptions\InvalidArgumentException
+     */
+    public function testEngineParsesPackageNameWithoutVersionThrowsExceptionForEmptyPackageString()
+    {
+        $engine = $this->getEngine();
+        $reflectionEngine = new \ReflectionClass(get_class($engine));
+        $method = $reflectionEngine->getMethod('getPackageWithoutVersionString');
+        $method->setAccessible(true);
+
+        $method->invokeArgs($engine, ['']);
+    }
+
 }
