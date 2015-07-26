@@ -2,6 +2,7 @@
 
 namespace NewUp\Filesystem;
 
+use Illuminate\Support\Str;
 use NewUp\Contracts\Filesystem\Filesystem as FileSystemContract;
 use NewUp\Contracts\Templates\StorageEngine;
 use NewUp\Exceptions\InvalidArgumentException;
@@ -87,6 +88,10 @@ class TemplateStorageEngine implements StorageEngine
     private function getPackageWithoutVersionString($packageName)
     {
         $packageParts = explode(':', $packageName);
+
+        if (strlen($packageName) > 0 && !Str::contains($packageName)) {
+            return $packageName;
+        }
 
         if (count($packageParts) > 0) {
             if (strlen($packageParts[0] > 0)) {
