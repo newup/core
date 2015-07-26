@@ -89,7 +89,9 @@ class TemplateStorageEngine implements StorageEngine
         $packageParts = explode(':', $packageName);
 
         if (count($packageParts) > 0) {
-            return $packageParts[0];
+            if (strlen($packageParts[0] > 0)) {
+                return $packageParts[0];
+            }
         }
 
         throw new InvalidArgumentException("Supplied package name is invalid: {$packageName}.");
