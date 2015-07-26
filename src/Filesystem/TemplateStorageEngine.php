@@ -4,6 +4,7 @@ namespace NewUp\Filesystem;
 
 use NewUp\Contracts\Filesystem\Filesystem as FileSystemContract;
 use NewUp\Contracts\Templates\StorageEngine;
+use NewUp\Exceptions\InvalidArgumentException;
 use NewUp\Templates\Generators\PathNormalizer;
 
 class TemplateStorageEngine implements StorageEngine
@@ -58,13 +59,21 @@ class TemplateStorageEngine implements StorageEngine
     /**
      * Gets the package version number from a package string, if present.
      *
-     * @param $packageName
-     *
+     * @param  $packageName
+     * @throws InvalidArgumentException
      * @return mixed
      */
     public function getPackageVersion($packageName)
     {
-        // TODO: Implement getPackageVersion() method.
+        $versionParts = explode(':', $packageName);
+
+        if (count($versionParts) == 2) {
+            return $versionParts[1];
+        } else if (count($versionParts) > 2) {
+            throw new InvalidArgumentException("Supplied package name is invalid: {$packageName}.");
+        }
+
+        return null;
     }
 
     /**
