@@ -13,8 +13,8 @@ class TemplateStorageEngineTest extends \PHPUnit_Framework_TestCase
     private function getEngine()
     {
         $files = $this->getMock('NewUp\Contracts\Filesystem\Filesystem');
-
-        return new TemplateStorageEngine($files, template_storage_path());
+        $composer = $this->getMockBuilder('NewUp\Foundation\Composer')->disableOriginalConstructor()->getMock();
+        return new TemplateStorageEngine($files, $composer, template_storage_path());
     }
 
     private function getPath()

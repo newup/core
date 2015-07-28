@@ -15,8 +15,9 @@ class FilesystemServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('NewUp\Contracts\Filesystem\Filesystem', 'NewUp\Filesystem\Filesystem');
+
         $this->app->singleton('NewUp\Contracts\Templates\StorageEngine', function() {
-           return new TemplateStorageEngine(app('NewUp\Contracts\Filesystem\Filesystem'), template_storage_path());
+           return new TemplateStorageEngine(app('NewUp\Contracts\Filesystem\Filesystem'), app('NewUp\Foundation\Composer'), template_storage_path());
         });
     }
 
