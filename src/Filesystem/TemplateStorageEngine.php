@@ -111,7 +111,16 @@ class TemplateStorageEngine implements StorageEngine
      */
     public function resolvePackagePath($packageName)
     {
-        // TODO: Implement resolvePackagePath() method.
+        $packageVersion = $this->getPackageVersion($packageName);
+        $packageName    = $this->getPackageWithoutVersionString($packageName);
+
+        $packagePath = template_storage_path().$packageName.'/';
+
+        if ($packageVersion !== null) {
+            $packagePath .= $packageVersion.'/';
+        }
+
+        return $this->normalizePath($packagePath);
     }
 
     /**

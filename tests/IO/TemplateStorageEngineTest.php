@@ -13,6 +13,7 @@ class TemplateStorageEngineTest extends \PHPUnit_Framework_TestCase
     private function getEngine()
     {
         $files = $this->getMock('NewUp\Contracts\Filesystem\Filesystem');
+
         return new TemplateStorageEngine($files, template_storage_path());
     }
 
@@ -47,9 +48,9 @@ class TemplateStorageEngineTest extends \PHPUnit_Framework_TestCase
 
     public function testEngineParsesPackageNameWithoutVersion()
     {
-        $engine = $this->getEngine();
+        $engine           = $this->getEngine();
         $reflectionEngine = new \ReflectionClass(get_class($engine));
-        $method = $reflectionEngine->getMethod('getPackageWithoutVersionString');
+        $method           = $reflectionEngine->getMethod('getPackageWithoutVersionString');
         $method->setAccessible(true);
 
         $this->assertEquals('test/test', $method->invokeArgs($engine, ['test/test']));
@@ -62,12 +63,30 @@ class TemplateStorageEngineTest extends \PHPUnit_Framework_TestCase
      */
     public function testEngineParsesPackageNameWithoutVersionThrowsExceptionForEmptyPackageString()
     {
-        $engine = $this->getEngine();
+        $engine           = $this->getEngine();
         $reflectionEngine = new \ReflectionClass(get_class($engine));
-        $method = $reflectionEngine->getMethod('getPackageWithoutVersionString');
+        $method           = $reflectionEngine->getMethod('getPackageWithoutVersionString');
         $method->setAccessible(true);
 
         $method->invokeArgs($engine, ['']);
+    }
+
+    public function testEngineResolvesCorrectPackagePaths()
+    {
+        $engine = $this->getEngine();
+
+        $paths = [
+            'test/package'     => $this->normalizePath(template_storage_path() . 'test/package/'),
+            'test/package:2.3' => $this->normalizePath(template_storage_path() . 'test/package/2.3/'),
+            'test/package:6.3' => $this->normalizePath(template_storage_path() . 'test/package/6.3/'),
+            'newup/package'    => $this->normalizePath(template_storage_path() . 'newup/package/'),
+            'newup/test:32'    => $this->normalizePath(template_storage_path() . 'newup/test/32/'),
+            'newup/test:dev'   => $this->normalizePath(template_storage_path() . 'newup/test/dev/'),
+        ];
+
+        foreach ($paths as $packageName => $expectedPath) {
+            $this->assertEquals($expectedPath, $engine->resolvePackagePath($packageName));
+        }
     }
 
 }
