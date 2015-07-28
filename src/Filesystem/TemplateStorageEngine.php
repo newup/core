@@ -94,7 +94,7 @@ class TemplateStorageEngine implements StorageEngine
         }
 
         if (count($packageParts) > 0) {
-            if (strlen($packageParts[0] > 0)) {
+            if (strlen($packageParts[0]) > 0) {
                 return $packageParts[0];
             }
         }
