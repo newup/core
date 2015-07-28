@@ -42,7 +42,11 @@ class TemplateStorageEngine implements StorageEngine
      */
     public function addPackage($packageName)
     {
-        // TODO: Implement addPackage() method.
+        $packagePath = $this->resolvePackagePath($packageName);
+
+        if (!$this->files->exists($packagePath)) {
+            $this->files->makeDirectory($packagePath);
+        }
     }
 
     /**
@@ -54,7 +58,7 @@ class TemplateStorageEngine implements StorageEngine
      */
     public function removePackage($packageName)
     {
-        // TODO: Implement removePackage() method.
+        $this->files->delete($this->resolvePackagePath($packageName));
     }
 
     /**
