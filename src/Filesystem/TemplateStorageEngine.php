@@ -52,9 +52,15 @@ class TemplateStorageEngine implements StorageEngine
     public function addPackage($packageName)
     {
         $packagePath = $this->resolvePackagePath($packageName);
-
+        $this->writePackageInstallationInstructions($packagePath, $packageName);
         $this->composer->setWorkingPath($packagePath);
         $this->composer->installPackage($this->getCleanPackageNameString($packageName), $this->preparePackageOptions($packageName));
+
+    }
+
+    private function writePackageInstallationInstructions($path, $packageName)
+    {
+        $this->files->put($path.DIRECTORY_SEPARATOR.'_newup_install_instructions', $packageName);
     }
 
     /**
@@ -66,7 +72,7 @@ class TemplateStorageEngine implements StorageEngine
      */
     public function removePackage($packageName)
     {
-        $this->files->delete($this->resolvePackagePath($packageName));
+        $this->files->deleteDirectory($this->resolvePackagePath($packageName), false);
     }
 
     /**
@@ -170,10 +176,10 @@ class TemplateStorageEngine implements StorageEngine
     {
         $packageVersion = $this->getPackageVersion($packageName);
         $packageName = $this->getCleanPackageNameString($packageName);
-        $packagePath = template_storage_path().$packageName.'/';
+        $packagePath = template_storage_path().$packageName;
 
         if ($packageVersion !== null) {
-            $packagePath .= $packageVersion.'/';
+            $packagePath .= '_{'.$packageVersion.'}'.DIRECTORY_SEPARATOR;
         }
 
         return $this->normalizePath($packagePath, true);
@@ -188,7 +194,8 @@ class TemplateStorageEngine implements StorageEngine
      */
     public function updatePackage($packageName)
     {
-        // TODO: Implement updatePackage() method.
+        $this->removePackage($packageName);
+        $this->addPackage($packageName);
     }
 
     /**
@@ -201,6 +208,9 @@ class TemplateStorageEngine implements StorageEngine
     public function configurePackage($packageName)
     {
         $packagePath = $this->resolvePackagePath($packageName);
+
+        $this->composer->setWorkingPath($packagePath);
+        $this->composer->updatePackage($this->preparePackageOptions($packageName));
     }
 
     /**
