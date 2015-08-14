@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 use NewUp\Foundation\Application;
+use NewUp\Support\ANSIColor;
 
 if (!function_exists('array_remove_value')) {
     /**
@@ -160,5 +161,13 @@ if (!function_exists('argument')) {
      */
     function argument($argument, $default = null) {
         return array_get(app('NewUp\Templates\Renderers\Collectors\InputCollector')->collect(), 'user_options.'.$argument, $default);
+    }
+}
+
+if (!function_exists('remove_ansi')) {
+    function remove_ansi($input) {
+        $ansi = new ANSIColor;
+        $input = str_replace('[[', chr(27).'[', $input);
+        return $ansi->colorStrip($input);
     }
 }
