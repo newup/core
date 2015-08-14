@@ -23,6 +23,9 @@ class Kernel extends BaseKernel
         'NewUp\Console\Commands\About',
         'NewUp\Console\Commands\Init',
         'NewUp\Console\Commands\Build',
+        'NewUp\Console\Commands\Install',
+        'NewUp\Console\Commands\Remove',
+        'NewUp\Console\Commands\Update',
     ];
 
     /**
