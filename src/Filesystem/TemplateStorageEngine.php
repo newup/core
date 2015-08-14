@@ -178,9 +178,7 @@ class TemplateStorageEngine implements StorageEngine
             $packagePath .= $packageVersion.'/';
         }
 
-        // Remove the trailing DIRECTORY_SEPARATOR from the resolved path
-        // and return the result.
-        return rtrim($this->normalizePath($packagePath), DIRECTORY_SEPARATOR);
+        return $this->normalizePath($packagePath, true);
     }
 
     /**
