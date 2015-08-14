@@ -18,6 +18,13 @@ class Composer
     protected $workingPath;
 
     /**
+     * The initial working directory.
+     *
+     * @var string
+     */
+    protected $initialDirectory;
+
+    /**
      * The filesystem implementation.
      *
      * @var \NewUp\Contracts\Filesystem\\Filesystem
@@ -43,6 +50,7 @@ class Composer
     public function __construct(Filesystem $filesystem)
     {
         $this->files = $filesystem;
+        $this->initialDirectory = getcwd();
     }
 
     /**
@@ -100,10 +108,6 @@ class Composer
     {
         $optionString = '';
 
-        if (!array_key_exists('--do-install', $options)) {
-            $options['--no-install'] = null;
-        }
-
         foreach ($forceOptions as $option => $value) {
             if (is_numeric($option)) {
                 $options[$value] = null;
@@ -113,10 +117,6 @@ class Composer
         }
 
         foreach ($options as $option => $value) {
-
-            if ($option == '--do-install') {
-                continue;
-            }
 
             if (is_null($value)) {
                 $optionString .= ' ' . $option;
@@ -229,7 +229,7 @@ class Composer
     {
         $process = $this->getProcess();
         $process->setCommandLine(trim($this->findComposer() . ' create-project ' . $packageName . ' "' .
-                                      $this->workingPath . '" ' . $this->prepareOptions($options, ['--no-ansi'])));
+                                      $this->workingPath . '" ' . $this->prepareOptions($options, ['--no-ansi', '--no-install'])));
         $this->prepareInstallationDirectory($this->workingPath);
 
         $process->run();
@@ -243,8 +243,25 @@ class Composer
         return true;
     }
 
-    public function updatePackage($packageName, $options = [])
+    /**
+     * Updates the packages dependencies by running "composer update".
+     *
+     * @param array $options
+     * @return bool
+     */
+    public function updatePackageDependencies($options = [])
     {
+        $process = $this->getProcess();
+        $process->setCommandLine(trim($this->findComposer().' update '.$this->prepareOptions($options, ['--no-progress'])));
+        chdir($this->workingPath);
+        $process->run();
+
+        if ($process->isSuccessful() == false) {
+            // TODO: Handle failures.
+        }
+
+        chdir($this->initialDirectory);
+        return true;
     }
 
 }

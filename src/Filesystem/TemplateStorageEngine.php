@@ -216,7 +216,7 @@ class TemplateStorageEngine implements StorageEngine
         $packagePath = $this->resolvePackagePath($packageName);
 
         $this->composer->setWorkingPath($packagePath);
-        $this->composer->updatePackage($this->preparePackageOptions($packageName));
+        $this->composer->updatePackageDependencies($this->preparePackageOptions($packageName));
     }
 
     /**
