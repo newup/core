@@ -37,9 +37,9 @@ class TemplateStorageEngine implements StorageEngine
 
     public function __construct(FileSystemContract $filesystem, Composer $composer, $templateStoragePath)
     {
-        $this->files = $filesystem;
+        $this->files               = $filesystem;
         $this->templateStoragePath = $this->normalizePath($templateStoragePath);
-        $this->composer = $composer;
+        $this->composer            = $composer;
     }
 
     /**
@@ -54,13 +54,14 @@ class TemplateStorageEngine implements StorageEngine
         $packagePath = $this->resolvePackagePath($packageName);
         $this->writePackageInstallationInstructions($packagePath, $packageName);
         $this->composer->setWorkingPath($packagePath);
-        $this->composer->installPackage($this->getCleanPackageNameString($packageName), $this->preparePackageOptions($packageName));
+        $this->composer->installPackage($this->getCleanPackageNameString($packageName),
+            $this->preparePackageOptions($packageName));
 
     }
 
     private function writePackageInstallationInstructions($path, $packageName)
     {
-        $this->files->put($path.DIRECTORY_SEPARATOR.'_newup_install_instructions', $packageName);
+        $this->files->put($path . DIRECTORY_SEPARATOR . '_newup_install_instructions', $packageName);
     }
 
     /**
@@ -175,11 +176,11 @@ class TemplateStorageEngine implements StorageEngine
     public function resolvePackagePath($packageName)
     {
         $packageVersion = $this->getPackageVersion($packageName);
-        $packageName = $this->getCleanPackageNameString($packageName);
-        $packagePath = template_storage_path().$packageName;
+        $packageName    = $this->getCleanPackageNameString($packageName);
+        $packagePath    = template_storage_path() . $packageName;
 
         if ($packageVersion !== null) {
-            $packagePath .= '_{'.$packageVersion.'}'.DIRECTORY_SEPARATOR;
+            $packagePath .= '_{' . $packageVersion . '}' . DIRECTORY_SEPARATOR;
         }
 
         return $this->normalizePath($packagePath, true);
@@ -188,8 +189,11 @@ class TemplateStorageEngine implements StorageEngine
     /**
      * Updates a given package.
      *
-     * @param $packageName
+     * This is the wrong method if you are looking
+     * for something like 'composer update'. Look
+     * at the 'configurePackage' method instead.
      *
+     * @param $packageName
      * @return mixed
      */
     public function updatePackage($packageName)
@@ -201,8 +205,10 @@ class TemplateStorageEngine implements StorageEngine
     /**
      * Configures a given package by name.
      *
-     * @param $packageName
+     * Use this when you want to run something
+     * like 'composer update'.
      *
+     * @param $packageName
      * @return mixed
      */
     public function configurePackage($packageName)
@@ -224,7 +230,7 @@ class TemplateStorageEngine implements StorageEngine
     {
         $packagePath = $this->resolvePackagePath($packageName);
 
-        return $this->files->exists($packagePath.DIRECTORY_SEPARATOR.'composer.json');
+        return $this->files->exists($packagePath . DIRECTORY_SEPARATOR . 'composer.json');
     }
 
     /**
