@@ -103,6 +103,10 @@ class Composer
             $options['--no-install'] = null;
         }
 
+        if (!array_key_exists('--no-ansi', $options)) {
+            $options['--no-ansi'] = null;
+        }
+
         foreach ($options as $option => $value) {
 
             if ($option == '--do-install') {
@@ -192,6 +196,23 @@ class Composer
     }
 
     /**
+     * Gets the message when Composer throws an exception.
+     *
+     * @param $errorMessage
+     * @return string
+     */
+    private function parseComposerErrorMessage($errorMessage)
+    {
+        // Split the error message into an array of lines.
+        $errorLines = preg_split("/\r\n|\n|\r/", $errorMessage);
+        if (isset($errorLines[4])) {
+            return trim($errorLines[4]);
+        }
+
+        return '';
+    }
+
+    /**
      * Installs a Composer package, placing it in NewUp's template storage.
      *
      * @param        $packageName
@@ -209,8 +230,9 @@ class Composer
         $process->run();
 
         if ($process->isSuccessful() == false) {
+            $composerError = $this->parseComposerErrorMessage($process->getErrorOutput());
             throw new PackageInstallationException($process->getErrorOutput(),
-                "There was an error installing the package: {$packageName}");
+                "There was an error installing the package: {$packageName}".PHP_EOL."Composer is reporting the following error:".PHP_EOL.'--> '.$composerError);
         }
 
         return true;
