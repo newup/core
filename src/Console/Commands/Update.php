@@ -41,9 +41,18 @@ class Update extends Command
         $packageName = $this->argument('name');
 
         if (!$this->templateStorageEngine->packageExists($packageName)) {
-            $this->comment("The package {$packageName} is not currently installed.");
+            if (!$this->confirm("The package {$packageName} is not currently installed. Would you like to install it instead? [yes|no]",
+                false)
+            ) {
+                $this->comment("The package {$packageName} is not currently installed, and will not be installed right now.");
 
-            return;
+                return;
+            } else {
+                $this->comment("Okay, we will install the {$packageName} package template. Give us a moment to get things ready...");
+                $this->call('template:install', ['name' => $packageName]);
+
+                return;
+            }
         }
 
 
