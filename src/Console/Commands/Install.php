@@ -41,8 +41,14 @@ class Install extends Command
         $packageName = $this->argument('name');
 
         if ($this->templateStorageEngine->packageExists($packageName)) {
-            $this->comment("The package {$packageName} is already installed.");
-            return;
+            if (!$this->confirm("The package {$packageName} is already installed. Would you like to update it instead? [yes|no]", false)) {
+                $this->comment("The package {$packageName} is already installed and will not be updated.");
+                return;
+            } else {
+                $this->comment("Okay, we will update the {$packageName} package. Give us a moment to get things ready...");
+                $this->call('template:update', ['name' => $packageName]);
+                return;
+            }
         }
         $this->line("Installing {$packageName}. Sit back and relax for a minute, this can take a while.");
         $this->templateStorageEngine->addPackage($packageName);
