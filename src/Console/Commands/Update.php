@@ -47,7 +47,7 @@ class Update extends Command
         }
 
 
-        $this->line("Updating {$packageName}. Sit back and relax for a minute, this can take a while (it usually take a little longer than an install).");
+        $this->line("Updating {$packageName}. Sit back and relax for a minute, this can take a while (it usually takes a little longer than an install).");
         $this->templateStorageEngine->updatePackage($packageName);
         $this->info("{$packageName} updated.");
     }
