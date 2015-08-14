@@ -35,6 +35,7 @@ class Init extends Command
     public function __construct(TemplateInitializer $initializer, Filesystem $files)
     {
         parent::__construct();
+        $this->setAliases(['template:init']);
         $this->templateInitializer = $initializer;
         $this->files = $files;
     }

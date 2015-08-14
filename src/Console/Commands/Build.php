@@ -34,7 +34,7 @@ class Build extends Command
     public function __construct(Builder $templateBuilder)
     {
         parent::__construct();
-        $this->setAliases(['a', 'an']);
+        $this->setAliases(['a', 'an', 'template:build']);
         $this->templateBuilder = $templateBuilder;
     }
 

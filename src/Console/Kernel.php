@@ -15,7 +15,8 @@ class Kernel extends BaseKernel
     protected $commandInputOverrides = [
         'build' => '\NewUp\Console\Input\GeneratorInput',
         'a' => '\NewUp\Console\Input\GeneratorInput',
-        'an' => '\NewUp\Console\Input\GeneratorInput'
+        'an' => '\NewUp\Console\Input\GeneratorInput',
+        'template:build' => '\NewUp\Console\Input\GeneratorInput',
     ];
 
     protected $commands = [
