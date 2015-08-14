@@ -257,8 +257,7 @@ class Composer
         $process = $this->getProcess();
         $process->setCommandLine(trim($this->findComposer() . ' update ' .
                                       $this->prepareOptions($options, ['--no-progress'])));
-        var_dump(trim($this->findComposer() . ' update ' .
-                      $this->prepareOptions($options, ['--no-progress'])));
+
         chdir($this->workingPath);
         $process->run();
 
