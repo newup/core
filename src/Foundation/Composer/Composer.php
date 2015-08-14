@@ -239,7 +239,7 @@ class Composer
             $composerError = $this->parseComposerErrorMessage($process->getErrorOutput());
             throw new PackageInstallationException($process->getErrorOutput(),
                 "There was an error installing the package: {$packageName}" . PHP_EOL .
-                "Composer is reporting the following error:" . PHP_EOL . '--> ' . $composerError);
+                'Composer is reporting the following error:' . PHP_EOL . '--> ' . $composerError);
         }
 
         return true;
@@ -248,6 +248,7 @@ class Composer
     /**
      * Updates the packages dependencies by running "composer update".
      *
+     * @throws PackageInstallationException
      * @param array $options
      * @return bool
      */
@@ -256,11 +257,16 @@ class Composer
         $process = $this->getProcess();
         $process->setCommandLine(trim($this->findComposer() . ' update ' .
                                       $this->prepareOptions($options, ['--no-progress'])));
+        var_dump(trim($this->findComposer() . ' update ' .
+                      $this->prepareOptions($options, ['--no-progress'])));
         chdir($this->workingPath);
         $process->run();
 
         if ($process->isSuccessful() == false) {
-            // TODO: Handle failures.
+            $composerError = remove_ansi($process->getErrorOutput());
+            throw new PackageInstallationException($process->getErrorOutput(),
+                "There was an error updating the dependencies.".PHP_EOL.
+                'Composer is reporting the following error(s):'.PHP_EOL.'--> '.$composerError);
         }
 
         chdir($this->initialDirectory);
