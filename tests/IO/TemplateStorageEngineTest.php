@@ -78,11 +78,11 @@ class TemplateStorageEngineTest extends \PHPUnit_Framework_TestCase
 
         $paths = [
             'test/package'     => $this->normalizePath(template_storage_path() . 'test/package/', true),
-            'test/package:2.3' => $this->normalizePath(template_storage_path() . 'test/package/2.3/', true),
-            'test/package:6.3' => $this->normalizePath(template_storage_path() . 'test/package/6.3/', true),
+            'test/package:2.3' => $this->normalizePath(template_storage_path() . 'test/package_{2.3}/', true),
+            'test/package:6.3' => $this->normalizePath(template_storage_path() . 'test/package_{6.3}/', true),
             'newup/package'    => $this->normalizePath(template_storage_path() . 'newup/package/', true),
-            'newup/test:32'    => $this->normalizePath(template_storage_path() . 'newup/test/32/', true),
-            'newup/test:dev'   => $this->normalizePath(template_storage_path() . 'newup/test/dev/', true),
+            'newup/test:32'    => $this->normalizePath(template_storage_path() . 'newup/test_{32}/', true),
+            'newup/test:dev'   => $this->normalizePath(template_storage_path() . 'newup/test_{dev}/', true),
         ];
 
         foreach ($paths as $packageName => $expectedPath) {
