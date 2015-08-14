@@ -52,13 +52,18 @@ class TemplateStorageEngine implements StorageEngine
     public function addPackage($packageName)
     {
         $packagePath = $this->resolvePackagePath($packageName);
-        $this->writePackageInstallationInstructions($packagePath, $packageName);
         $this->composer->setWorkingPath($packagePath);
         $this->composer->installPackage($this->getCleanPackageNameString($packageName),
             $this->preparePackageOptions($packageName));
-
+        $this->writePackageInstallationInstructions($packagePath, $packageName);
     }
 
+    /**
+     * Writes the package installation instructions to the template storage.
+     *
+     * @param $path
+     * @param $packageName
+     */
     private function writePackageInstallationInstructions($path, $packageName)
     {
         $this->files->put($path . DIRECTORY_SEPARATOR . '_newup_install_instructions', $packageName);
@@ -198,8 +203,40 @@ class TemplateStorageEngine implements StorageEngine
      */
     public function updatePackage($packageName)
     {
-        $this->removePackage($packageName);
-        $this->addPackage($packageName);
+
+        if (!$this->packageExists($packageName)) {
+            return false;
+        }
+
+        $newPackageLocation           = $this->resolvePackagePath($packageName);
+        $oldPackageLocation           = $this->normalizePath($newPackageLocation . '_{updating_in_progress}');
+        $installationInstructionsPath =
+            $this->normalizePath($oldPackageLocation . DIRECTORY_SEPARATOR . '_newup_install_instructions');
+
+        if ($this->files->exists($oldPackageLocation)) {
+            $this->files->deleteDirectory($oldPackageLocation, false);
+        }
+
+        $this->files->makeDirectory($oldPackageLocation, 0755, true);
+        $this->files->copyDirectory($newPackageLocation, $oldPackageLocation);
+        $this->files->deleteDirectory($newPackageLocation, false);
+
+        $installInstructions = $this->files->get($installationInstructionsPath);
+
+        try {
+            $this->addPackage($installInstructions);
+            $this->files->deleteDirectory($oldPackageLocation, false);
+
+            return true;
+        } catch (\Exception $e) {
+            // There was an issue updating the package. We will rollback.
+            $this->files->deleteDirectory($newPackageLocation, false);
+            $this->files->makeDirectory($newPackageLocation, 0755, true);
+            $this->files->copyDirectory($oldPackageLocation, $newPackageLocation);
+            $this->files->deleteDirectory($oldPackageLocation, false);
+            // TODO: Handle failure
+        }
+
     }
 
     /**
