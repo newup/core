@@ -139,7 +139,7 @@ class Composer
         $process->run();
 
         if ($process->isSuccessful() == false) {
-            throw new PackageInstallationException("There was an error installing the package: {$packageName}");
+            throw new PackageInstallationException($process->getErrorOutput(), "There was an error installing the package: {$packageName}");
         }
 
         return true;
