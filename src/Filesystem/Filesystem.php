@@ -31,4 +31,34 @@ class Filesystem extends LaravelFileSystem implements FileSystemContract
         return iterator_to_array(Finder::create()->files()->ignoreDotFiles(false)->in($directory), false);
     }
 
+    /**
+     * Get all of the directories within a given directory.
+     *
+     * @param  string  $directory
+     * @return array
+     */
+    public function directories($directory)
+    {
+        $directories = array();
+
+        foreach (Finder::create()->in($directory)->directories()->ignoreVCS(false)->ignoreDotFiles(false)->ignoreUnreadableDirs(false)->depth(0) as $dir)
+        {
+            $directories[] = $dir->getPathname();
+        }
+
+        return $directories;
+    }
+
+    /**
+     * Determine if the given path is readable.
+     *
+     * @param  string $path
+     * @return mixed
+     */
+    public function isReadable($path)
+    {
+        return is_readable($path);
+    }
+
+
 }

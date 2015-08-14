@@ -159,6 +159,14 @@ interface Filesystem
     public function isWritable($path);
 
     /**
+     * Determine if the given path is readable.
+     *
+     * @param  string $path
+     * @return mixed
+     */
+    public function isReadable($path);
+
+    /**
      * Determine if the given path is a file.
      *
      * @param  string $file
