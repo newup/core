@@ -93,9 +93,10 @@ class Composer
      * Prepares the options string.
      *
      * @param $options
+     * @param $forceOptions
      * @return string
      */
-    private function prepareOptions($options)
+    private function prepareOptions($options, $forceOptions = [])
     {
         $optionString = '';
 
@@ -103,8 +104,12 @@ class Composer
             $options['--no-install'] = null;
         }
 
-        if (!array_key_exists('--no-ansi', $options)) {
-            $options['--no-ansi'] = null;
+        foreach ($forceOptions as $option => $value) {
+            if (is_numeric($option)) {
+                $options[$value] = null;
+            } else {
+                $options[$option] = $value;
+            }
         }
 
         foreach ($options as $option => $value) {
@@ -224,7 +229,7 @@ class Composer
     {
         $process = $this->getProcess();
         $process->setCommandLine(trim($this->findComposer() . ' create-project ' . $packageName . ' "' .
-                                      $this->workingPath . '" ' . $this->prepareOptions($options)));
+                                      $this->workingPath . '" ' . $this->prepareOptions($options, ['--no-ansi'])));
         $this->prepareInstallationDirectory($this->workingPath);
 
         $process->run();
@@ -236,6 +241,10 @@ class Composer
         }
 
         return true;
+    }
+
+    public function updatePackage($packageName, $options = [])
+    {
     }
 
 }
