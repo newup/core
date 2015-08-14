@@ -121,6 +121,12 @@ class Composer
         $this->files->deleteDirectory($directory, true);
     }
 
+    /**
+     * Installs a Composer package, placing it in NewUp's template storage.
+     *
+     * @param       $packageName
+     * @param array $options
+     */
     public function installPackage($packageName, $options = [])
     {
         $process = $this->getProcess();
