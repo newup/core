@@ -216,7 +216,7 @@ class TemplateStorageEngine implements StorageEngine
     {
         $packagePath = $this->resolvePackagePath($packageName);
 
-        return ($this->files->exists($packagePath) && $this->files->isDirectory($packagePath));
+        return $this->files->exists($packagePath.DIRECTORY_SEPARATOR.'composer.json');
     }
 
     /**
