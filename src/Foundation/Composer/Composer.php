@@ -1,6 +1,6 @@
 <?php
 
-namespace NewUp\Foundation;
+namespace NewUp\Foundation\Composer;
 
 use NewUp\Contracts\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;

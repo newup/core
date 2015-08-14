@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use NewUp\Contracts\Filesystem\Filesystem as FileSystemContract;
 use NewUp\Contracts\Templates\StorageEngine;
 use NewUp\Exceptions\InvalidArgumentException;
-use NewUp\Foundation\Composer;
+use NewUp\Foundation\Composer\Composer;
 use NewUp\Templates\Generators\PathNormalizer;
 
 class TemplateStorageEngine implements StorageEngine
@@ -24,7 +24,7 @@ class TemplateStorageEngine implements StorageEngine
     /**
      * The Composer instance.
      *
-     * @var \NewUp\Foundation\Composer
+     * @var \NewUp\Foundation\Composer\Composer
      */
     protected $composer;
 
