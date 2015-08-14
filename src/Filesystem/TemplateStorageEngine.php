@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use NewUp\Contracts\Filesystem\Filesystem as FileSystemContract;
 use NewUp\Contracts\Templates\StorageEngine;
 use NewUp\Exceptions\InvalidArgumentException;
+use NewUp\Foundation\Composer;
 use NewUp\Templates\Generators\PathNormalizer;
 
 class TemplateStorageEngine implements StorageEngine
@@ -21,16 +22,24 @@ class TemplateStorageEngine implements StorageEngine
     protected $files = null;
 
     /**
+     * The Composer instance.
+     *
+     * @var \NewUp\Foundation\Composer
+     */
+    protected $composer;
+
+    /**
      * The template storage engine path.
      *
      * @var string
      */
     protected $templateStoragePath = '';
 
-    public function __construct(FileSystemContract $filesystem, $templateStoragePath)
+    public function __construct(FileSystemContract $filesystem, Composer $composer, $templateStoragePath)
     {
         $this->files = $filesystem;
         $this->templateStoragePath = $this->normalizePath($templateStoragePath);
+        $this->composer = $composer;
     }
 
     /**
@@ -44,9 +53,8 @@ class TemplateStorageEngine implements StorageEngine
     {
         $packagePath = $this->resolvePackagePath($packageName);
 
-        if (!$this->files->exists($packagePath)) {
-            $this->files->makeDirectory($packagePath);
-        }
+        $this->composer->setWorkingPath($packagePath);
+        $this->composer->installPackage($this->getCleanPackageNameString($packageName), $this->preparePackageOptions($packageName));
     }
 
     /**
@@ -73,12 +81,46 @@ class TemplateStorageEngine implements StorageEngine
         $versionParts = explode(':', $packageName);
 
         if (count($versionParts) == 2) {
-            return $versionParts[1];
+            return explode('>', $versionParts[1])[0];
         } else if (count($versionParts) > 2) {
             throw new InvalidArgumentException("Supplied package name is invalid: {$packageName}.");
         }
 
         return null;
+    }
+
+    /**
+     * Returns an array of options that is compatible with the
+     * Composer class.
+     *
+     * @param $packageString
+     * @return array
+     */
+    private function preparePackageOptions($packageString)
+    {
+        $packageOptions = explode('>', $packageString);
+        array_shift($packageOptions);
+
+        if (count($packageOptions) == 0) {
+            return [];
+        }
+
+        $packageOptions = explode(',', $packageOptions[0]);
+
+        $processedOptions = [];
+
+        foreach ($packageOptions as $option) {
+            $tempOption = explode('=', $option);
+
+            if (count($tempOption) == 1) {
+                $processedOptions[$tempOption[0]] = null;
+            } elseif (count($tempOption) == 2) {
+                $processedOptions[$tempOption[0]] = $tempOption[1];
+            }
+
+        }
+
+        return $processedOptions;
     }
 
     /**
@@ -107,6 +149,17 @@ class TemplateStorageEngine implements StorageEngine
     }
 
     /**
+     * @param $packageName
+     * @return mixed
+     * @throws InvalidArgumentException
+     */
+    private function getCleanPackageNameString($packageName)
+    {
+        return explode('>', $this->getPackageWithoutVersionString($packageName))[0];
+    }
+
+
+    /**
      * Gets the path to a stored package.
      *
      * @param $packageName
@@ -115,16 +168,19 @@ class TemplateStorageEngine implements StorageEngine
      */
     public function resolvePackagePath($packageName)
     {
-        $packageVersion = $this->getPackageVersion($packageName);
-        $packageName    = $this->getPackageWithoutVersionString($packageName);
 
+        ($this->preparePackageOptions($packageName));
+        $packageVersion = $this->getPackageVersion($packageName);
+        $packageName = $this->getCleanPackageNameString($packageName);
         $packagePath = template_storage_path().$packageName.'/';
 
         if ($packageVersion !== null) {
             $packagePath .= $packageVersion.'/';
         }
 
-        return $this->normalizePath($packagePath);
+        // Remove the trailing DIRECTORY_SEPARATOR from the resolved path
+        // and return the result.
+        return rtrim($this->normalizePath($packagePath), DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -148,7 +204,7 @@ class TemplateStorageEngine implements StorageEngine
      */
     public function configurePackage($packageName)
     {
-        // TODO: Implement configurePackage() method.
+        $packagePath = $this->resolvePackagePath($packageName);
     }
 
     /**
@@ -160,7 +216,9 @@ class TemplateStorageEngine implements StorageEngine
      */
     public function packageExists($packageName)
     {
-        // TODO: Implement packageExists() method.
+        $packagePath = $this->resolvePackagePath($packageName);
+
+        return ($this->files->exists($packagePath) && $this->files->isDirectory($packagePath));
     }
 
     /**
