@@ -3,6 +3,7 @@
 namespace NewUp\Foundation\Composer;
 
 use NewUp\Contracts\Filesystem\Filesystem;
+use NewUp\Foundation\Composer\Exceptions\PackageInstallationException;
 use Symfony\Component\Process\Process;
 
 class Composer
@@ -124,8 +125,10 @@ class Composer
     /**
      * Installs a Composer package, placing it in NewUp's template storage.
      *
-     * @param       $packageName
-     * @param array $options
+     * @param        $packageName
+     * @param  array $options
+     * @throws PackageInstallationException
+     * @return bool
      */
     public function installPackage($packageName, $options = [])
     {
@@ -136,10 +139,10 @@ class Composer
         $process->run();
 
         if ($process->isSuccessful() == false) {
-            // TODO:: HANDLE ERROR
+            throw new PackageInstallationException("There was an error installing the package: {$packageName}");
         }
 
-        // TODO:: HANDLE SUCCESS
+        return true;
     }
 
 }
