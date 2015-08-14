@@ -94,7 +94,7 @@ class Composer
             if (is_null($value)) {
                 $optionString .= ' ' . $option;
             } else {
-                $optionString .= ' ' . $option . ' ' . $value;
+                $optionString .= ' ' . $option . '=' . $value;
             }
         }
 
