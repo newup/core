@@ -168,8 +168,6 @@ class TemplateStorageEngine implements StorageEngine
      */
     public function resolvePackagePath($packageName)
     {
-
-        ($this->preparePackageOptions($packageName));
         $packageVersion = $this->getPackageVersion($packageName);
         $packageName = $this->getCleanPackageNameString($packageName);
         $packagePath = template_storage_path().$packageName.'/';
