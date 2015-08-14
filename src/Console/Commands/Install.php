@@ -48,13 +48,13 @@ class Install extends Command
 
                 return;
             } else {
-                $this->comment("Okay, we will update the {$packageName} package. Give us a moment to get things ready...");
+                $this->comment("Okay, we will update the {$packageName} package template. Give us a moment to get things ready...");
                 $this->call('template:update', ['name' => $packageName]);
 
                 return;
             }
         }
-        
+
         $this->line("Installing {$packageName}. Sit back and relax for a minute, this can take a while.");
         $this->templateStorageEngine->addPackage($packageName);
         $this->info("{$packageName} installed.");
