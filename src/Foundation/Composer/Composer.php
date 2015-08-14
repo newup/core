@@ -49,7 +49,7 @@ class Composer
 
     public function __construct(Filesystem $filesystem)
     {
-        $this->files = $filesystem;
+        $this->files            = $filesystem;
         $this->initialDirectory = getcwd();
     }
 
@@ -140,7 +140,7 @@ class Composer
     private function prepareInstallationDirectory($directory)
     {
         if (!$this->files->exists($directory)) {
-            $this->files->makeDirectory($directory);
+            $this->files->makeDirectory($directory . DIRECTORY_SEPARATOR, 0755, true);
 
             return;
         }
@@ -229,7 +229,8 @@ class Composer
     {
         $process = $this->getProcess();
         $process->setCommandLine(trim($this->findComposer() . ' create-project ' . $packageName . ' "' .
-                                      $this->workingPath . '" ' . $this->prepareOptions($options, ['--no-ansi', '--no-install'])));
+                                      $this->workingPath . '" ' .
+                                      $this->prepareOptions($options, ['--no-ansi', '--no-install'])));
         $this->prepareInstallationDirectory($this->workingPath);
 
         $process->run();
@@ -237,7 +238,8 @@ class Composer
         if ($process->isSuccessful() == false) {
             $composerError = $this->parseComposerErrorMessage($process->getErrorOutput());
             throw new PackageInstallationException($process->getErrorOutput(),
-                "There was an error installing the package: {$packageName}".PHP_EOL."Composer is reporting the following error:".PHP_EOL.'--> '.$composerError);
+                "There was an error installing the package: {$packageName}" . PHP_EOL .
+                "Composer is reporting the following error:" . PHP_EOL . '--> ' . $composerError);
         }
 
         return true;
@@ -252,7 +254,8 @@ class Composer
     public function updatePackageDependencies($options = [])
     {
         $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer().' update '.$this->prepareOptions($options, ['--no-progress'])));
+        $process->setCommandLine(trim($this->findComposer() . ' update ' .
+                                      $this->prepareOptions($options, ['--no-progress'])));
         chdir($this->workingPath);
         $process->run();
 
@@ -261,6 +264,7 @@ class Composer
         }
 
         chdir($this->initialDirectory);
+
         return true;
     }
 
