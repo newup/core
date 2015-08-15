@@ -234,7 +234,7 @@ class TemplateStorageEngine implements StorageEngine
         try {
             $this->addPackage($installInstructions);
             $this->files->deleteDirectory($oldPackageLocation, false);
-
+            $this->log->info('Updated package template', ['package' => $packageName]);
             return true;
         } catch (\Exception $e) {
             // There was an issue updating the package. We will rollback.
@@ -242,6 +242,7 @@ class TemplateStorageEngine implements StorageEngine
             $this->files->makeDirectory($newPackageLocation, 0755, true);
             $this->files->copyDirectory($oldPackageLocation, $newPackageLocation);
             $this->files->deleteDirectory($oldPackageLocation, false);
+            $this->log->debug('Package updated failed', ['package' => $packageName, 'message' => $e->getMessage(), 'exception' => $e]);
             throw new ComposerException('There was an unexpected failure during the package update process.', $e->getCode(), $e);
         }
 
@@ -259,7 +260,7 @@ class TemplateStorageEngine implements StorageEngine
     public function configurePackage($packageName)
     {
         $packagePath = $this->resolvePackagePath($packageName);
-
+        
         $this->composer->setWorkingPath($packagePath);
         $this->composer->updatePackageDependencies($this->preparePackageOptions($packageName));
     }
