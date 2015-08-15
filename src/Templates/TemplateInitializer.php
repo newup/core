@@ -72,7 +72,7 @@ class TemplateInitializer
         $packageComposer->setAuthors(config('user.configuration.authors', []));
 
         $writer = new ConfigurationWriter($packageComposer->toArray());
-        $writer['config'] = (object)['vendor-dir' => '_vendor_dir'];
+        $writer['config'] = (object)['vendor-dir' => '_newup_vendor'];
 
         $writer->save($directory.'/composer.json');
         $this->renderer->setData('package', $package);
