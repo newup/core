@@ -3,6 +3,7 @@
 namespace NewUp\Templates;
 
 use NewUp\Contracts\Filesystem\Filesystem;
+use NewUp\Foundation\Composer\AutoLoaderManager;
 use NewUp\Templates\Generators\ContentGenerator;
 use NewUp\Templates\Loaders\PackageLoader;
 use NewUp\Templates\Renderers\Collectors\InputCollector;
@@ -73,12 +74,25 @@ class Builder
      */
     protected $inputCollector;
 
-    public function __construct(ContentGenerator $contentGenerator, Filesystem $files, PackageLoader $loader, InputCollector $inputCollector)
-    {
-        $this->generator = $contentGenerator;
-        $this->files = $files;
-        $this->packageLoader = $loader;
-        $this->inputCollector = $inputCollector;
+    /**
+     * The AutoLoaderManager instance.
+     *
+     * @var AutoLoaderManager
+     */
+    protected $autoLoaderManager;
+
+    public function __construct(
+        ContentGenerator $contentGenerator,
+        Filesystem $files,
+        PackageLoader $loader,
+        InputCollector $inputCollector,
+        AutoLoaderManager $manager
+    ) {
+        $this->generator         = $contentGenerator;
+        $this->files             = $files;
+        $this->packageLoader     = $loader;
+        $this->inputCollector    = $inputCollector;
+        $this->autoLoaderManager = $manager;
     }
 
     /**
@@ -128,10 +142,11 @@ class Builder
      */
     private function getTemplateDirectory()
     {
-        $templateDirectory = realpath($this->templateDirectory.'/_template');
+        $templateDirectory = realpath($this->templateDirectory . '/_template');
 
         if ($this->files->exists($templateDirectory) && $this->files->isDirectory($templateDirectory)) {
             $this->generator->setInsideTemplateDirectory(true);
+
             return $templateDirectory;
         }
 
@@ -145,7 +160,7 @@ class Builder
      */
     private function getCommonTemplateDirectory()
     {
-        $commonDirectory = realpath($this->templateDirectory.'/_newup/common');
+        $commonDirectory = realpath($this->templateDirectory . '/_newup/common');
 
         if ($this->files->exists($commonDirectory) && $this->files->isDirectory($commonDirectory)) {
             return $commonDirectory;
@@ -175,7 +190,7 @@ class Builder
         }
 
         foreach ($this->package->getPathsToProcess() as $pathKey => $processPath) {
-           $this->generator->getPathManager()->getCollector()->addFileNames([$pathKey => $processPath]);
+            $this->generator->getPathManager()->getCollector()->addFileNames([$pathKey => $processPath]);
         }
 
         $this->generator->addPaths((array)$this->getTemplateDirectory());
@@ -190,7 +205,8 @@ class Builder
     private function loadPackageTemplate($directory)
     {
         $namespacedPackageClass = $this->packageLoader->loadPackage(realpath($directory));
-        $this->package = app($namespacedPackageClass);
+        $this->autoLoaderManager->mergePackageLoader(realpath($directory));
+        $this->package          = app($namespacedPackageClass);
     }
 
     /**
