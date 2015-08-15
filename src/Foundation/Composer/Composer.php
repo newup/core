@@ -276,8 +276,11 @@ class Composer
     public function updatePackageDependencies($options = [])
     {
         $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer() . ' update ' .
-                                      $this->prepareOptions($options, ['--no-progress'])));
+
+        $processCommand = trim($this->findComposer() . ' update ' .
+                               $this->prepareOptions($options, ['--no-progress']));
+
+        $process->setCommandLine($processCommand);
 
         chdir($this->workingPath);
         $process->run();
