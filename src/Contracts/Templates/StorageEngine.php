@@ -61,21 +61,6 @@ interface StorageEngine {
     public function packageExists($packageName);
 
     /**
-     * Gets the packages currently installed.
-     *
-     * @return mixed
-     */
-    public function getPackages();
-
-    /**
-     * Gets the packages currently installed that match the given pattern.
-     *
-     * @param $pattern
-     * @return mixed
-     */
-    public function getPackagesLike($pattern);
-
-    /**
      * Gets the storage path.
      *
      * @return string

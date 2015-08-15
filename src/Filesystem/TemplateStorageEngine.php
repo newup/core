@@ -333,28 +333,6 @@ class TemplateStorageEngine implements StorageEngine
     }
 
     /**
-     * Gets the packages currently installed.
-     *
-     * @return mixed
-     */
-    public function getPackages()
-    {
-        // TODO: Implement getPackages() method.
-    }
-
-    /**
-     * Gets the packages currently installed that match the given pattern.
-     *
-     * @param $pattern
-     *
-     * @return mixed
-     */
-    public function getPackagesLike($pattern)
-    {
-        // TODO: Implement getPackagesLike() method.
-    }
-
-    /**
      * Gets the storage path.
      *
      * @return string
