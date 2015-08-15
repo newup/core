@@ -27,6 +27,7 @@ class Kernel extends BaseKernel
         'NewUp\Console\Commands\Remove',
         'NewUp\Console\Commands\Update',
         'NewUp\Console\Commands\Reconfigure',
+        'NewUp\Console\Commands\Composer\Which',
     ];
 
     /**
