@@ -283,18 +283,36 @@ class Composer
         $process->setCommandLine($processCommand);
 
         chdir($this->workingPath);
+        $this->log->info('Changing working directory for Composer update', ['directory' => $this->workingPath]);
+        $this->log->info('Running Composer command', ['command' => $processCommand]);
         $process->run();
 
         if ($process->isSuccessful() == false) {
+            $this->restoreWorkingDirectory();
+
             $composerError = remove_ansi($process->getErrorOutput());
+
+            $this->log->error('Composer update process failure', ['composer' => $composerError]);
+
             throw new PackageInstallationException($process->getErrorOutput(),
                 "There was an error updating the dependencies." . PHP_EOL .
                 'Composer is reporting the following error(s):' . PHP_EOL . '--> ' . $composerError);
         }
 
-        chdir($this->initialDirectory);
-
+        $this->restoreWorkingDirectory();
+        $this->log->info('Package template dependencies updated', ['directory' => $this->workingPath]);
         return true;
+    }
+
+    /**
+     * Restores the initial working directory.
+     *
+     * @return void
+     */
+    private function restoreWorkingDirectory()
+    {
+        $this->log->info('Restoring working directory', ['directory' => $this->initialDirectory]);
+        chdir($this->initialDirectory);
     }
 
 }
