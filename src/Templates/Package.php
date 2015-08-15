@@ -249,7 +249,11 @@ class Package implements PackageContract, PackageFactory
      */
     public static function fromFile($path, $strict = true)
     {
-        return self::fromArray(json_decode(file_get_contents($path), true), $strict);
+        if (file_exists($path)) {
+            return self::fromArray(json_decode(file_get_contents($path), true), $strict);
+        } else {
+            return new Package;
+        }
     }
 
     /**
