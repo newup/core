@@ -257,7 +257,7 @@ class Composer
 
         if ($process->isSuccessful() == false) {
             $composerError = $this->parseComposerErrorMessage($process->getErrorOutput());
-            
+
             $this->log->error('Composer create-project process failure', ['composer' => $composerError]);
 
             throw new PackageInstallationException($process->getErrorOutput(),
