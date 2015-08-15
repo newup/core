@@ -25,6 +25,8 @@ class FilesystemServiceProvider extends ServiceProvider
             );
         });
 
+        $this->app->singleton('NewUp\Contracts\Templates\SearchableStorageEngine', 'NewUp\Contracts\Templates\StorageEngine');
+
         $this->app->singleton('NewUp\Foundation\Composer\AutoLoaderManager', function() {
             return new AutoLoaderManager(app('NewUp\Contracts\Filesystem\Filesystem'), app(), app('Illuminate\Contracts\Logging\Log'));
         });
