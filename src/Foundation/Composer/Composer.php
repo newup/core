@@ -281,7 +281,7 @@ class Composer
         $process = $this->getProcess();
 
         $processCommand = trim($this->findComposer() . ' update ' .
-                               $this->prepareOptions($options, ['--no-progress']));
+                               $this->prepareOptions($options, ['--no-progress', '--no-ansi']));
 
         $process->setCommandLine($processCommand);
 
@@ -293,7 +293,7 @@ class Composer
         if ($process->isSuccessful() == false) {
             $this->restoreWorkingDirectory();
 
-            $composerError = remove_ansi($process->getErrorOutput());
+            $composerError = $process->getErrorOutput();
 
             $this->log->error('Composer update process failure', ['composer' => $composerError]);
 
