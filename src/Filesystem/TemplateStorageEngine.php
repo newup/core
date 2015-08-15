@@ -84,6 +84,7 @@ class TemplateStorageEngine implements StorageEngine
      */
     public function removePackage($packageName)
     {
+        $this->log->info('Removing package template', ['package' => $packageName]);
         $this->files->deleteDirectory($this->resolvePackagePath($packageName), false);
     }
 
