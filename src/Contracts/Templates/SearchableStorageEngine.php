@@ -2,7 +2,7 @@
 
 namespace NewUp\Contracts\Templates;
 
-interface SearchableStorageEngine
+interface SearchableStorageEngine extends  StorageEngine
 {
 
     /**
@@ -15,8 +15,9 @@ interface SearchableStorageEngine
     /**
      * Gets all the installed packages.
      *
+     * @param $includeProcessingPackages
      * @return mixed
      */
-    public function getInstalledPackages();
+    public function getInstalledPackages($includeProcessingPackages = false);
 
 }
