@@ -90,7 +90,7 @@ class GeneratorInput extends ArgvInput
      *
      * @return string
      */
-    public function getTemplateName()
+    private function getTemplateName()
     {
         if ($this->templateName == null) {
             // The template name should be the second token.
@@ -131,7 +131,7 @@ class GeneratorInput extends ArgvInput
         $includePath = $this->getPackageClassPath();
 
         if (!file_exists($includePath)) {
-            throw new TemplatePackageMissingException("The package template {$this->getTemplateName()} is not installed or it cannot be found. The package template must be installed before it can be built.");
+            throw new TemplatePackageMissingException("{$includePath} does not exist.");
         }
 
         scope_include($includePath);
