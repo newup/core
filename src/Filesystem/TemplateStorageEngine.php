@@ -37,6 +37,11 @@ class TemplateStorageEngine implements StorageEngine
      */
     protected $templateStoragePath = '';
 
+    /**
+     * The Log implementation instance.
+     *
+     * @var Log
+     */
     protected $log;
 
     public function __construct(FileSystemContract $filesystem, Composer $composer, $templateStoragePath, Log $logger)
