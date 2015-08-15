@@ -68,6 +68,7 @@ class TemplateStorageEngine implements StorageEngine
             $this->preparePackageOptions($packageName)
         );
         $this->writePackageInstallationInstructions($packagePath, $packageName);
+        $this->configurePackage($packageName);
     }
 
     /**
@@ -241,6 +242,7 @@ class TemplateStorageEngine implements StorageEngine
 
         try {
             $this->addPackage($installInstructions);
+            $this->configurePackage($packageName);
             $this->files->deleteDirectory($oldPackageLocation, false);
             $this->log->info('Updated package template', ['package' => $packageName]);
 
