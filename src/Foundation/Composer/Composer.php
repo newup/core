@@ -168,6 +168,7 @@ class Composer
     private function checkInstallationDirectory($directory)
     {
         if ($this->installationAttempts >= $this->breakAtInstallationAttempt) {
+            $this->log->error('Installation directory checks failed at max attempts', ['attempts' => $this->installationAttempts]);
             throw new PackageInstallationException(null, "The package template could not be installed.");
         }
 
@@ -183,22 +184,26 @@ class Composer
 
         foreach ($directories as $directory) {
             if (!$this->files->isReadable($directory)) {
+                $this->log->error('Unreadable directory preventing Composer install', ['directory' => $directory]);
                 $directoriesReadable = false;
             }
         }
 
         foreach ($files as $file) {
             if (!$this->files->isReadable($file->getPathname())) {
+                $this->log->error('Unreadable file preventing Composer install', ['file' => $file]);
                 $filesReadable = false;
             }
         }
 
         if (!$directoriesReadable || !$filesReadable) {
+            $this->log->critical('Unreadable files/directories, cannot proceed with install.');
             throw new InvalidInstallationDirectoryException(null,
                 "The installation directory ({$directory}) is not empty and could not be cleared due to a permissions issue. Please manually remove all files from the directory and try again.");
         }
 
         if (!$this->files->isWritable($directory)) {
+            $this->log->critical('Installation directory is not writeable by NewUp. Cannot proceed with install.', ['directory' => $directory, 'permissions' => fileperms($directory)]);
             throw new InvalidInstallationDirectoryException(null,
                 "The installation directory ({$directory}) is not writeable by the NewUp process.");
         }
@@ -206,6 +211,7 @@ class Composer
         // At this point, there is no clear reason why the preparation
         // did not succeed. Because of this, we will try again.
         $this->installationAttempts++;
+        $this->log->debug('Installation attempt incremented', ['directory' => $directory, 'attempt' => $this->installationAttempts]);
         $this->prepareInstallationDirectory($directory);
     }
 
