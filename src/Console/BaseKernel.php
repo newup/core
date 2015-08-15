@@ -32,10 +32,15 @@ abstract class BaseKernel extends LaravelKernel
     {
         if (is_null($this->artisan)) {
             return $this->artisan = (new NewUpApplication($this->app, $this->events))
-                ->resolveCommands($this->commands);
+                ->resolveCommands($this->getCommands());
         }
 
         return $this->artisan;
+    }
+
+    protected function getCommands()
+    {
+        return $this->commands;
     }
 
 }
