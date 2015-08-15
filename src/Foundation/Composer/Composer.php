@@ -67,7 +67,7 @@ class Composer
      *
      * @return string
      */
-    protected function findComposer()
+    public function findComposer()
     {
         if ($this->files->exists($this->workingPath . '/composer.phar')) {
             return '"' . PHP_BINARY . '" composer.phar';
