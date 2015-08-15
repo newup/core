@@ -370,21 +370,20 @@ class TemplateStorageEngine implements StorageEngine, SearchableStorageEngine
     /**
      * Gets all the installed packages.
      *
-     * Each package version will be listed as its own package.
-     *
+     * @param $includeProcessingPackages
      * @return mixed
      */
-    public function getInstalledPackages()
+    public function getInstalledPackages($includeProcessingPackages = false)
     {
         $vendors = $this->getInstalledVendors();
 
         foreach ($vendors as &$vendor) {
-            $vendorPackages = $this->files->directories($vendor['directory']);
+            $vendorPackages     = $this->files->directories($vendor['directory']);
             $realVendorPackages = [];
 
             foreach ($vendorPackages as $package) {
 
-                if (Str::endsWith($package, '_{updating_in_progress}')) {
+                if (Str::endsWith($package, '_{updating_in_progress}') && $includeProcessingPackages == false) {
                     // Do not include any package that might be garbage from an
                     // update process.
                     continue;
@@ -407,21 +406,28 @@ class TemplateStorageEngine implements StorageEngine, SearchableStorageEngine
      */
     private function getPackageDetails($path)
     {
-        $packageName = explode(DIRECTORY_SEPARATOR, $this->normalizePath($path));
-        $packageName = end($packageName);
+        $packagePath    = $this->normalizePath($path);
+        $packageName    = explode(DIRECTORY_SEPARATOR, $packagePath);
+        $packageName    = end($packageName);
         $packageVersion = null;
 
         if (Str::endsWith($packageName, '}')) {
             // Version, handle it specially.
-            $parts = explode('{', $packageName, 2);
+            $packageName = str_replace('_{updating_in_progress}', '', $packageName);
+            $parts       = null;
+
+            $parts       = explode('{', $packageName, 2);
             $packageName = rtrim($parts[0], '_');
-            $packageVersion = rtrim($parts[1], '}');
+            if (isset($parts[1])) {
+                $packageVersion = rtrim($parts[1], '}');
+            }
         }
 
         $packageDetails = [
-            'package' => $packageName,
-            'version' => $packageVersion,
-            'instance' => Package::fromFile($path.DIRECTORY_SEPARATOR.'composer.json', false)
+            'package'  => $packageName,
+            'version'  => $packageVersion,
+            'instance' => Package::fromFile($path . DIRECTORY_SEPARATOR . 'composer.json', false),
+            'path'     => $packagePath
         ];
 
         return $packageDetails;
