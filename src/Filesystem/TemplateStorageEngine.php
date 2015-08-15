@@ -85,6 +85,35 @@ class TemplateStorageEngine implements StorageEngine
     }
 
     /**
+     * Writes a file that indicates package updates have been initiated.
+     *
+     * @param $path
+     * @param $packageName
+     */
+    private function writePackageUpdateInitiated($path, $packageName)
+    {
+        if (!$this->files->exists($path)) {
+            $this->files->makeDirectory($path, 0755, true);
+        }
+        $this->log->info('Writing package template update initiated', ['path' => $path, 'package' => $packageName]);
+        $this->files->put($path.DIRECTORY_SEPARATOR.'_newup_update_initiated', $packageName);
+    }
+
+    /**
+     * Removes the template update initiated file, indicating updates have completed.
+     *
+     * @param $path
+     */
+    private function removePackageUpdateInitiatedFile($path)
+    {
+        $this->log->info('Removing package templating update initiated file', ['path' => $path]);
+        $updateInitiatedFile = $path.DIRECTORY_SEPARATOR.'_newup_update_initiated';
+        if ($this->files->exists($updateInitiatedFile)) {
+            $this->files->delete($updateInitiatedFile);
+        }
+    }
+
+    /**
      * Removes a package from the storage engine.
      *
      * @param $packageName
@@ -238,14 +267,25 @@ class TemplateStorageEngine implements StorageEngine
         $this->files->copyDirectory($newPackageLocation, $oldPackageLocation);
         $this->files->deleteDirectory($newPackageLocation, false);
 
+        // Retrieve the old installation instructions that were stored
+        // when the package template was first installed.
         $installInstructions = $this->files->get($installationInstructionsPath);
 
+        // Write updated initiated here in case of early failures.
+        $this->writePackageUpdateInitiated($newPackageLocation, $installInstructions);
+
         try {
+
             $this->addPackage($installInstructions);
+            // Write updated initiated here in case of failures during configuration.
+            $this->writePackageUpdateInitiated($newPackageLocation, $installInstructions);
             $this->configurePackage($packageName);
             $this->files->deleteDirectory($oldPackageLocation, false);
             $this->log->info('Updated package template', ['package' => $packageName]);
 
+            // If we are at this point of the update process, we can safely assume that
+            // it is okay to remove the update initiated file.
+            $this->removePackageUpdateInitiatedFile($newPackageLocation);
             return true;
         } catch (\Exception $e) {
             // There was an issue updating the package. We will rollback.
