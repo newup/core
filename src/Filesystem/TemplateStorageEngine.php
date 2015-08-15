@@ -80,7 +80,7 @@ class TemplateStorageEngine implements StorageEngine
     private function writePackageInstallationInstructions($path, $packageName)
     {
         $this->log->info('Writing package template installation instructions',
-            ['path' => $packageName, 'package' => $packageName]);
+            ['path' => $path, 'package' => $packageName]);
         $this->files->put($path . DIRECTORY_SEPARATOR . '_newup_install_instructions', $packageName);
     }
 
