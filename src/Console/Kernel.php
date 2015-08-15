@@ -21,12 +21,12 @@ class Kernel extends BaseKernel
 
     protected $commands = [
         'NewUp\Console\Commands\About',
-        'NewUp\Console\Commands\Init',
-        'NewUp\Console\Commands\Build',
-        'NewUp\Console\Commands\Install',
-        'NewUp\Console\Commands\Remove',
-        'NewUp\Console\Commands\Update',
-        'NewUp\Console\Commands\Reconfigure',
+        'NewUp\Console\Commands\Templates\Init',
+        'NewUp\Console\Commands\Templates\Build',
+        'NewUp\Console\Commands\Templates\Install',
+        'NewUp\Console\Commands\Templates\Remove',
+        'NewUp\Console\Commands\Templates\Update',
+        'NewUp\Console\Commands\Templates\Reconfigure',
         'NewUp\Console\Commands\Composer\Which',
         'NewUp\Console\Commands\Composer\Version',
         'NewUp\Console\Commands\Composer\Update',
