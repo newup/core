@@ -7,6 +7,7 @@ use NewUp\Contracts\Filesystem\Filesystem as FileSystemContract;
 use NewUp\Contracts\Templates\StorageEngine;
 use NewUp\Exceptions\InvalidArgumentException;
 use NewUp\Foundation\Composer\Composer;
+use NewUp\Foundation\Composer\Exceptions\ComposerException;
 use NewUp\Templates\Generators\PathNormalizer;
 
 class TemplateStorageEngine implements StorageEngine
@@ -198,6 +199,7 @@ class TemplateStorageEngine implements StorageEngine
      * for something like 'composer update'. Look
      * at the 'configurePackage' method instead.
      *
+     * @throws ComposerException
      * @param $packageName
      * @return mixed
      */
@@ -234,7 +236,7 @@ class TemplateStorageEngine implements StorageEngine
             $this->files->makeDirectory($newPackageLocation, 0755, true);
             $this->files->copyDirectory($oldPackageLocation, $newPackageLocation);
             $this->files->deleteDirectory($oldPackageLocation, false);
-            // TODO: Handle failure
+            throw new ComposerException('There was an unexpected failure during the package update process.', $e->getCode(), $e);
         }
 
     }
