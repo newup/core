@@ -2,8 +2,6 @@
 
 namespace NewUp\Console;
 
-use NewUp\Console\Input\GeneratorInput;
-
 class Kernel extends BaseKernel
 {
 
@@ -13,9 +11,9 @@ class Kernel extends BaseKernel
      * @var array
      */
     protected $commandInputOverrides = [
-        'build' => '\NewUp\Console\Input\GeneratorInput',
-        'a' => '\NewUp\Console\Input\GeneratorInput',
-        'an' => '\NewUp\Console\Input\GeneratorInput',
+        'build'          => '\NewUp\Console\Input\GeneratorInput',
+        'a'              => '\NewUp\Console\Input\GeneratorInput',
+        'an'             => '\NewUp\Console\Input\GeneratorInput',
         'template:build' => '\NewUp\Console\Input\GeneratorInput',
     ];
 
@@ -38,7 +36,8 @@ class Kernel extends BaseKernel
         if (config('user.configuration.enableUtilityCommands', false)) {
             // Enable the TSE Utility Commands
             return array_merge($this->commands, [
-               'NewUp\Console\Commands\Tse\Analyze',
+                'NewUp\Console\Commands\Tse\Analyze',
+                'NewUp\Console\Commands\Tse\Reset',
             ]);
         }
 
@@ -60,8 +59,8 @@ class Kernel extends BaseKernel
     /**
      * Run the console application.
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface  $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     * @param  \Symfony\Component\Console\Input\InputInterface   $input
+     * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return int
      */
     public function handle($input, $output = null)
@@ -69,19 +68,16 @@ class Kernel extends BaseKernel
         // The name of the command should be the first argument.
         $commandName = $input->getFirstArgument();
 
-        if ($this->commandOverridesInputInterface($commandName))
-        {
+        if ($this->commandOverridesInputInterface($commandName)) {
             $inputClass = $this->commandInputOverrides[$commandName];
-            $input = new $inputClass;
+            $input      = new $inputClass;
         }
 
-        try
-        {
+        try {
             $this->bootstrap();
+
             return $this->getArtisan()->run($input, $output);
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $this->reportException($e);
 
             $this->renderException($output, $e);
@@ -89,7 +85,6 @@ class Kernel extends BaseKernel
             return 1;
         }
     }
-
 
 
 }
