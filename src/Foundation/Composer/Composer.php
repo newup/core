@@ -243,9 +243,12 @@ class Composer
     public function installPackage($packageName, $options = [])
     {
         $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer() . ' create-project ' . $packageName . ' "' .
-                                      $this->workingPath . '" ' .
-                                      $this->prepareOptions($options, ['--no-ansi', '--no-install'])));
+        
+        $processCommand = trim($this->findComposer() . ' create-project ' . $packageName . ' "' .
+                               $this->workingPath . '" ' .
+                               $this->prepareOptions($options, ['--no-ansi', '--no-install']));
+
+        $process->setCommandLine($processCommand);
         $this->prepareInstallationDirectory($this->workingPath);
 
         $process->run();
