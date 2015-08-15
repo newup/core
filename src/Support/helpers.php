@@ -165,6 +165,12 @@ if (!function_exists('argument')) {
 }
 
 if (!function_exists('remove_ansi')) {
+    /**
+     * Removes ANSI escape sequences from strings.
+     *
+     * @param $input
+     * @return string
+     */
     function remove_ansi($input) {
         $ansi = new ANSIColor;
         $input = str_replace('[[', chr(27).'[', $input);
