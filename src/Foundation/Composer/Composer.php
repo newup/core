@@ -257,7 +257,9 @@ class Composer
 
         if ($process->isSuccessful() == false) {
             $composerError = $this->parseComposerErrorMessage($process->getErrorOutput());
-            $this->log->error('Composer process failure', ['composer' => $composerError]);
+            
+            $this->log->error('Composer create-project process failure', ['composer' => $composerError]);
+
             throw new PackageInstallationException($process->getErrorOutput(),
                 "There was an error installing the package: {$packageName}" . PHP_EOL .
                 'Composer is reporting the following error:' . PHP_EOL . '--> ' . $composerError);
