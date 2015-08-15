@@ -86,5 +86,9 @@ class Kernel extends BaseKernel
         }
     }
 
+    public function getApplication()
+    {
+        return $this->getArtisan();
+    }
 
 }
