@@ -2,6 +2,7 @@
 
 namespace NewUp\Foundation\Composer;
 
+use Illuminate\Contracts\Logging\Log;
 use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Foundation\Composer\Exceptions\InvalidInstallationDirectoryException;
 use NewUp\Foundation\Composer\Exceptions\PackageInstallationException;
@@ -47,10 +48,18 @@ class Composer
      */
     protected $breakAtInstallationAttempt = 2;
 
-    public function __construct(Filesystem $filesystem)
+    /**
+     * The Log implementation instance.
+     *
+     * @var Log
+     */
+    protected $log;
+
+    public function __construct(Filesystem $filesystem, Log $logger)
     {
         $this->files            = $filesystem;
         $this->initialDirectory = getcwd();
+        $this->log              = $logger;
     }
 
     /**
@@ -264,8 +273,8 @@ class Composer
         if ($process->isSuccessful() == false) {
             $composerError = remove_ansi($process->getErrorOutput());
             throw new PackageInstallationException($process->getErrorOutput(),
-                "There was an error updating the dependencies.".PHP_EOL.
-                'Composer is reporting the following error(s):'.PHP_EOL.'--> '.$composerError);
+                "There was an error updating the dependencies." . PHP_EOL .
+                'Composer is reporting the following error(s):' . PHP_EOL . '--> ' . $composerError);
         }
 
         chdir($this->initialDirectory);
