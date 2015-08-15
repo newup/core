@@ -33,6 +33,19 @@ class Kernel extends BaseKernel
         'NewUp\Console\Commands\Composer\Update',
     ];
 
+    protected function getCommands()
+    {
+        if (config('user.configuration.enableUtilityCommands', false)) {
+            // Enable the TSE Utility Commands
+            return array_merge($this->commands, [
+               'NewUp\Console\Commands\Tse\Analyze',
+            ]);
+        }
+
+        return $this->commands;
+    }
+
+
     /**
      * Determines if a command overrides the input interface.
      *
@@ -76,5 +89,7 @@ class Kernel extends BaseKernel
             return 1;
         }
     }
+
+
 
 }
