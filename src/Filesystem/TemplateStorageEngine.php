@@ -5,13 +5,15 @@ namespace NewUp\Filesystem;
 use Illuminate\Contracts\Logging\Log;
 use Illuminate\Support\Str;
 use NewUp\Contracts\Filesystem\Filesystem as FileSystemContract;
+use NewUp\Contracts\Templates\SearchableStorageEngine;
 use NewUp\Contracts\Templates\StorageEngine;
 use NewUp\Exceptions\InvalidArgumentException;
 use NewUp\Foundation\Composer\Composer;
 use NewUp\Foundation\Composer\Exceptions\ComposerException;
 use NewUp\Templates\Generators\PathNormalizer;
+use NewUp\Templates\Package;
 
-class TemplateStorageEngine implements StorageEngine
+class TemplateStorageEngine implements StorageEngine, SearchableStorageEngine
 {
 
     use PathNormalizer;
@@ -96,7 +98,7 @@ class TemplateStorageEngine implements StorageEngine
             $this->files->makeDirectory($path, 0755, true);
         }
         $this->log->info('Writing package template update initiated', ['path' => $path, 'package' => $packageName]);
-        $this->files->put($path.DIRECTORY_SEPARATOR.'_newup_update_initiated', $packageName);
+        $this->files->put($path . DIRECTORY_SEPARATOR . '_newup_update_initiated', $packageName);
     }
 
     /**
@@ -107,7 +109,7 @@ class TemplateStorageEngine implements StorageEngine
     private function removePackageUpdateInitiatedFile($path)
     {
         $this->log->info('Removing package templating update initiated file', ['path' => $path]);
-        $updateInitiatedFile = $path.DIRECTORY_SEPARATOR.'_newup_update_initiated';
+        $updateInitiatedFile = $path . DIRECTORY_SEPARATOR . '_newup_update_initiated';
         if ($this->files->exists($updateInitiatedFile)) {
             $this->files->delete($updateInitiatedFile);
         }
@@ -286,6 +288,7 @@ class TemplateStorageEngine implements StorageEngine
             // If we are at this point of the update process, we can safely assume that
             // it is okay to remove the update initiated file.
             $this->removePackageUpdateInitiatedFile($newPackageLocation);
+
             return true;
         } catch (\Exception $e) {
             // There was an issue updating the package. We will rollback.
@@ -340,6 +343,88 @@ class TemplateStorageEngine implements StorageEngine
     public function getStoragePath()
     {
         return $this->templateStoragePath;
+    }
+
+    /**
+     * Gets the vendors of all installed package templates.
+     *
+     * @return mixed
+     */
+    public function getInstalledVendors()
+    {
+        $vendors = [];
+
+        foreach ($this->files->directories($this->getStoragePath()) as $vendorDirectory) {
+            $vendorDirectory      = $this->normalizePath($vendorDirectory);
+            $vendorName           = explode(DIRECTORY_SEPARATOR, $vendorDirectory);
+            $vendorName           = end($vendorName);
+            $vendors[$vendorName] = [
+                'vendor'    => $vendorName,
+                'directory' => $vendorDirectory
+            ];
+        }
+
+        return $vendors;
+    }
+
+    /**
+     * Gets all the installed packages.
+     *
+     * Each package version will be listed as its own package.
+     *
+     * @return mixed
+     */
+    public function getInstalledPackages()
+    {
+        $vendors = $this->getInstalledVendors();
+
+        foreach ($vendors as &$vendor) {
+            $vendorPackages = $this->files->directories($vendor['directory']);
+            $realVendorPackages = [];
+
+            foreach ($vendorPackages as $package) {
+
+                if (Str::endsWith($package, '_{updating_in_progress}')) {
+                    // Do not include any package that might be garbage from an
+                    // update process.
+                    continue;
+                }
+
+                $realVendorPackages[] = $this->getPackageDetails($package);
+            }
+
+            $vendor['packages'] = $realVendorPackages;
+        }
+
+        return $vendors;
+    }
+
+    /**
+     * Gets the details for a given package, based on a given path.
+     *
+     * @param $path
+     * @return array
+     */
+    private function getPackageDetails($path)
+    {
+        $packageName = explode(DIRECTORY_SEPARATOR, $this->normalizePath($path));
+        $packageName = end($packageName);
+        $packageVersion = null;
+
+        if (Str::endsWith($packageName, '}')) {
+            // Version, handle it specially.
+            $parts = explode('{', $packageName, 2);
+            $packageName = rtrim($parts[0], '_');
+            $packageVersion = rtrim($parts[1], '}');
+        }
+
+        $packageDetails = [
+            'package' => $packageName,
+            'version' => $packageVersion,
+            'instance' => Package::fromFile($path.DIRECTORY_SEPARATOR.'composer.json', false)
+        ];
+
+        return $packageDetails;
     }
 
 
