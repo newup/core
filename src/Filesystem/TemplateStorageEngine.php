@@ -49,7 +49,7 @@ class TemplateStorageEngine implements StorageEngine
         $this->files               = $filesystem;
         $this->templateStoragePath = $this->normalizePath($templateStoragePath);
         $this->composer            = $composer;
-        $this->log = $logger;
+        $this->log                 = $logger;
     }
 
     /**
@@ -63,8 +63,10 @@ class TemplateStorageEngine implements StorageEngine
     {
         $packagePath = $this->resolvePackagePath($packageName);
         $this->composer->setWorkingPath($packagePath);
-        $this->composer->installPackage($this->getCleanPackageNameString($packageName),
-            $this->preparePackageOptions($packageName));
+        $this->composer->installPackage(
+            $this->getCleanPackageNameString($packageName),
+            $this->preparePackageOptions($packageName)
+        );
         $this->writePackageInstallationInstructions($packagePath, $packageName);
     }
 
@@ -76,7 +78,8 @@ class TemplateStorageEngine implements StorageEngine
      */
     private function writePackageInstallationInstructions($path, $packageName)
     {
-        $this->log->info('Writing package template installation instructions', ['path' => $packageName, 'package' => $packageName]);
+        $this->log->info('Writing package template installation instructions',
+            ['path' => $packageName, 'package' => $packageName]);
         $this->files->put($path . DIRECTORY_SEPARATOR . '_newup_install_instructions', $packageName);
     }
 
@@ -240,6 +243,7 @@ class TemplateStorageEngine implements StorageEngine
             $this->addPackage($installInstructions);
             $this->files->deleteDirectory($oldPackageLocation, false);
             $this->log->info('Updated package template', ['package' => $packageName]);
+
             return true;
         } catch (\Exception $e) {
             // There was an issue updating the package. We will rollback.
@@ -247,8 +251,10 @@ class TemplateStorageEngine implements StorageEngine
             $this->files->makeDirectory($newPackageLocation, 0755, true);
             $this->files->copyDirectory($oldPackageLocation, $newPackageLocation);
             $this->files->deleteDirectory($oldPackageLocation, false);
-            $this->log->debug('Package updated failed', ['package' => $packageName, 'message' => $e->getMessage(), 'exception' => $e]);
-            throw new ComposerException('There was an unexpected failure during the package update process.', $e->getCode(), $e);
+            $this->log->debug('Package updated failed',
+                ['package' => $packageName, 'message' => $e->getMessage(), 'exception' => $e]);
+            throw new ComposerException('There was an unexpected failure during the package update process.',
+                $e->getCode(), $e);
         }
 
     }
