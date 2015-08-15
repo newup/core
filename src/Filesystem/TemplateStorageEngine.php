@@ -433,5 +433,17 @@ class TemplateStorageEngine implements StorageEngine, SearchableStorageEngine
         return $packageDetails;
     }
 
+    /**
+     * Resets the storage engine.
+     *
+     * @return mixed
+     */
+    public function reset()
+    {
+        foreach ($this->getInstalledVendors() as $vendor) {
+            $this->files->deleteDirectory($vendor['directory']);
+        }
+    }
+
 
 }

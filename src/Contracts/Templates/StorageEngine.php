@@ -67,4 +67,11 @@ interface StorageEngine {
      */
     public function getStoragePath();
 
+    /**
+     * Resets the storage engine.
+     *
+     * @return mixed
+     */
+    public function reset();
+
 }
