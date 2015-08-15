@@ -3,6 +3,7 @@
 namespace NewUp\Console\Input;
 
 use NewUp\Exceptions\InvalidPackageTemplateException;
+use NewUp\Exceptions\TemplatePackageMissingException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -118,6 +119,7 @@ class GeneratorInput extends ArgvInput
      * Binds the current Input instance with the given arguments and options.
      *
      * @throws InvalidPackageTemplateException
+     * @throws TemplatePackageMissingException
      * @param InputDefinition $definition A InputDefinition instance
      */
     public function bind(InputDefinition $definition)
@@ -129,7 +131,7 @@ class GeneratorInput extends ArgvInput
         $includePath = $this->getPackageClassPath();
 
         if (!file_exists($includePath)) {
-            throw new InvalidPackageTemplateException("{$includePath} does not exist.");
+            throw new TemplatePackageMissingException("{$includePath} does not exist.");
         }
 
         scope_include($includePath);
