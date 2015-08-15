@@ -260,7 +260,7 @@ class TemplateStorageEngine implements StorageEngine
     public function configurePackage($packageName)
     {
         $packagePath = $this->resolvePackagePath($packageName);
-        
+        $this->log->info('Attempting to configure package', ['package' => $packageName]);
         $this->composer->setWorkingPath($packagePath);
         $this->composer->updatePackageDependencies($this->preparePackageOptions($packageName));
     }
