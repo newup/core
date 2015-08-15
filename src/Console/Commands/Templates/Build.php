@@ -1,6 +1,6 @@
 <?php
 
-namespace NewUp\Console\Commands;
+namespace NewUp\Console\Commands\Templates;
 
 use Illuminate\Console\Command;
 use NewUp\Templates\Builder;
