@@ -2,7 +2,10 @@
 
 namespace NewUp\Console\Input;
 
+use NewUp\Console\Application;
+use NewUp\Console\Commands\Templates\Install;
 use NewUp\Exceptions\InvalidPackageTemplateException;
+use NewUp\Exceptions\TemplatePackageMissingException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -118,6 +121,7 @@ class GeneratorInput extends ArgvInput
      * Binds the current Input instance with the given arguments and options.
      *
      * @throws InvalidPackageTemplateException
+     * @throws TemplatePackageMissingException
      * @param InputDefinition $definition A InputDefinition instance
      */
     public function bind(InputDefinition $definition)
@@ -129,7 +133,15 @@ class GeneratorInput extends ArgvInput
         $includePath = $this->getPackageClassPath();
 
         if (!file_exists($includePath)) {
-            throw new TemplatePackageMissingException("The package template {$this->getTemplateName()} is not installed or it cannot be found. The package template must be installed before it can be built.");
+            Application::$output->writeln("<comment>{$this->getTemplateName()} is not installed. Attempting to install it now...</comment>");
+            $result = app('Illuminate\Contracts\Console\Kernel')->getApplication()->callWithSharedOutput('template:install', ['name' => $this->getTemplateName(), '--confirm' => true]);
+
+            if ($result === Install::INSTALL_FAIL) {
+                // Fail angrily.
+                throw new TemplatePackageMissingException("The package template {$this->getTemplateName()} is not installed or it cannot be found. The package template must be installed before it can be built.");
+            } else {
+                Application::$output->writeln("<comment>It looks like everything went well. We will continue building the package template...</comment>");
+            }
         }
 
         scope_include($includePath);

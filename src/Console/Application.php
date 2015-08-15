@@ -6,10 +6,13 @@ use Illuminate\Console\Application as LaravelConsoleApplication;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Symfony\Component\Console\Application as SymfonyApplication;
+use Symfony\Component\Console\Input\ArrayInput;
 
 class Application extends LaravelConsoleApplication
 {
-    
+
+    public static $output;
+
     /**
      * Create a new Artisan console application.
      *
@@ -25,6 +28,13 @@ class Application extends LaravelConsoleApplication
         $this->setAutoExit(false);
         $this->setCatchExceptions(false);
         $events->fire('artisan.start', [$this]);
+    }
+
+    public function callWithSharedOutput($command, array $parameters = array())
+    {
+        $parameters['command'] = $command;
+
+        return $this->find($command)->run(new ArrayInput($parameters), self::$output);
     }
 
 }

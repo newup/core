@@ -14,12 +14,15 @@
 */
 
 use NewUp\Foundation\Application;
+use NewUp\Console\Application as ConsoleApplication;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 $autoLoader = require __DIR__ . '/bootstrap/autoload.php';
 
 $app = require_once __DIR__ . '/bootstrap/app.php';
 
 Application::$loader = &$autoLoader;
+ConsoleApplication::$output = new ConsoleOutput;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +40,7 @@ $kernel->bootstrap();
 
 $status = $kernel->handle(
     $input = new Symfony\Component\Console\Input\ArgvInput,
-    new Symfony\Component\Console\Output\ConsoleOutput
+    ConsoleApplication::$output
 );
 
 /*
