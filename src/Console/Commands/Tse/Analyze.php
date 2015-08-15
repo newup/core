@@ -15,7 +15,7 @@ class Analyze extends Command
      *
      * @var string
      */
-    protected $name = 'analyze';
+    protected $name = 'tse:analyze';
 
     /**
      * The console command description.
