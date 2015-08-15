@@ -72,7 +72,13 @@ class Build extends Command
     protected function getOptions()
     {
         return [
-            ['newup-directory', null, InputOption::VALUE_OPTIONAL, 'Builds a package template from a local directory', null]
+            [
+                'newup-directory',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Builds a package template from a local directory',
+                null
+            ]
         ];
     }
 
