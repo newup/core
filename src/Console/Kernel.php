@@ -28,6 +28,8 @@ class Kernel extends BaseKernel
         'NewUp\Console\Commands\Update',
         'NewUp\Console\Commands\Reconfigure',
         'NewUp\Console\Commands\Composer\Which',
+        'NewUp\Console\Commands\Composer\Version',
+        'NewUp\Console\Commands\Composer\Update',
     ];
 
     /**

@@ -13,7 +13,7 @@ class Which extends Command
      *
      * @var string
      */
-    protected $name = 'which:composer';
+    protected $name = 'composer:which';
 
     /**
      * The console command description.

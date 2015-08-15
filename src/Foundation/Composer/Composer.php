@@ -4,6 +4,7 @@ namespace NewUp\Foundation\Composer;
 
 use Illuminate\Contracts\Logging\Log;
 use NewUp\Contracts\Filesystem\Filesystem;
+use NewUp\Foundation\Composer\Exceptions\ComposerException;
 use NewUp\Foundation\Composer\Exceptions\InvalidInstallationDirectoryException;
 use NewUp\Foundation\Composer\Exceptions\PackageInstallationException;
 use Symfony\Component\Process\Process;
@@ -315,6 +316,62 @@ class Composer
     {
         $this->log->info('Restoring working directory', ['directory' => $this->initialDirectory]);
         chdir($this->initialDirectory);
+    }
+
+    /**
+     * Gets the Composer version.
+     *
+     * @return string
+     * @throws ComposerException
+     */
+    public function getVersion()
+    {
+        $process = $this->getProcess();
+        $processCommand = trim($this->findComposer() . ' --version');
+        $process->setCommandLine($processCommand);
+        $this->log->info('Running Composer command', ['command' => $processCommand]);
+        $process->run();
+
+        if ($process->isSuccessful() == false) {
+            $composerError = remove_ansi($process->getErrorOutput());
+            $this->log->error('Composer version process failure', ['composer' => $composerError]);
+            throw new ComposerException('There was an error retrieving the Composer version');
+        }
+
+        return $process->getOutput();
+    }
+
+    /**
+     * Attempts to update Composer.
+     *
+     * Returns true if Composer was updated, false if not.
+     *
+     * @return bool
+     * @throws ComposerException
+     */
+    public function selfUpdate()
+    {
+        $beforeVersion = $this->getVersion();
+
+        $process = $this->getProcess();
+        $processCommand = trim($this->findComposer() . ' self-update');
+        $process->setCommandLine($processCommand);
+        $this->log->info('Running Composer command', ['command' => $processCommand]);
+        $process->run();
+
+        if ($process->isSuccessful() == false) {
+            $composerError = remove_ansi($process->getErrorOutput());
+            $this->log->error('Composer self update process failure', ['composer' => $composerError]);
+            throw new ComposerException('There was an error updating Composer');
+        }
+
+        $afterVersion = $this->getVersion();
+
+        if ($beforeVersion == $afterVersion) {
+            return false;
+        }
+
+        return true;
     }
 
 }
