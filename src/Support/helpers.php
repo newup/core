@@ -61,6 +61,18 @@ if (!function_exists('load_system_template')) {
     }
 }
 
+if (!function_exists('find_tse_template')) {
+    /**
+     * Locates a package location from storage based on package name.
+     *
+     * @param $template
+     * @return mixed
+     */
+    function find_tse_template($template) {
+        return app('NewUp\Contracts\Templates\StorageEngine')->resolvePackagePath($template);
+    }
+}
+
 if (!function_exists('load_core_template')) {
     /**
      * Get the contents of a core template by name.
