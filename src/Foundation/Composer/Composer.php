@@ -243,7 +243,7 @@ class Composer
     public function installPackage($packageName, $options = [])
     {
         $process = $this->getProcess();
-        
+
         $processCommand = trim($this->findComposer() . ' create-project ' . $packageName . ' "' .
                                $this->workingPath . '" ' .
                                $this->prepareOptions($options, ['--no-ansi', '--no-install']));
@@ -251,10 +251,13 @@ class Composer
         $process->setCommandLine($processCommand);
         $this->prepareInstallationDirectory($this->workingPath);
 
+        $this->log->info('Running Composer command', ['command' => $processCommand]);
+
         $process->run();
 
         if ($process->isSuccessful() == false) {
             $composerError = $this->parseComposerErrorMessage($process->getErrorOutput());
+            $this->log->error('Composer process failure', ['composer' => $composerError]);
             throw new PackageInstallationException($process->getErrorOutput(),
                 "There was an error installing the package: {$packageName}" . PHP_EOL .
                 'Composer is reporting the following error:' . PHP_EOL . '--> ' . $composerError);
