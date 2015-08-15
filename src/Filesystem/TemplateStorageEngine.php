@@ -2,6 +2,7 @@
 
 namespace NewUp\Filesystem;
 
+use Illuminate\Contracts\Logging\Log;
 use Illuminate\Support\Str;
 use NewUp\Contracts\Filesystem\Filesystem as FileSystemContract;
 use NewUp\Contracts\Templates\StorageEngine;
@@ -36,11 +37,14 @@ class TemplateStorageEngine implements StorageEngine
      */
     protected $templateStoragePath = '';
 
-    public function __construct(FileSystemContract $filesystem, Composer $composer, $templateStoragePath)
+    protected $log;
+
+    public function __construct(FileSystemContract $filesystem, Composer $composer, $templateStoragePath, Log $logger)
     {
         $this->files               = $filesystem;
         $this->templateStoragePath = $this->normalizePath($templateStoragePath);
         $this->composer            = $composer;
+        $this->log = $logger;
     }
 
     /**
@@ -67,6 +71,7 @@ class TemplateStorageEngine implements StorageEngine
      */
     private function writePackageInstallationInstructions($path, $packageName)
     {
+        $this->log->info('Writing package installation instructions.', [['path' => $packageName, 'package' => $packageName]]);
         $this->files->put($path . DIRECTORY_SEPARATOR . '_newup_install_instructions', $packageName);
     }
 

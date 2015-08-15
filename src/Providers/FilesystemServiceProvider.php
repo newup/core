@@ -16,8 +16,12 @@ class FilesystemServiceProvider extends ServiceProvider
     {
         $this->app->bind('NewUp\Contracts\Filesystem\Filesystem', 'NewUp\Filesystem\Filesystem');
 
-        $this->app->singleton('NewUp\Contracts\Templates\StorageEngine', function() {
-           return new TemplateStorageEngine(app('NewUp\Contracts\Filesystem\Filesystem'), app('NewUp\Foundation\Composer\Composer'), template_storage_path());
+        $this->app->singleton('NewUp\Contracts\Templates\StorageEngine', function () {
+            return new TemplateStorageEngine(app('NewUp\Contracts\Filesystem\Filesystem'),
+                app('NewUp\Foundation\Composer\Composer'),
+                template_storage_path(),
+                app('Illuminate\Contracts\Logging\Log')
+            );
         });
     }
 
