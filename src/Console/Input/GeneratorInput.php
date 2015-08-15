@@ -189,7 +189,7 @@ class GeneratorInput extends ArgvInput
             return str_finish($this->customTemplatePath, '/');
         }
 
-        // TODO: Return the path from a template in the template storage. Currently only supports direct paths.
+        return str_finish(find_tse_template($this->getTemplateName()), '/');
     }
 
     public function getTokens()

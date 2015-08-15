@@ -102,13 +102,14 @@ class Builder
      */
     public function setTemplateDirectory($directory)
     {
+        // The directory will be null if a template is being loaded from storage.
         if ($directory == null) {
-            // TODO: Load template directory from storage.
-        } else {
-            $this->templateDirectory = realpath($directory);
+            $this->templateDirectory = realpath(find_tse_template($this->templateName));
+            $this->loadPackageTemplate($this->templateDirectory);
+            return;
         }
 
-        // Load the actual package template.
+        $this->templateDirectory = realpath($directory);
         $this->loadPackageTemplate(realpath($directory));
     }
 
