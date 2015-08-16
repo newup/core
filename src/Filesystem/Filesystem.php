@@ -29,7 +29,7 @@ class Filesystem extends LaravelFileSystem implements FileSystemContract
      */
     public function allFiles($directory)
     {
-        return iterator_to_array(Finder::create()->files()->ignoreDotFiles(false)->in($directory), false);
+        return iterator_to_array(Finder::create()->files()->ignoreDotFiles(false)->ignoreVCS(false)->in($directory), false);
     }
 
     /**
