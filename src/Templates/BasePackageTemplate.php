@@ -204,4 +204,15 @@ abstract class BasePackageTemplate
         $this->templateRenderer = $renderer;
     }
 
+    /**
+     * Shares data with package template files.
+     *
+     * @param $key   The name of the variable to share.
+     * @param $value The value of the variable to share.
+     */
+    public function shareData($key, $value)
+    {
+        $this->templateRenderer->setData($key, $value);
+    }
+
 }
