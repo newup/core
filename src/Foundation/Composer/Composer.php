@@ -3,6 +3,7 @@
 namespace NewUp\Foundation\Composer;
 
 use Illuminate\Contracts\Logging\Log;
+use Illuminate\Support\Str;
 use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Foundation\Composer\Exceptions\ComposerException;
 use NewUp\Foundation\Composer\Exceptions\InvalidInstallationDirectoryException;
@@ -258,12 +259,17 @@ class Composer
 
         if ($process->isSuccessful() == false) {
             $composerError = $this->parseComposerErrorMessage($process->getErrorOutput());
-
             $this->log->error('Composer create-project process failure', ['composer' => $composerError]);
+
+            $additionalInformation = '';
+
+            if (Str::contains($process->getErrorOutput(), 'The system cannot find the path specified. (code: 3)')) {
+                $additionalInformation = PHP_EOL.PHP_EOL.'Based on the provided error message, the following article may be helpful:'.PHP_EOL.'https://getcomposer.org/doc/articles/troubleshooting.md#-the-system-cannot-find-the-path-specified-windows-';
+            }
 
             throw new PackageInstallationException($process->getErrorOutput(),
                 "There was an error installing the package: {$packageName}" . PHP_EOL .
-                'Composer is reporting the following error:' . PHP_EOL . '--> ' . $composerError);
+                'Composer is reporting the following error:' . PHP_EOL . '--> ' . $composerError.$additionalInformation);
         }
 
         return true;
@@ -292,7 +298,6 @@ class Composer
 
         if ($process->isSuccessful() == false) {
             $this->restoreWorkingDirectory();
-
             $composerError = $process->getErrorOutput();
 
             $this->log->error('Composer update process failure', ['composer' => $composerError]);
