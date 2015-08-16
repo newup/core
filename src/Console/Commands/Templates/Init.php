@@ -74,6 +74,7 @@ class Init extends Command
 
             $packageVendor = Package::parseVendorAndPackage($this->argument('name'));
             $this->templateInitializer->initialize($packageVendor[0], $packageVendor[1], $directory);
+            $this->info('Package initialized');
         } catch (InvalidPathException $invalidPath) {
             $this->error($invalidPath->getMessage());
         } catch (InvalidArgumentException $invalidVendorPackage) {
