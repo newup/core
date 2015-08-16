@@ -2,7 +2,7 @@
 
 namespace NewUp\Templates\Analyzers;
 
-use Illuminate\Filesystem\Filesystem;
+use NewUp\Filesystem\Filesystem;
 use NewUp\Exceptions\InvalidPathException;
 use NewUp\Templates\Generators\PathNormalizer;
 use NewUp\Contracts\IO\DirectoryAnalyzer as DirectoryAnalyzerContract;
