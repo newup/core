@@ -140,7 +140,7 @@ class GeneratorInput extends ArgvInput
                 // Fail angrily.
                 throw new TemplatePackageMissingException("The package template {$this->getTemplateName()} is not installed or it cannot be found. The package template must be installed before it can be built.");
             } else {
-                Application::$output->writeln("<comment>It looks like everything went well. We will continue building the package template...</comment>");
+                Application::$output->writeln('<comment>It looks like everything went well. We will continue building the package template...</comment>');
             }
         }
 
