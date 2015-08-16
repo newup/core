@@ -2,7 +2,7 @@
 
 namespace NewUp\Contracts\IO;
 
-use Illuminate\Filesystem\Filesystem;
+use NewUp\Filesystem\Filesystem;
 use NewUp\Templates\Analyzers\DirectoryAnalyzer;
 use org\bovigo\vfs\vfsStream;
 
