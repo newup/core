@@ -175,6 +175,8 @@ class Builder
      */
     public function build()
     {
+        $this->package->builderLoaded();
+
         if ($this->getCommonTemplateDirectory() !== null) {
             $this->generator->getRenderer()->addPath($this->getCommonTemplateDirectory());
         }
@@ -208,7 +210,6 @@ class Builder
         $namespacedPackageClass = $this->packageLoader->loadPackage(realpath($directory));
         $this->autoLoaderManager->mergePackageLoader(realpath($directory));
         $this->package          = app($namespacedPackageClass);
-        $this->package->builderLoaded();
     }
 
     /**
