@@ -2,8 +2,17 @@
 
 namespace NewUp\Templates;
 
+use NewUp\Contracts\Templates\Renderer;
+
 abstract class BasePackageTemplate
 {
+
+    /**
+     * The Renderer implementation.
+     *
+     * @var \NewUp\Contracts\Templates\Renderer
+     */
+    protected $templateRenderer = null;
 
     /**
      * The paths that NewUp should ignore.
@@ -183,6 +192,16 @@ abstract class BasePackageTemplate
     public function builderLoaded()
     {
 
+    }
+
+    /**
+     * Sets the Renderer instance.
+     *
+     * @param \NewUp\Contracts\Templates\Renderer $renderer
+     */
+    public function setRendererInstance(Renderer $renderer)
+    {
+        $this->templateRenderer = $renderer;
     }
 
 }

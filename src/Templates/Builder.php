@@ -175,6 +175,7 @@ class Builder
      */
     public function build()
     {
+        $this->package->setRendererInstance($this->generator->getRenderer());
         $this->package->builderLoaded();
 
         if ($this->getCommonTemplateDirectory() !== null) {
