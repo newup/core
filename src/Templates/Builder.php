@@ -208,6 +208,7 @@ class Builder
         $namespacedPackageClass = $this->packageLoader->loadPackage(realpath($directory));
         $this->autoLoaderManager->mergePackageLoader(realpath($directory));
         $this->package          = app($namespacedPackageClass);
+        $this->package->builderLoaded();
     }
 
     /**

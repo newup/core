@@ -175,4 +175,14 @@ abstract class BasePackageTemplate
         ];
     }
 
+    /**
+     * Called when the builder has loaded the package class.
+     *
+     * @return mixed
+     */
+    public function builderLoaded()
+    {
+
+    }
+
 }
