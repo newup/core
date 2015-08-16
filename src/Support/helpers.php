@@ -46,7 +46,7 @@ if (!function_exists('load_system_template')) {
     /**
      * Get the contents of a system template by name.
      *
-     * @param $templateName
+     * @param  $templateName
      * @return null|string
      */
     function load_system_template($templateName)
@@ -65,7 +65,7 @@ if (!function_exists('find_tse_template')) {
     /**
      * Locates a package location from storage based on package name.
      *
-     * @param $template
+     * @param  $template
      * @return mixed
      */
     function find_tse_template($template) {
@@ -77,7 +77,7 @@ if (!function_exists('load_core_template')) {
     /**
      * Get the contents of a core template by name.
      *
-     * @param $templateName
+     * @param  $templateName
      * @return null|string
      */
     function load_core_template($templateName)
@@ -180,7 +180,7 @@ if (!function_exists('remove_ansi')) {
     /**
      * Removes ANSI escape sequences from strings.
      *
-     * @param $input
+     * @param  $input
      * @return string
      */
     function remove_ansi($input) {
