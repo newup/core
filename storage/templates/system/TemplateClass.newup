@@ -10,22 +10,13 @@ class Package extends BasePackageTemplate
 {
 
     /**
-     * A collection of patterns to simply copy.
+     * Called when the builder has loaded the package class.
      *
-     * @var array
+     * @return mixed
      */
-    protected $copyVerbatim = [];
-
-    /**
-     * Returns the paths that NewUp should process.
-     *
-     * @return array
-     */
-    public function getPathsToProcess()
+    public function builderLoaded()
     {
-        return [
 
-        ];
     }
 
     /**
