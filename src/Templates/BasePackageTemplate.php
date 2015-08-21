@@ -256,4 +256,14 @@ abstract class BasePackageTemplate
         return $this;
     }
 
+    /**
+     * Gets the output directory the template is being written to.
+     *
+     * @return string
+     */
+    protected function outputDirectory()
+    {
+        return $this->argument('newup-output-directory');
+    }
+
 }
