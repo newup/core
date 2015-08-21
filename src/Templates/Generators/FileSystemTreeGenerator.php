@@ -278,6 +278,11 @@ class FileSystemTreeGenerator implements FileTreeGenerator
     {
         $path = $this->normalizePath($path);
 
+        // Always remove "newup.keep" files.
+        if (Str::is('*newup.keep', $path)) {
+            return true;
+        }
+
         foreach ($this->automaticallyRemovedPaths as $removedPath) {
             if (Str::is($this->normalizePath($removedPath), $path)) {
                 return true;
