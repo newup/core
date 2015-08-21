@@ -46,9 +46,9 @@ class Build extends Command
     public function handle()
     {
         try {
-            $this->templateBuilder->setTemplateName($this->argument('template'));
+            $this->templateBuilder->setTemplateName($this->argument('newup-template'));
             $this->templateBuilder->setTemplateDirectory($this->option('newup-directory'));
-            $this->templateBuilder->setOutputDirectory($this->argument('output-directory'));
+            $this->templateBuilder->setOutputDirectory($this->argument('newup-output-directory'));
 
             // Set the arguments and options for the package builder, etc.
             $this->templateBuilder->setOptions($this->input->getOptions());
@@ -64,8 +64,13 @@ class Build extends Command
     protected function getArguments()
     {
         return [
-            ['template', InputArgument::REQUIRED, 'The template name', null],
-            ['output-directory', InputArgument::REQUIRED, 'The directory the built template should be saved to', null]
+            ['newup-template', InputArgument::REQUIRED, 'The template name', null],
+            [
+                'newup-output-directory',
+                InputArgument::REQUIRED,
+                'The directory the built template should be saved to',
+                null
+            ]
         ];
     }
 
