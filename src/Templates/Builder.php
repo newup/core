@@ -5,11 +5,14 @@ namespace NewUp\Templates;
 use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Foundation\Composer\AutoLoaderManager;
 use NewUp\Templates\Generators\ContentGenerator;
+use NewUp\Templates\Generators\PathNormalizer;
 use NewUp\Templates\Loaders\PackageLoader;
 use NewUp\Templates\Renderers\Collectors\InputCollector;
 
 class Builder
 {
+
+    use PathNormalizer;
 
     /**
      * The template directory.
@@ -185,16 +188,16 @@ class Builder
         $this->generator->setVerbatimExcludePatterns($this->package->getVerbatimExcludePatterns());
         $this->generator->setVerbatimPatterns($this->package->getVerbatimPatterns());
 
+        foreach ($this->package->getPathsToProcess() as $pathKey => $processPath) {
+            $this->generator->getPathManager()->getCollector()->addFileNames([$this->normalizePath($pathKey) => $this->normalizePath($processPath)]);
+        }
+
         foreach ($this->package->getIgnoredPaths() as $ignoredPath) {
-            $this->generator->getPathManager()->getGenerator()->addIgnoredPath($ignoredPath);
+            $this->generator->getPathManager()->getGenerator()->addIgnoredPath($this->normalizePath($ignoredPath));
         }
 
         foreach ($this->package->getPathsToRemove() as $pathToRemove) {
-            $this->generator->getPathManager()->getGenerator()->addAutomaticallyRemovedPath($pathToRemove);
-        }
-
-        foreach ($this->package->getPathsToProcess() as $pathKey => $processPath) {
-            $this->generator->getPathManager()->getCollector()->addFileNames([$pathKey => $processPath]);
+            $this->generator->getPathManager()->getGenerator()->addAutomaticallyRemovedPath($this->normalizePath($pathToRemove));
         }
 
         $this->generator->addPaths((array)$this->getTemplateDirectory());
