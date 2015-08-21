@@ -207,12 +207,21 @@ abstract class BasePackageTemplate
     /**
      * Shares data with package template files.
      *
-     * @param $key   The name of the variable to share.
-     * @param $value The value of the variable to share.
+     * @param       $key   The name of the variable to share.
+     * @param  null $value The value of the variable to share.
+     * @return $this
      */
-    public function shareData($key, $value)
+    public function shareData($key, $value= null)
     {
+        if (is_array($key)) {
+            foreach  ($key as $variableName => $variableValue) {
+                $this->templateRenderer->setData($variableName, $variableValue);
+            }
+            return $this;
+        }
+
         $this->templateRenderer->setData($key, $value);
+        return $this;
     }
 
 }
