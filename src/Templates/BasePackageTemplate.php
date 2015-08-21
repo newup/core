@@ -236,4 +236,24 @@ abstract class BasePackageTemplate
         return $this->shareData($key, $value);
     }
 
+    /**
+     * Adds a path to the ignore list.
+     *
+     * @param $path
+     * @return $this
+     */
+    public function ignorePath($path)
+    {
+        if (is_array($path)) {
+            foreach ($path as $pathToIgnore) {
+                $this->ignorePath($pathToIgnore);
+            }
+
+            return $this;
+        }
+
+        $this->ignoredPaths[] = $path;
+        return $this;
+    }
+
 }
