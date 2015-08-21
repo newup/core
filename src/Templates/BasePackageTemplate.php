@@ -224,4 +224,16 @@ abstract class BasePackageTemplate
         return $this;
     }
 
+    /**
+     * Shares data with package template files.
+     *
+     * @param       $key   The name of the variable to share.
+     * @param  null $value The value of the variable to share.
+     * @return $this
+     */
+    public function with($key, $value = null)
+    {
+        return $this->shareData($key, $value);
+    }
+
 }
