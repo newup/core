@@ -58,10 +58,13 @@ class Package implements PackageContract, PackageFactory
      * Sets the vendor.
      *
      * @param $vendor
+     * @return $this
      */
     public function setVendor($vendor)
     {
         $this->vendor = $vendor;
+
+        return $this;
     }
 
     /**
@@ -78,20 +81,26 @@ class Package implements PackageContract, PackageFactory
      * Sets the package name.
      *
      * @param $package
+     * @return $this
      */
     public function setPackage($package)
     {
         $this->package = $package;
+
+        return $this;
     }
 
     /**
      * Sets the package description.
      *
      * @param $description
+     * @return $this
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -108,10 +117,13 @@ class Package implements PackageContract, PackageFactory
      * Sets the package license.
      *
      * @param $license
+     * @return $this
      */
     public function setLicense($license)
     {
         $this->license = $license;
+
+        return $this;
     }
 
     /**
@@ -154,6 +166,7 @@ class Package implements PackageContract, PackageFactory
      * Sets the package authors.
      *
      * @param array $authors
+     * @return $this
      */
     public function setAuthors(array $authors)
     {
@@ -162,6 +175,8 @@ class Package implements PackageContract, PackageFactory
         foreach ($authors as $author) {
             $this->authors[] = (object)$author;
         }
+
+        return $this;
     }
 
     /**
@@ -201,6 +216,20 @@ class Package implements PackageContract, PackageFactory
 
         throw new InvalidArgumentException('The package name "' . $templateName .
             '" is invalid. Expected format "vendor/package".');
+    }
+
+    /**
+     * Returns a new Package instance configured with user preferences.
+     *
+     * @return Package
+     */
+    public static function getConfiguredPackage()
+    {
+        $package = new Package;
+        $package->setLicense(config('user.configuration.license'));
+        $package->setAuthors(config('user.configuration.authors'));
+
+        return $package;
     }
 
     /**
