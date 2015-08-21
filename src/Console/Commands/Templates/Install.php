@@ -44,12 +44,14 @@ class Install extends Command
     {
         $packageName = $this->argument('name');
 
-        if (!$this->confirm("Do you want to install the {$packageName} package template right now? [yes|no]",
-            true)
-        ) {
-            $this->comment("Package installation aborted by user.");
+        if ($this->option('confirm')) {
+            if (!$this->confirm("Do you want to install the {$packageName} package template right now? [yes|no]",
+                true)
+            ) {
+                $this->comment("Package installation aborted by user.");
 
-            return self::INSTALL_FAIL;
+                return self::INSTALL_FAIL;
+            }
         }
 
         if ($this->templateStorageEngine->packageExists($packageName)) {
