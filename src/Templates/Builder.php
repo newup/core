@@ -188,7 +188,7 @@ class Builder
         $this->generator->setVerbatimExcludePatterns($this->package->getVerbatimExcludePatterns());
         $this->generator->setVerbatimPatterns($this->package->getVerbatimPatterns());
 
-        foreach ($this->package->getPathsToProcess() as $pathKey => $processPath) {
+        foreach ($this->package->getTransformPaths() as $pathKey => $processPath) {
             $this->generator->getPathManager()->getCollector()->addFileNames([$this->normalizePath($pathKey) => $this->normalizePath($processPath)]);
         }
 

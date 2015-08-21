@@ -149,11 +149,11 @@ abstract class BasePackageTemplate
     }
 
     /**
-     * Returns the paths that NewUp should process.
+     * Returns the paths that NewUp should transform.
      *
      * @return array
      */
-    public function getPathsToProcess()
+    public function getTransformPaths()
     {
         return [
 
