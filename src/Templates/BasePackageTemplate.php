@@ -2,10 +2,14 @@
 
 namespace NewUp\Templates;
 
+use NewUp\Console\Commandable;
 use NewUp\Contracts\Templates\Renderer;
+use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class BasePackageTemplate
 {
+
+    use Commandable;
 
     /**
      * The Renderer implementation.
