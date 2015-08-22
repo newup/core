@@ -21,6 +21,7 @@ The [newup-playground](https://github.com/newup-playground) GitHub organization 
 | Playground | Description |
 |------------|-------------|
 | [newup-playground/alpha](https://github.com/newup-playground/alpha) | Demonstrates that NewUp can load package template dependencies. |
+| [newup-playground/disco](https://github.com/newup-playground/disco) | PHP implementation of [kayladnls/disco](https://github.com/kayladnls/disco) using NewUp. |
 | [newup-playground/workbench](https://github.com/newup-playground/workbench) | Recreates Laravel 4's workbench functionality using NewUp. |
 
 It is easy to install any of the playground templates. To install a playground package template when testing [`newup/core`](https://github.com/newup/core) use the following command:
