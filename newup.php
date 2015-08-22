@@ -23,6 +23,7 @@ $app = require_once __DIR__ . '/bootstrap/app.php';
 
 Application::$loader = &$autoLoader;
 ConsoleApplication::$output = new ConsoleOutput;
+ConsoleApplication::$input = new \Symfony\Component\Console\Input\ArgvInput;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +40,7 @@ $kernel = $app->make('Illuminate\Contracts\Console\Kernel');
 $kernel->bootstrap();
 
 $status = $kernel->handle(
-    $input = new Symfony\Component\Console\Input\ArgvInput,
+    ConsoleApplication::$input,
     ConsoleApplication::$output
 );
 
@@ -54,6 +55,6 @@ $status = $kernel->handle(
 |
 */
 
-$kernel->terminate($input, $status);
+$kernel->terminate(ConsoleApplication::$input, $status);
 
 exit($status);

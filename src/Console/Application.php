@@ -12,6 +12,7 @@ class Application extends LaravelConsoleApplication
 {
 
     public static $output;
+    public static $input;
 
     /**
      * Create a new Artisan console application.
