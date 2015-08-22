@@ -2,6 +2,7 @@
 
 namespace NewUp\Templates;
 
+use NewUp\Console\Application;
 use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Foundation\Composer\AutoLoaderManager;
 use NewUp\Templates\Generators\ContentGenerator;
@@ -179,6 +180,9 @@ class Builder
     public function build()
     {
         $this->package->setRendererInstance($this->generator->getRenderer());
+        $this->package->setApplication(app('NewUp\Console\Application'));
+        $this->package->setOutputInstance(Application::$output);
+        $this->package->setInputInstance(Application::$input);
         $this->package->builderLoaded();
 
         if ($this->getCommonTemplateDirectory() !== null) {
