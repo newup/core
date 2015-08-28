@@ -6,6 +6,7 @@ use Illuminate\Foundation\Console\Kernel as LaravelKernel;
 use NewUp\Console\Application as NewUpApplication;
 use Illuminate\Foundation\Bootstrap\DetectEnvironment;
 use Illuminate\Foundation\Bootstrap\LoadConfiguration;
+use NewUp\Foundation\Bootstrap\LoadUserConfiguration;
 use NewUp\Foundation\Bootstrap\ConfigureLogging;
 use Illuminate\Foundation\Bootstrap\HandleExceptions;
 use Illuminate\Foundation\Bootstrap\SetRequestForConsole;
@@ -23,6 +24,7 @@ abstract class BaseKernel extends LaravelKernel
     protected $bootstrappers = [
         DetectEnvironment::class,
         LoadConfiguration::class,
+        LoadUserConfiguration::class,
         ConfigureLogging::class,
         HandleExceptions::class,
         SetRequestForConsole::class,
