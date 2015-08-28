@@ -4,6 +4,13 @@ namespace NewUp\Console;
 
 use Illuminate\Foundation\Console\Kernel as LaravelKernel;
 use NewUp\Console\Application as NewUpApplication;
+use Illuminate\Foundation\Bootstrap\DetectEnvironment;
+use Illuminate\Foundation\Bootstrap\LoadConfiguration;
+use NewUp\Foundation\Bootstrap\ConfigureLogging;
+use Illuminate\Foundation\Bootstrap\HandleExceptions;
+use Illuminate\Foundation\Bootstrap\SetRequestForConsole;
+use Illuminate\Foundation\Bootstrap\RegisterProviders;
+use Illuminate\Foundation\Bootstrap\BootProviders;
 
 abstract class BaseKernel extends LaravelKernel
 {
@@ -14,13 +21,13 @@ abstract class BaseKernel extends LaravelKernel
      * @var array
      */
     protected $bootstrappers = [
-        'Illuminate\Foundation\Bootstrap\DetectEnvironment',
-        'Illuminate\Foundation\Bootstrap\LoadConfiguration',
-        'NewUp\Foundation\Bootstrap\ConfigureLogging',
-        'Illuminate\Foundation\Bootstrap\HandleExceptions',
-        'Illuminate\Foundation\Bootstrap\SetRequestForConsole',
-        'Illuminate\Foundation\Bootstrap\RegisterProviders',
-        'Illuminate\Foundation\Bootstrap\BootProviders',
+        DetectEnvironment::class,
+        LoadConfiguration::class,
+        ConfigureLogging::class,
+        HandleExceptions::class,
+        SetRequestForConsole::class,
+        RegisterProviders::class,
+        BootProviders::class,
     ];
 
     /**
