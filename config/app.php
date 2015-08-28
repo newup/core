@@ -12,37 +12,37 @@ return [
         /**
          * Relevant Laravel framework service providers.
          */
-        'Illuminate\Bus\BusServiceProvider',
-        'Illuminate\Encryption\EncryptionServiceProvider',
-        'Illuminate\Filesystem\FilesystemServiceProvider',
-        'Illuminate\Pipeline\PipelineServiceProvider',
-        'Illuminate\Validation\ValidationServiceProvider',
+        \Illuminate\Bus\BusServiceProvider::class,
+        \Illuminate\Encryption\EncryptionServiceProvider::class,
+        \Illuminate\Filesystem\FilesystemServiceProvider::class,
+        \Illuminate\Pipeline\PipelineServiceProvider::class,
+        \Illuminate\Validation\ValidationServiceProvider::class,
 
         /**
          * NewUp specific service providers.
          */
-        'NewUp\Providers\FilesystemServiceProvider',
-        'NewUp\Providers\RendererServiceProvider',
-        'NewUp\Providers\PathNameParserServiceProvider',
-        'NewUp\Providers\GeneratorAnalyzerServiceProvider',
+        \NewUp\Providers\FilesystemServiceProvider::class,
+        \NewUp\Providers\RendererServiceProvider::class,
+        \NewUp\Providers\PathNameParserServiceProvider::class,
+        \NewUp\Providers\GeneratorAnalyzerServiceProvider::class,
     ],
 
     'render_filters' => [
-        'NewUp\Templates\Renderers\Filters\StudlyFilter',
-        'NewUp\Templates\Renderers\Filters\CamelFilter',
-        'NewUp\Templates\Renderers\Filters\LowerFilter',
-        'NewUp\Templates\Renderers\Filters\PluralFilter',
-        'NewUp\Templates\Renderers\Filters\SingularFilter',
-        'NewUp\Templates\Renderers\Filters\SlugFilter',
-        'NewUp\Templates\Renderers\Filters\SnakeFilter',
-        'NewUp\Templates\Renderers\Filters\StudlyFilter',
-        'NewUp\Templates\Renderers\Filters\UpperFilter',
+        \NewUp\Templates\Renderers\Filters\StudlyFilter::class,
+        \NewUp\Templates\Renderers\Filters\CamelFilter::class,
+        \NewUp\Templates\Renderers\Filters\LowerFilter::class,
+        \NewUp\Templates\Renderers\Filters\PluralFilter::class,
+        \NewUp\Templates\Renderers\Filters\SingularFilter::class,
+        \NewUp\Templates\Renderers\Filters\SlugFilter::class,
+        \NewUp\Templates\Renderers\Filters\SnakeFilter::class,
+        \NewUp\Templates\Renderers\Filters\StudlyFilter::class,
+        \NewUp\Templates\Renderers\Filters\UpperFilter::class,
     ],
 
     'render_functions' => [
-        'NewUp\Templates\Renderers\Functions\PathNameFunction',
-        'NewUp\Templates\Renderers\Functions\ArgumentFunction',
-        'NewUp\Templates\Renderers\Functions\OptionFunction',
+        \NewUp\Templates\Renderers\Functions\PathNameFunction::class,
+        \NewUp\Templates\Renderers\Functions\ArgumentFunction::class,
+        \NewUp\Templates\Renderers\Functions\OptionFunction::class,
     ],
 
 ];
