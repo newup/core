@@ -180,7 +180,7 @@ class Builder
     public function build()
     {
         $this->package->setRendererInstance($this->generator->getRenderer());
-        $this->package->setApplication(app('NewUp\Console\Application'));
+        $this->package->setApplication(app(Application::class));
         $this->package->setOutputInstance(Application::$output);
         $this->package->setInputInstance(Application::$input);
         $this->package->builderLoaded();
