@@ -226,8 +226,8 @@ class Package implements PackageContract, PackageFactory
     public static function getConfiguredPackage()
     {
         $package = new Package;
-        $package->setLicense(config('user.configuration.license'));
-        $package->setAuthors(config('user.configuration.authors'));
+        $package->setLicense(user_config('configuration.license'));
+        $package->setAuthors(user_config('configuration.authors'));
 
         return $package;
     }

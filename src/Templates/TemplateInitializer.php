@@ -68,8 +68,8 @@ class TemplateInitializer
         $packageComposer->setVendor($vendor);
         $packageComposer->setPackage($package);
         $packageComposer->setDescription('Give your package template a good description');
-        $packageComposer->setLicense(config('user.configuration.license', ''));
-        $packageComposer->setAuthors(config('user.configuration.authors', []));
+        $packageComposer->setLicense(user_config('configuration.license', ''));
+        $packageComposer->setAuthors(user_config('configuration.authors', []));
 
         $writer = new ConfigurationWriter($packageComposer->toArray());
         $writer['config'] = (object)['vendor-dir' => '_newup_vendor'];

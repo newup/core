@@ -51,7 +51,7 @@ class PackageLoader
             throw new InvalidPathException("A Package.php file must be present in in \"_newup\" directory.");
         }
 
-        $package = Package::fromFile($directory.'/composer.json', config('user.configuration.strictComposerValues', true));
+        $package = Package::fromFile($directory.'/composer.json', user_config('configuration.strictComposerValues', true));
         $namespace = package_vendor_namespace($package->getVendor(), $package->getPackage(), true);
 
         add_psr4($namespace, $directory.'/_newup');

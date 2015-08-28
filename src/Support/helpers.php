@@ -6,6 +6,29 @@ use NewUp\Support\ANSIColor;
 use NewUp\Contracts\Templates\StorageEngine;
 use NewUp\Templates\Renderers\Collectors\InputCollector;
 
+
+if (!function_exists('user_config')) {
+    /**
+     * Get / set the specified user configuration value.
+     *
+     * If an array is passed as the key, we will assume you want to set an array of values.
+     *
+     * @param  array|string $key
+     * @param  mixed $default
+     * @return mixed
+     */
+    function user_config($key = null, $default = null)
+    {
+        if (is_null($key)) {
+            return app('config.user');
+        }
+        if (is_array($key)) {
+            return app('config.user')->set($key);
+        }
+        return app('config.user')->get($key, $default);
+    }
+}
+
 if (!function_exists('array_remove_value')) {
     /**
      * Removes the given value from the array.
@@ -39,7 +62,8 @@ if (!function_exists('template_storage_path')) {
      *
      * @return string
      */
-    function template_storage_path() {
+    function template_storage_path()
+    {
         return storage_path('templates/store/');
     }
 }
@@ -70,7 +94,8 @@ if (!function_exists('find_tse_template')) {
      * @param  $template
      * @return mixed
      */
-    function find_tse_template($template) {
+    function find_tse_template($template)
+    {
         return app(StorageEngine::class)->resolvePackagePath($template);
     }
 }
@@ -131,7 +156,8 @@ if (!function_exists('add_psr4')) {
      * @param $namespace
      * @param $directory
      */
-    function add_psr4($namespace, $directory) {
+    function add_psr4($namespace, $directory)
+    {
         get_composer_loader()->setPsr4($namespace, $directory);
     }
 }
@@ -145,7 +171,8 @@ if (!function_exists('scope_include')) {
      *
      * @param $include
      */
-    function scope_include($include) {
+    function scope_include($include)
+    {
         include $include;
     }
 }
@@ -159,8 +186,9 @@ if (!function_exists('option')) {
      *
      * @return mixed
      */
-    function option($option, $default = null) {
-        return array_get(app(InputCollector::class)->collect(), 'user_options.'.$option, $default);
+    function option($option, $default = null)
+    {
+        return array_get(app(InputCollector::class)->collect(), 'user_options.' . $option, $default);
     }
 }
 
@@ -173,8 +201,9 @@ if (!function_exists('argument')) {
      *
      * @return mixed
      */
-    function argument($argument, $default = null) {
-        return array_get(app(InputCollector::class)->collect(), 'user_options.'.$argument, $default);
+    function argument($argument, $default = null)
+    {
+        return array_get(app(InputCollector::class)->collect(), 'user_options.' . $argument, $default);
     }
 }
 
@@ -185,9 +214,10 @@ if (!function_exists('remove_ansi')) {
      * @param  $input
      * @return string
      */
-    function remove_ansi($input) {
+    function remove_ansi($input)
+    {
         $ansi = new ANSIColor;
-        $input = str_replace('[[', chr(27).'[', $input);
+        $input = str_replace('[[', chr(27) . '[', $input);
         return $ansi->colorStrip($input);
     }
 }

@@ -48,7 +48,7 @@ class Kernel extends BaseKernel
 
     protected function getCommands()
     {
-        if (config('user.configuration.enableUtilityCommands', false)) {
+        if (user_config('configuration.enableUtilityCommands', false)) {
             // Enable the TSE Utility Commands
             return array_merge($this->commands, [
                 TseAnalyze::class,
