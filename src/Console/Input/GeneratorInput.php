@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Contracts\Console\Kernel;
 
 /**
  * GeneratorInput extends Symfony's ArgvInput.
@@ -134,7 +135,7 @@ class GeneratorInput extends ArgvInput
 
         if (!file_exists($includePath)) {
             Application::$output->writeln("<comment>{$this->getTemplateName()} is not installed. Attempting to install it now...</comment>");
-            $result = app('Illuminate\Contracts\Console\Kernel')->getApplication()->callWithSharedOutput('template:install', ['name' => $this->getTemplateName(), '--confirm' => true]);
+            $result = app(Kernel::class)->getApplication()->callWithSharedOutput('template:install', ['name' => $this->getTemplateName(), '--confirm' => true]);
 
             if ($result === Install::INSTALL_FAIL) {
                 // Fail angrily.
