@@ -2,6 +2,21 @@
 
 namespace NewUp\Console;
 
+use NewUp\Console\Input\GeneratorInput;
+use NewUp\Console\Commands\About;
+use NewUp\Console\Commands\Templates\Init;
+use NewUp\Console\Commands\Templates\Build;
+use NewUp\Console\Commands\Templates\Install;
+use NewUp\Console\Commands\Templates\Remove;
+use NewUp\Console\Commands\Templates\Update;
+use NewUp\Console\Commands\Templates\Reconfigure;
+use NewUp\Console\Commands\Templates\Search;
+use NewUp\Console\Commands\Composer\Which as ComposerWhich;
+use NewUp\Console\Commands\Composer\Version as ComposerVersion;
+use NewUp\Console\Commands\Composer\Update as ComposerUpdate;
+use NewUp\Console\Commands\Tse\Analyze as TseAnalyze;
+use NewUp\Console\Commands\Tse\Reset as TseReset;
+
 class Kernel extends BaseKernel
 {
 
@@ -11,24 +26,24 @@ class Kernel extends BaseKernel
      * @var array
      */
     protected $commandInputOverrides = [
-        'build'          => '\NewUp\Console\Input\GeneratorInput',
-        'a'              => '\NewUp\Console\Input\GeneratorInput',
-        'an'             => '\NewUp\Console\Input\GeneratorInput',
-        'template:build' => '\NewUp\Console\Input\GeneratorInput',
+        'build'          => GeneratorInput::class,
+        'a'              => GeneratorInput::class,
+        'an'             => GeneratorInput::class,
+        'template:build' => GeneratorInput::class,
     ];
 
     protected $commands = [
-        'NewUp\Console\Commands\About',
-        'NewUp\Console\Commands\Templates\Init',
-        'NewUp\Console\Commands\Templates\Build',
-        'NewUp\Console\Commands\Templates\Install',
-        'NewUp\Console\Commands\Templates\Remove',
-        'NewUp\Console\Commands\Templates\Update',
-        'NewUp\Console\Commands\Templates\Reconfigure',
-        'NewUp\Console\Commands\Templates\Search',
-        'NewUp\Console\Commands\Composer\Which',
-        'NewUp\Console\Commands\Composer\Version',
-        'NewUp\Console\Commands\Composer\Update',
+        About::class,
+        Init::class,
+        Build::class,
+        Install::class,
+        Remove::class,
+        Update::class,
+        Reconfigure::class,
+        Search::class,
+        ComposerWhich::class,
+        ComposerVersion::class,
+        ComposerUpdate::class,
     ];
 
     protected function getCommands()
@@ -36,8 +51,8 @@ class Kernel extends BaseKernel
         if (config('user.configuration.enableUtilityCommands', false)) {
             // Enable the TSE Utility Commands
             return array_merge($this->commands, [
-                'NewUp\Console\Commands\Tse\Analyze',
-                'NewUp\Console\Commands\Tse\Reset',
+                TseAnalyze::class,
+                TseReset::class,
             ]);
         }
 
