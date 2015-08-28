@@ -7,6 +7,23 @@ use NewUp\Contracts\Templates\StorageEngine;
 use NewUp\Templates\Renderers\Collectors\InputCollector;
 
 
+if (!function_exists('get_user_config_path')) {
+    /**
+     * Gets the user configuration directory.
+     *
+     * @return string
+     */
+    function get_user_config_path() {
+        $userConfigurationPath = config_path('user');
+
+        if (defined('NEWUP_CORE_USER_CONFIGURATION_DIRECTORY')) {
+            $userConfigurationPath = NEWUP_CORE_USER_CONFIGURATION_DIRECTORY;
+        }
+
+        return $userConfigurationPath;
+    }
+}
+
 if (!function_exists('user_config')) {
     /**
      * Get / set the specified user configuration value.

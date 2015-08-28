@@ -26,11 +26,7 @@ class LoadUserConfiguration extends LoadConfiguration
     {
         $files = [];
 
-        $userConfigurationPath = config_path('user');
-
-        if (defined('NEWUP_CORE_USER_CONFIGURATION_DIRECTORY')) {
-            $userConfigurationPath = NEWUP_CORE_USER_CONFIGURATION_DIRECTORY;
-        }
+        $userConfigurationPath = get_user_config_path();
 
         $userConfigurationPath = $this->normalizePath($userConfigurationPath);
         $this->userConfigurationPath = $userConfigurationPath;
