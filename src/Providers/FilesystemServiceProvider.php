@@ -5,6 +5,12 @@ namespace NewUp\Providers;
 use Illuminate\Support\ServiceProvider;
 use NewUp\Filesystem\TemplateStorageEngine;
 use NewUp\Foundation\Composer\AutoLoaderManager;
+use NewUp\Contracts\Filesystem\Filesystem as FilesystemContract;
+use NewUp\Filesystem\Filesystem;
+use NewUp\Contracts\Templates\StorageEngine;
+use NewUp\Foundation\Composer\Composer;
+use Illuminate\Contracts\Logging\Log;
+use NewUp\Contracts\Templates\SearchableStorageEngine;
 
 class FilesystemServiceProvider extends ServiceProvider
 {
@@ -15,20 +21,20 @@ class FilesystemServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('NewUp\Contracts\Filesystem\Filesystem', 'NewUp\Filesystem\Filesystem');
+        $this->app->bind(FilesystemContract::class, Filesystem::class);
 
-        $this->app->singleton('NewUp\Contracts\Templates\StorageEngine', function () {
-            return new TemplateStorageEngine(app('NewUp\Contracts\Filesystem\Filesystem'),
-                app('NewUp\Foundation\Composer\Composer'),
+        $this->app->singleton(StorageEngine::class, function () {
+            return new TemplateStorageEngine(app(FilesystemContract::class),
+                app(Composer::class),
                 template_storage_path(),
-                app('Illuminate\Contracts\Logging\Log')
+                app(Log::class)
             );
         });
 
-        $this->app->singleton('NewUp\Contracts\Templates\SearchableStorageEngine', 'NewUp\Contracts\Templates\StorageEngine');
+        $this->app->singleton(SearchableStorageEngine::class, StorageEngine::class);
 
-        $this->app->singleton('NewUp\Foundation\Composer\AutoLoaderManager', function() {
-            return new AutoLoaderManager(app('NewUp\Contracts\Filesystem\Filesystem'), app(), app('Illuminate\Contracts\Logging\Log'));
+        $this->app->singleton(AutoLoaderManager::class, function() {
+            return new AutoLoaderManager(app(FilesystemContract::class), app(), app(Log::class));
         });
     }
 
