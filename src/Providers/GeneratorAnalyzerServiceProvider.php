@@ -3,13 +3,17 @@
 namespace NewUp\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use NewUp\Contracts\IO\FileTreeGenerator;
+use NewUp\Contracts\IO\DirectoryAnalyzer as DirectoryAnalyzerContract;
+use NewUp\Templates\Analyzers\DirectoryAnalyzer;
+use NewUp\Templates\Generators\FileSystemTreeGenerator;
 
 class GeneratorAnalyzerServiceProvider extends ServiceProvider
 {
 
     protected $singletonClassMap = [
-        'NewUp\Contracts\IO\FileTreeGenerator' => 'NewUp\Templates\Generators\FileSystemTreeGenerator',
-        'NewUp\Contracts\IO\DirectoryAnalyzer' => 'NewUp\Templates\Analyzers\DirectoryAnalyzer'
+        FileTreeGenerator::class => FileSystemTreeGenerator::class,
+        DirectoryAnalyzerContract::class => DirectoryAnalyzer::class,
     ];
 
     /**
