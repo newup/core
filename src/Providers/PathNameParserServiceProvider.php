@@ -3,6 +3,8 @@
 namespace NewUp\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use NewUp\Contracts\Templates\PathNameParser;
+use NewUp\Templates\Parsers\FileSystemPathNameParser;
 
 class PathNameParserServiceProvider extends ServiceProvider
 {
@@ -14,8 +16,8 @@ class PathNameParserServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('NewUp\Contracts\Templates\PathNameParser', function () {
-            return $this->app->make('NewUp\Templates\Parsers\FileSystemPathNameParser');
+        $this->app->singleton(PathNameParser::class, function () {
+            return $this->app->make(FileSystemPathNameParser::class);
         });
     }
 
