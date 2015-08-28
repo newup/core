@@ -3,6 +3,8 @@
 use Illuminate\Support\Str;
 use NewUp\Foundation\Application;
 use NewUp\Support\ANSIColor;
+use NewUp\Contracts\Templates\StorageEngine;
+use NewUp\Templates\Renderers\Collectors\InputCollector;
 
 if (!function_exists('array_remove_value')) {
     /**
@@ -69,7 +71,7 @@ if (!function_exists('find_tse_template')) {
      * @return mixed
      */
     function find_tse_template($template) {
-        return app('NewUp\Contracts\Templates\StorageEngine')->resolvePackagePath($template);
+        return app(StorageEngine::class)->resolvePackagePath($template);
     }
 }
 
@@ -158,7 +160,7 @@ if (!function_exists('option')) {
      * @return mixed
      */
     function option($option, $default = null) {
-        return array_get(app('NewUp\Templates\Renderers\Collectors\InputCollector')->collect(), 'user_options.'.$option, $default);
+        return array_get(app(InputCollector::class)->collect(), 'user_options.'.$option, $default);
     }
 }
 
@@ -172,7 +174,7 @@ if (!function_exists('argument')) {
      * @return mixed
      */
     function argument($argument, $default = null) {
-        return array_get(app('NewUp\Templates\Renderers\Collectors\InputCollector')->collect(), 'user_options.'.$argument, $default);
+        return array_get(app(InputCollector::class)->collect(), 'user_options.'.$argument, $default);
     }
 }
 
