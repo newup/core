@@ -45,6 +45,7 @@ class Build extends Command
      */
     public function handle()
     {
+        $this->line('Preparing to build template package: '.$this->argument('newup-template').'...');
         try {
             $this->templateBuilder->setTemplateName($this->argument('newup-template'));
             $this->templateBuilder->setTemplateDirectory($this->option('newup-directory'));
@@ -55,6 +56,7 @@ class Build extends Command
             $this->templateBuilder->setArguments($this->input->getArguments());
 
             $this->templateBuilder->build();
+            $this->info($this->argument('newup-template').' was successfully built.');
         } catch (\Exception $e) {
             $this->error($e->getTraceAsString());
             $this->error($e->getMessage(), $e->getLine(), $e->getFile());
