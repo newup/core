@@ -84,7 +84,7 @@ class TemplateInitializer
             $this->files->makeDirectory($directory.'/_newup/');
         }
 
-        if ($this->shouldCreateTemplateDirectory) {
+        if ($this->shouldCreateTemplateDirectory && $this->files->exists($directory.'/_template') == false) {
             $this->files->makeDirectory($directory.'/_template');
         }
 
