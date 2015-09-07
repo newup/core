@@ -69,6 +69,13 @@ abstract class BasePackageTemplate
     protected $copyVerbatimExclude = [];
 
     /**
+     * Determines if the Builder command should display default interactions.
+     *
+     * @var bool
+     */
+    protected $isQuiet = false;
+
+    /**
      * Get the value of a command option.
      *
      * @param      $name
@@ -268,6 +275,16 @@ abstract class BasePackageTemplate
     protected function outputDirectory()
     {
         return $this->argument('newup-output-directory');
+    }
+
+    /**
+     * Gets whether or not the builder command should be quiet.
+     *
+     * @return bool
+     */
+    public function isQuiet()
+    {
+        return $this->isQuiet;
     }
 
 }
