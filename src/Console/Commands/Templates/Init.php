@@ -51,7 +51,7 @@ class Init extends Command
             $directory = $this->argument('directory');
 
             if (!$this->files->exists($directory)) {
-                $createDirectory = $this->confirm("{$directory} does not exist. Would you like to create it? [yes|no]", true);
+                $createDirectory = $this->confirm("{$directory} does not exist. Would you like to create it? [YES/no]", true);
 
                 if ($createDirectory) {
                     $this->files->makeDirectory($directory);
@@ -62,7 +62,7 @@ class Init extends Command
                 $fileCount = count($this->files->allFiles($directory));
 
                 if ($fileCount > 0) {
-                    $removeFiles = $this->confirm("{$directory} is not empty. Would you like to remove the contents? [yes|no]", false);
+                    $removeFiles = $this->confirm("{$directory} is not empty. Would you like to remove the contents? [yes|NO]", false);
 
                     if ($removeFiles) {
                         $this->files->deleteDirectory($directory, true);
