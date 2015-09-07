@@ -47,6 +47,7 @@ class Init extends Command
      */
     public function handle()
     {
+        $this->line('Starting package template initialization...');
         try {
             $directory = $this->argument('directory');
 
@@ -74,10 +75,12 @@ class Init extends Command
 
             $packageVendor = Package::parseVendorAndPackage($this->argument('name'));
             $this->templateInitializer->initialize($packageVendor[0], $packageVendor[1], $directory);
-            $this->info('Package initialized');
+            $this->info('Package was successfully initialized!');
         } catch (InvalidPathException $invalidPath) {
+            $this->error('There was a problem initializing the package template (most likely due to an invalid path). The error was:');
             $this->error($invalidPath->getMessage());
         } catch (InvalidArgumentException $invalidVendorPackage) {
+            $this->error('There was a problem initializing the package template');
             $this->error($invalidVendorPackage->getMessage());
         }
     }
