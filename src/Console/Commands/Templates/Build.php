@@ -67,9 +67,8 @@ class Build extends Command
             ['newup-template', InputArgument::REQUIRED, 'The template name', null],
             [
                 'newup-output-directory',
-                InputArgument::OPTIONAL,
-                'The directory the built template should be saved to',
-                '.'
+                InputArgument::REQUIRED,
+                'The directory the built template should be saved to'
             ]
         ];
     }
