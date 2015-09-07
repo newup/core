@@ -242,4 +242,14 @@ class Builder
         $this->inputCollector->setArguments($arguments);
     }
 
+    /**
+     * Gets the Package instance.
+     *
+     * @return BasePackageTemplate
+     */
+    public function getPackage()
+    {
+        return $this->package;
+    }
+
 }
