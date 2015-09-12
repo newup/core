@@ -18,6 +18,28 @@ class YAMLParserTest extends PHPUnit_Framework_TestCase
         return new YAMLParser;
     }
 
+    public function testSettingsTrimValuesWorksCorrectly()
+    {
+        $p = $this->getYAMLParser();
+        $this->assertEquals(false, $p->willTrimArrayValues());
+        $p->trimArrayValues();
+        $this->assertEquals(true, $p->willTrimArrayValues());
+        $p->trimArrayValues(false);
+        $this->assertEquals(false, $p->willTrimArrayValues());
+    }
+
+    public function testParserTrimsArraysCorrectly()
+    {
+        $p = $this->getYAMLParser();
+        $p->trimArrayValues();
+        $value = $p->parseString(loadFixtureContent('Configuration/Parsers/yaml_trimmable.yaml'));
+
+        $this->assertEquals([
+            'first' => 'first second third',
+            'second' => 'first second third'
+        ], $value);
+    }
+
     public function testYAMLParserParsesStrings()
     {
         $p = $this->getYAMLParser();
