@@ -6,7 +6,7 @@ use NewUp\Console\Application;
 use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Foundation\Composer\AutoLoaderManager;
 use NewUp\Templates\Generators\ContentGenerator;
-use NewUp\Templates\Generators\PathNormalizer;
+use NewUp\Filesystem\PathNormalizer;
 use NewUp\Templates\Loaders\PackageLoader;
 use NewUp\Templates\Renderers\Collectors\InputCollector;
 

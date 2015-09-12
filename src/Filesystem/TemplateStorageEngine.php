@@ -10,7 +10,6 @@ use NewUp\Contracts\Templates\StorageEngine;
 use NewUp\Exceptions\InvalidArgumentException;
 use NewUp\Foundation\Composer\Composer;
 use NewUp\Foundation\Composer\Exceptions\ComposerException;
-use NewUp\Templates\Generators\PathNormalizer;
 use NewUp\Templates\Package;
 
 class TemplateStorageEngine implements StorageEngine, SearchableStorageEngine

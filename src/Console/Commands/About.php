@@ -3,7 +3,7 @@
 namespace NewUp\Console\Commands;
 
 use Illuminate\Console\Command;
-use NewUp\Templates\Generators\PathNormalizer;
+use NewUp\Filesystem\PathNormalizer;
 
 class About extends Command
 {

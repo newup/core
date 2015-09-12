@@ -5,7 +5,7 @@ namespace NewUp\Foundation\Composer;
 use Illuminate\Contracts\Logging\Log;
 use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Foundation\Application;
-use NewUp\Templates\Generators\PathNormalizer;
+use NewUp\Filesystem\PathNormalizer;
 
 class AutoLoaderManager
 {

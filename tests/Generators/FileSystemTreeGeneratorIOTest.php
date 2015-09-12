@@ -4,7 +4,7 @@ namespace NewUp\Tests\Generators;
 
 use NewUp\Filesystem\Filesystem;
 use NewUp\Templates\Generators\FileSystemTreeGenerator;
-use NewUp\Templates\Generators\PathNormalizer;
+use NewUp\Filesystem\PathNormalizer;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 

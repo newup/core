@@ -4,7 +4,7 @@ namespace NewUp\Tests\IO;
 
 use NewUp\Exceptions\InvalidArgumentException;
 use NewUp\Filesystem\TemplateStorageEngine;
-use NewUp\Templates\Generators\PathNormalizer;
+use NewUp\Filesystem\PathNormalizer;
 
 class TemplateStorageEngineTest extends \PHPUnit_Framework_TestCase
 {

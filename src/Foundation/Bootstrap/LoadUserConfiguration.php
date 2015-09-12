@@ -3,7 +3,7 @@
 namespace NewUp\Foundation\Bootstrap;
 
 use Illuminate\Config\Repository;
-use NewUp\Templates\Generators\PathNormalizer;
+use NewUp\Filesystem\PathNormalizer;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Illuminate\Contracts\Foundation\Application;
