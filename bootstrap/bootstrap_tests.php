@@ -24,7 +24,7 @@ if (!function_exists('loadFixtureContent')) {
      * @return string
      */
     function loadFixtureContent($file) {
-        return file_get_contents(getFixturePath($file));
+        return normalize_line_endings(file_get_contents(getFixturePath($file)));
     }
 }
 
