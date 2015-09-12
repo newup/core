@@ -245,7 +245,7 @@ if (!function_exists('normalize_line_endings')) {
      *
      * Adapted from
      * https://www.darklaunch.com/2009/05/06/php-normalize-newlines-line-endings-crlf-cr-lf-unix-windows-mac
-     * 
+     *
      * @param $string
      */
     function normalize_line_endings($string) {
