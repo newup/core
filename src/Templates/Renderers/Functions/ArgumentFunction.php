@@ -28,12 +28,9 @@ class ArgumentFunction extends BaseFunction
      */
     public function getFunction()
     {
-        return new \Twig_SimpleFunction('argument', function ($argument, $default = null) {
-
-            return array_get($this->context->getData(), 'user_args.'.$argument, $default);
-
-        });
+        return function ($argument, $default = null) {
+            return array_get($this->context->getData(), 'user_args.' . $argument, $default);
+        };
     }
-
 
 }

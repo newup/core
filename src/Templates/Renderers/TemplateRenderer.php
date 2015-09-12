@@ -133,8 +133,8 @@ class TemplateRenderer implements Renderer
 
             if ($function instanceof RendererFunction) {
                 $function->setContext($this);
-                $this->twigEnvironment->addFunction($function->getFunction());
-                $this->twigStringEnvironment->addFunction($function->getFunction());
+                $this->twigEnvironment->addFunction(new \Twig_SimpleFunction($function->getName(), $function->getFunction()));
+                $this->twigStringEnvironment->addFunction(new \Twig_SimpleFunction($function->getName(), $function->getFunction()));
             }
         }
     }

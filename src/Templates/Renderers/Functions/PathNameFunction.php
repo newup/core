@@ -28,7 +28,7 @@ class PathNameFunction extends BaseFunction
      */
     public function getFunction()
     {
-        return new \Twig_SimpleFunction('path', function ($pathName) {
+        return function ($pathName) {
             $data = $this->context->getData();
 
             if (array_key_exists('sys_pathNames', $data)) {
@@ -40,8 +40,7 @@ class PathNameFunction extends BaseFunction
             }
 
             return '';
-        });
+        };
     }
-
 
 }

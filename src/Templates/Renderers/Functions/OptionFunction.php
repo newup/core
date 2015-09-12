@@ -28,12 +28,9 @@ class OptionFunction extends BaseFunction
      */
     public function getFunction()
     {
-        return new \Twig_SimpleFunction('option', function ($argument, $default = null) {
-
+        return function ($argument, $default = null) {
             return array_get($this->context->getData(), 'user_options.' . $argument, $default);
-
-        });
+        };
     }
-
 
 }
