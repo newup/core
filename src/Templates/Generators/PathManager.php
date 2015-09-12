@@ -6,7 +6,7 @@ use NewUp\Contracts\IO\FileTreeGenerator;
 use NewUp\Contracts\Templates\PathNameParser;
 use NewUp\Contracts\Templates\Renderer;
 use NewUp\Filesystem\DirectoryAnalyzer;
-use NewUp\Templates\Parsers\YAMLParser;
+use NewUp\Configuration\Parsers\YAMLParser;
 use NewUp\Templates\Renderers\Collectors\FileNameCollector;
 use NewUp\Filesystem\Generators\PathTreeArrayFormat;
 

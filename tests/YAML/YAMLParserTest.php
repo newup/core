@@ -2,7 +2,7 @@
 
 namespace NewUp\Tests;
 
-use NewUp\Templates\Parsers\YAMLParser;
+use NewUp\Configuration\Parsers\YAMLParser;
 use NewUp\Tests\Renderer\RenderTestBase;
 
 class YAMLParserTest extends RenderTestBase

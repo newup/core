@@ -3,7 +3,7 @@
 namespace NewUp\Configuration;
 
 use Illuminate\Support\Collection;
-use NewUp\Templates\Parsers\YAMLParser;
+use NewUp\Configuration\Parsers\YAMLParser;
 
 class ConfigurationWriter extends Collection
 {

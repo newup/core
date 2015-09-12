@@ -3,7 +3,7 @@
 namespace NewUp\Tests\Configuration;
 
 use NewUp\Configuration\ConfigurationWriter;
-use NewUp\Templates\Parsers\YAMLParser;
+use NewUp\Configuration\Parsers\YAMLParser;
 
 class ConfigurationWriterTest extends \PHPUnit_Framework_TestCase
 {

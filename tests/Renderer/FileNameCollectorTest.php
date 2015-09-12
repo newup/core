@@ -2,7 +2,7 @@
 
 namespace NewUp\Tests\Renderer;
 
-use NewUp\Templates\Parsers\YAMLParser;
+use NewUp\Configuration\Parsers\YAMLParser;
 use NewUp\Templates\Renderers\Collectors\FileNameCollector;
 
 class FileNameCollectorTest extends RenderTestBase
