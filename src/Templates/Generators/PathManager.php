@@ -5,9 +5,10 @@ namespace NewUp\Templates\Generators;
 use NewUp\Contracts\IO\FileTreeGenerator;
 use NewUp\Contracts\Templates\PathNameParser;
 use NewUp\Contracts\Templates\Renderer;
-use NewUp\Templates\Analyzers\DirectoryAnalyzer;
+use NewUp\Filesystem\DirectoryAnalyzer;
 use NewUp\Templates\Parsers\YAMLParser;
 use NewUp\Templates\Renderers\Collectors\FileNameCollector;
+use NewUp\Filesystem\Generators\PathTreeArrayFormat;
 
 /**
  * Class PathManager
