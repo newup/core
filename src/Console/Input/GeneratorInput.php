@@ -49,6 +49,8 @@ class GeneratorInput extends ArgvInput
      */
     private $customTemplatePath = null;
 
+    protected $packageClass = null;
+
     public function __construct(array $argv = null, InputDefinition $definition = null)
     {
         if (null === $argv) {
@@ -57,9 +59,9 @@ class GeneratorInput extends ArgvInput
 
         array_shift($argv);
         $this->tokens = $argv;
-
         $this->getTemplateName();
         $this->initializeTemplatePath();
+        $this->getPackageClass();
 
         parent::__construct($definition);
     }
@@ -118,18 +120,11 @@ class GeneratorInput extends ArgvInput
         }
     }
 
-    /**
-     * Binds the current Input instance with the given arguments and options.
-     *
-     * @throws InvalidPackageTemplateException
-     * @throws TemplatePackageMissingException
-     * @param InputDefinition $definition A InputDefinition instance
-     */
-    public function bind(InputDefinition $definition)
+    private function getPackageClass()
     {
-        $this->arguments = array();
-        $this->options = array();
-        $this->definition = $definition;
+        if ($this->packageClass !== null) {
+            return $this->packageClass;
+        }
 
         $includePath = $this->getPackageClassPath();
 
@@ -147,11 +142,39 @@ class GeneratorInput extends ArgvInput
 
         scope_include($includePath);
 
-        $packageClass = $this->getNamespacedPackageName();
+        $this->packageClass = $packageClass = $this->getNamespacedPackageName();
 
         if (!class_exists($packageClass)) {
             throw new InvalidPackageTemplateException("{$packageClass} class does not exist.");
         }
+
+        return $packageClass;
+    }
+
+    private function packageDefinesArgumentsAndOptions()
+    {
+        $packageClass = $this->getPackageClass();
+
+        $optionArgumentCount = count($packageClass::getOptions()) +
+            count($packageClass::getArguments());
+
+        return ($optionArgumentCount > 0);
+    }
+
+    /**
+     * Binds the current Input instance with the given arguments and options.
+     *
+     * @throws InvalidPackageTemplateException
+     * @throws TemplatePackageMissingException
+     * @param InputDefinition $definition A InputDefinition instance
+     */
+    public function bind(InputDefinition $definition)
+    {
+        $this->arguments = array();
+        $this->options = array();
+        $this->definition = $definition;
+
+        $packageClass = $this->getPackageClass();
 
         $options = $packageClass::getOptions();
         $arguments = $packageClass::getArguments();
