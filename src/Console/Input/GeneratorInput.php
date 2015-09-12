@@ -6,6 +6,7 @@ use NewUp\Console\Application;
 use NewUp\Console\Commands\Templates\Install;
 use NewUp\Exceptions\InvalidPackageTemplateException;
 use NewUp\Exceptions\TemplatePackageMissingException;
+use NewUp\Templates\BasePackageTemplate;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -49,7 +50,12 @@ class GeneratorInput extends ArgvInput
      */
     private $customTemplatePath = null;
 
-    protected $packageClass = null;
+    /**
+     * The package class instance.
+     *
+     * @var null|BasePackageTemplate
+     */
+    private $packageClass = null;
 
     public function __construct(array $argv = null, InputDefinition $definition = null)
     {
@@ -61,7 +67,6 @@ class GeneratorInput extends ArgvInput
         $this->tokens = $argv;
         $this->getTemplateName();
         $this->initializeTemplatePath();
-        $this->getPackageClass();
 
         parent::__construct($definition);
     }
@@ -120,6 +125,13 @@ class GeneratorInput extends ArgvInput
         }
     }
 
+    /**
+     * Gets the package class.
+     *
+     * @return null|string
+     * @throws \NewUp\Exceptions\InvalidPackageTemplateException
+     * @throws \NewUp\Exceptions\TemplatePackageMissingException
+     */
     private function getPackageClass()
     {
         if ($this->packageClass !== null) {
@@ -151,21 +163,12 @@ class GeneratorInput extends ArgvInput
         return $packageClass;
     }
 
-    private function packageDefinesArgumentsAndOptions()
-    {
-        $packageClass = $this->getPackageClass();
-
-        $optionArgumentCount = count($packageClass::getOptions()) +
-            count($packageClass::getArguments());
-
-        return ($optionArgumentCount > 0);
-    }
-
     /**
      * Binds the current Input instance with the given arguments and options.
      *
      * @throws InvalidPackageTemplateException
      * @throws TemplatePackageMissingException
+     *
      * @param InputDefinition $definition A InputDefinition instance
      */
     public function bind(InputDefinition $definition)
@@ -199,13 +202,36 @@ class GeneratorInput extends ArgvInput
         }
 
         $this->parse();
+
+        if ((count($options) + count($arguments)) == 0 &&
+            count($this->arguments) == 2
+        ) {
+            // The package does not define any arguments or options. We
+            // will check to see if the user has not supplied all of
+            // the required arguments specified by NewUp. If they
+            // haven't, it is most like the install directory.
+            // We will add that argument automatically here
+            // to make general usage a little bit nicer.
+            $this->arguments = array_merge($this->arguments, ['newup-output-directory' => '.']);
+        }
+
     }
 
+    /**
+     * Gets the path to the new package class.
+     *
+     * @return string
+     */
     private function getPackageClassPath()
     {
         return $this->getTemplateArgumentPath() . '_newup/Package.php';
     }
 
+    /**
+     * Gets the namespaced package name.
+     *
+     * @return string
+     */
     private function getNamespacedPackageName()
     {
         $path = $this->getTemplateArgumentPath();
