@@ -107,7 +107,7 @@ class YAMLParser
      */
     public function toYaml($input, $inline = 2, $indent = 4, $exceptionOnInvalidType = false, $objectSupport = false)
     {
-        return Yaml::dump($input, $inline, $indent, $exceptionOnInvalidType, $objectSupport);
+        return normalize_line_endings(Yaml::dump($input, $inline, $indent, $exceptionOnInvalidType, $objectSupport));
     }
 
 }
