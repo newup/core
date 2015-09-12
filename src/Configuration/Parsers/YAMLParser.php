@@ -69,11 +69,21 @@ class YAMLParser
     /**
      * Sets whether or not the parser trims array values.
      *
-     * @param bool $value
+     * @param bool|true $value
      */
-    public function trimArrayValues($value)
+    public function trimArrayValues($value= true)
     {
         $this->trimArrayValues = $value;
+    }
+
+    /**
+     * Gets whether or not the parser trims array values.
+     *
+     * @return bool
+     */
+    public function willTrimArrayValues()
+    {
+        return $this->trimArrayValues;
     }
 
     /**
