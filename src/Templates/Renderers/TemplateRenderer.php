@@ -117,9 +117,9 @@ class TemplateRenderer implements Renderer
             $filter = app($filter);
 
             if ($filter instanceof FilterContract) {
-                $this->twigEnvironment->addFilter(new \Twig_SimpleFilter($filter->getName(), $filter->getOperator()));
+                $this->twigEnvironment->addFilter(new \Twig_SimpleFilter($filter->getName(), $filter->getFilter()));
                 $this->twigStringEnvironment->addFilter(new \Twig_SimpleFilter($filter->getName(),
-                    $filter->getOperator()));
+                    $filter->getFilter()));
             }
         }
     }

@@ -19,7 +19,7 @@ class PluralFilter extends Filter
      *
      * @return \Closure
      */
-    public function getOperator()
+    public function getFilter()
     {
         return function ($string, $count = 2) {
             return Str::plural($string, $count);

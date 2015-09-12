@@ -19,7 +19,7 @@ class SingularFilter extends Filter
      *
      * @return \Closure
      */
-    public function getOperator()
+    public function getFilter()
     {
         return function ($string) {
             return Str::singular($string);

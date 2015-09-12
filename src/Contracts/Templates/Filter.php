@@ -17,6 +17,6 @@ interface Filter
      *
      * @return \Closure
      */
-    public function getOperator();
+    public function getFilter();
 
 }

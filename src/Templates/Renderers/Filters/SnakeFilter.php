@@ -19,7 +19,7 @@ class SnakeFilter extends Filter
      *
      * @return \Closure
      */
-    public function getOperator()
+    public function getFilter()
     {
         return function ($string, $delimiter = '_') {
             return Str::snake($string, $delimiter);
