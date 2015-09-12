@@ -2,7 +2,7 @@
 
 namespace NewUp\Tests\Generators;
 
-use NewUp\Templates\Generators\PathTreeArrayFormat;
+use NewUp\Filesystem\Generators\PathTreeArrayFormat;
 
 class PathTreeArrayFormatTest extends \PHPUnit_Framework_TestCase
 {

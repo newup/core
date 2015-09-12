@@ -2,7 +2,7 @@
 
 namespace NewUp\Tests\Generators;
 
-use NewUp\Templates\Generators\FileSystemTreeGenerator;
+use NewUp\Filesystem\Generators\TreeGenerator;
 
 class FileSystemTreeGeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,7 +17,7 @@ class FileSystemTreeGeneratorTest extends \PHPUnit_Framework_TestCase
     private function getGenerator()
     {
         $fileSystem = $this->getMock('NewUp\Contracts\Filesystem\Filesystem');
-        $generator  = new FileSystemTreeGenerator($fileSystem);
+        $generator  = new TreeGenerator($fileSystem);
 
         return $generator;
     }

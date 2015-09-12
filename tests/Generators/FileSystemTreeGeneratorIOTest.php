@@ -3,7 +3,7 @@
 namespace NewUp\Tests\Generators;
 
 use NewUp\Filesystem\Filesystem;
-use NewUp\Templates\Generators\FileSystemTreeGenerator;
+use NewUp\Filesystem\Generators\TreeGenerator;
 use NewUp\Filesystem\PathNormalizer;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
@@ -28,7 +28,7 @@ class FileSystemTreeGeneratorIOTest extends \PHPUnit_Framework_TestCase
     private function getGenerator()
     {
         $fileSystem = new Filesystem;
-        $generator  = new FileSystemTreeGenerator($fileSystem);
+        $generator  = new TreeGenerator($fileSystem);
 
         $generator->addPaths([
             'someKey'    => ['path' => 'some/file.txt', 'type' => 'file', 'home' => 'some/'],
