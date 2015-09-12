@@ -28,12 +28,16 @@ class YAMLParserTest extends PHPUnit_Framework_TestCase
 
     public function testYAMLParserParsesFiles()
     {
-
+        $p = $this->getYAMLParser();
+        $parsedValue = $p->parseFile(getFixturePath('Configuration/Parsers/yaml_string.yaml'));
+        $this->assertEquals($this->expectedValueFromYAMLString, $parsedValue);
     }
 
     public function testParserCreatesYAMLFromArray()
     {
-
+        $p = $this->getYAMLParser();
+        $this->assertEquals(loadFixtureContent('Configuration/Parsers/yaml_string.yaml'),
+            $p->toYaml($this->expectedValueFromYAMLString));
     }
 
 }
