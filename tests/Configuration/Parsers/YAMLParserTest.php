@@ -40,4 +40,16 @@ class YAMLParserTest extends PHPUnit_Framework_TestCase
             $p->toYaml($this->expectedValueFromYAMLString));
     }
 
+    public function testYAMLParserReadsNewUpFileNameCollectionsCorrectly()
+    {
+        $p = $this->getYAMLParser();
+        $p->trimArrayValues(true);
+        $parsedValue = $p->parseFile(getFixturePath('Configuration/Parsers/yaml_filenames.yaml'));
+
+        $this->assertEquals([
+            'ServiceProvider.php'  => '{% if (1 == 1) %} hello world {% endif %}',
+            'ServiceProvider2.php' => '{{ "test_stuff"|studly }}'
+        ], $parsedValue);
+    }
+
 }
