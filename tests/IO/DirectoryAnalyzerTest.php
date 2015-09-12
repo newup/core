@@ -3,7 +3,7 @@
 namespace NewUp\Contracts\IO;
 
 use NewUp\Filesystem\Filesystem;
-use NewUp\Templates\Analyzers\DirectoryAnalyzer;
+use NewUp\Filesystem\DirectoryAnalyzer;
 use org\bovigo\vfs\vfsStream;
 
 class DirectoryAnalyzerTest extends \PHPUnit_Framework_TestCase
