@@ -1,6 +1,6 @@
 <?php
 
-namespace NewUp\Templates\Analyzers;
+namespace NewUp\Filesystem;
 
 use NewUp\Filesystem\Filesystem;
 use NewUp\Exceptions\InvalidPathException;

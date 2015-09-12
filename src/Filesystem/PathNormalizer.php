@@ -1,6 +1,6 @@
 <?php
 
-namespace NewUp\Templates\Generators;
+namespace NewUp\Filesystem;
 
 trait PathNormalizer
 {

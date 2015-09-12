@@ -1,10 +1,11 @@
 <?php
 
-namespace NewUp\Templates\Generators;
+namespace NewUp\Filesystem\Generators;
 
 use Illuminate\Support\Str;
 use NewUp\Contracts\Filesystem\Filesystem;
 use NewUp\Contracts\IO\FileTreeGenerator;
+use NewUp\Filesystem\PathNormalizer;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -16,7 +17,7 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @package NewUp\Templates\Generators
  */
-class FileSystemTreeGenerator implements FileTreeGenerator
+class TreeGenerator implements FileTreeGenerator
 {
 
     use PathNormalizer;
@@ -204,16 +205,16 @@ class FileSystemTreeGenerator implements FileTreeGenerator
     private function resolveAutomaticallyIgnoredPaths()
     {
         foreach ($this->paths as $path) {
-                if (is_array($path)) {
-                    $path = $path['home'];
-                }
-                if (!Str::endsWith($path, $this->normalizePath('_template/'))) {
-                    $ignoredPath = $this->normalizePath(realpath($path.'/composer.json'));
+            if (is_array($path)) {
+                $path = $path['home'];
+            }
+            if (!Str::endsWith($path, $this->normalizePath('_template/'))) {
+                $ignoredPath = $this->normalizePath(realpath($path.'/composer.json'));
 
-                    if (!in_array($ignoredPath, $this->automaticallyResolvedIgnoredPaths)) {
-                        $this->automaticallyResolvedIgnoredPaths[] = $ignoredPath;
-                    }
+                if (!in_array($ignoredPath, $this->automaticallyResolvedIgnoredPaths)) {
+                    $this->automaticallyResolvedIgnoredPaths[] = $ignoredPath;
                 }
+            }
         }
 
         // Add the '_newup' directory.
