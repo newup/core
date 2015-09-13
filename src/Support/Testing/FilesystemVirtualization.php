@@ -31,4 +31,16 @@ trait FilesystemVirtualization
         unset($this->vfs);
     }
 
+    /**
+     * Gets a vfsStream URL.
+     *
+     * @param $path
+     *
+     * @return string
+     */
+    public function getPath($path)
+    {
+        return vfsStream::url($path);
+    }
+
 }
