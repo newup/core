@@ -1,6 +1,6 @@
 <?php
 
-namespace NewUp\Support\Testing;
+namespace NewUp\Support\Testing\FilesystemVirtualization;
 
 use org\bovigo\vfs\vfsStream;
 
