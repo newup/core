@@ -4,29 +4,8 @@ include 'autoload.php';
 
 include 'app.php';
 
-if (!function_exists('getFixturePath')) {
-    /**
-     * Returns the full path of a fixture file.
-     *
-     * @param $file
-     * @return string
-     */
-    function getFixturePath($file) {
-        return realpath(__DIR__.'/../tests/fixtures/'.$file);
-    }
-}
-
-if (!function_exists('loadFixtureContent')) {
-    /**
-     * Returns the content of a given fixture file.
-     *
-     * @param $file
-     * @return string
-     */
-    function loadFixtureContent($file) {
-        return normalize_line_endings(file_get_contents(getFixturePath($file)));
-    }
-}
+// Include the test helper functions.
+include __DIR__.'/../src/Support/Testing/helpers.php';
 
 $kernel = $app->make('Illuminate\Contracts\Console\Kernel');
 $kernel->bootstrap();
