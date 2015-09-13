@@ -40,7 +40,7 @@ trait FilesystemVirtualization
      */
     public function getPath($path)
     {
-        return vfsStream::url($path);
+        return vfsStream::url($this->virtualPath.'/'.$path);
     }
 
 }
