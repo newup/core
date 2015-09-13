@@ -20,7 +20,6 @@ trait FilesystemVirtualization
     public function setUpVfs()
     {
         $this->vfs = vfsStream::setup($this->virtualPath);
-        dd($this->virtualPath);
     }
 
     /**
