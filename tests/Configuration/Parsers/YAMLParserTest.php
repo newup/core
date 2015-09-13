@@ -48,6 +48,22 @@ class YAMLParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($this->expectedValueFromYAMLString, $parsedValue);
     }
 
+    public function testYAMLParserCanParseSomethingTwiceInARow()
+    {
+        $p = $this->getYAMLParser();
+        $yamlString = loadFixtureContent('Configuration/Parsers/yaml_string.yaml');
+        $parsedValue = $p->parseString($yamlString);
+        $this->assertEquals($parsedValue, $p->parseFile(getFixturePath('Configuration/Parsers/yaml_string.yaml')));
+    }
+
+    public function testYAMLParserDoesNotRetainStateBetweenParses()
+    {
+        $p = $this->getYAMLParser();
+        $firstValue = $p->parseFile(getFixturePath('Configuration/Parsers/yaml_string.yaml'));
+        $secondValue = $p->parseFile(getFixturePath('Configuration/Parsers/yaml_trimmable.yaml'));
+        $this->assertNotEquals($firstValue, $secondValue);
+    }
+
     public function testYAMLParserParsesFiles()
     {
         $p = $this->getYAMLParser();
@@ -69,7 +85,7 @@ class YAMLParserTest extends PHPUnit_Framework_TestCase
         $parsedValue = $p->parseFile(getFixturePath('Configuration/Parsers/yaml_filenames.yaml'));
 
         $this->assertEquals([
-            'ServiceProvider.php'  => '{% if (1 == 1) %} hello world {% endif %}',
+            'ServiceProvider.php' => '{% if (1 == 1) %} hello world {% endif %}',
             'ServiceProvider2.php' => '{{ "test_stuff"|studly }}'
         ], $parsedValue);
     }
