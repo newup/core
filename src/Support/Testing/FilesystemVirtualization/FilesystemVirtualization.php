@@ -3,6 +3,7 @@
 namespace NewUp\Support\Testing\FilesystemVirtualization;
 
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 
 trait FilesystemVirtualization
 {
@@ -10,7 +11,7 @@ trait FilesystemVirtualization
     /**
      * The vfsStream instance.
      *
-     * @var vfsStream
+     * @var vfsStreamDirectory
      */
     protected $vfs;
 
@@ -23,12 +24,22 @@ trait FilesystemVirtualization
     }
 
     /**
+     * Gets the vfsStreamDirectory instance.
+     *
+     * @return \org\bovigo\vfs\vfsStreamDirectory
+     */
+    public function getVfs()
+    {
+        return $this->vfs;
+    }
+
+    /**
      * Frees the vfs variable and unsets it.
      */
     public function tearDownVfs()
     {
-        $this->vfs = null;
         unset($this->vfs);
+        $this->vfs = null;
     }
 
     /**
