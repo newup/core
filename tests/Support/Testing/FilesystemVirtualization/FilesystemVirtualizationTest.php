@@ -1,6 +1,7 @@
 <?php
 
 use NewUp\Support\Testing\FilesystemVirtualization\FilesystemVirtualization;
+use org\bovigo\vfs\vfsStreamFile;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
 
@@ -80,6 +81,46 @@ class FilesystemVirtualizationTest extends PHPUnit_Framework_TestCase
     public function testVirtualizeCreatesContent()
     {
         $this->virtualSystem->virtualize(['test']);
+        $this->assertEquals(1, $this->virtualSystem->getFileCount());
+        $file = $this->virtualSystem->getFileByName('test');
+        $this->assertNotNull($file);
+        $this->assertEquals('test', $file->getName());
+    }
+
+    public function testVirtualizeCanCreateMultipleFiles()
+    {
+        $this->virtualSystem->virtualize([
+            'test', 'test2', 'test3'
+        ]);
+        $this->assertEquals(3, $this->virtualSystem->getFileCount());
+    }
+
+    public function testVirtualizeCanAcceptVfsContentInstances()
+    {
+        $this->virtualSystem->virtualize([
+            'test',
+            vfsStream::newFile('test2'),
+            vfsStream::newDirectory('testDir')
+        ]);
+        $this->assertEquals(3, $this->virtualSystem->getFileCount());
+        $this->assertInstanceOf(vfsStreamDirectory::class, $this->virtualSystem->getFileAtIndex(2));
+        $this->assertInstanceOf(vfsStreamFile::class, $this->virtualSystem->getFileAtIndex(1));
+    }
+
+    public function testVirtualStructureCreatesContent()
+    {
+        $this->virtualSystem->virtualizeStructure([
+            'File.txt',
+            'directory' => [
+                'nested_file',
+                'nested_directory' => [
+                    'nested_directory_file'
+                ]
+            ]
+        ]);
+        $this->assertEquals(2, $this->virtualSystem->getFileCount());
+        $this->assertInstanceOf(vfsStreamFile::class, $this->virtualSystem->getFileAtIndex(0));
+        $this->assertInstanceOf(vfsStreamDirectory::class, $this->virtualSystem->getFileAtIndex(1));
     }
 
 }

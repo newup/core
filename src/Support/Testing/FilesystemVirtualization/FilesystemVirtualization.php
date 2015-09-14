@@ -115,6 +115,18 @@ trait FilesystemVirtualization
     }
 
     /**
+     * Creates and appends a given structure to the virtual file system.
+     *
+     * @param $structure
+     */
+    public function virtualizeStructure($structure)
+    {
+        $this->assertVfsHasBeenSetUp();
+
+        vfsStream::create($structure, $this->vfs);
+    }
+
+    /**
      * Asserts that the vfs instance has been created.
      *
      * @throws \RuntimeException
