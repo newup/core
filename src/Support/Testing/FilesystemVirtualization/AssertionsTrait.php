@@ -161,7 +161,7 @@ trait AssertionsTrait
      * @param $actualFile
      * @param string $message
      */
-    public function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, $message = '')
+    public function assertVfsXmlFileNotEqualsVfsXmlFile($expectedFile, $actualFile, $message = '')
     {
         PHPUnit::assertXmlFileNotEqualsXmlFile($this->getPath($expectedFile), $this->getPath($actualFile), $message);
     }
@@ -185,7 +185,7 @@ trait AssertionsTrait
      * @param $actualXml
      * @param string $message
      */
-    public function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '')
+    public function assertXmlStringNotEqualsVfsXmlFile($expectedFile, $actualXml, $message = '')
     {
         PHPUnit::assertXmlStringNotEqualsXmlFile($this->getPath($expectedFile), $actualXml, $message);
     }
