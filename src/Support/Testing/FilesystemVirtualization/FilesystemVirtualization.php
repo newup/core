@@ -51,7 +51,7 @@ trait FilesystemVirtualization
      *
      * @return string
      */
-    public function getPath($path)
+    public function getPath($path = '')
     {
         return vfsStream::url($this->virtualPath . '/' . $path);
     }
