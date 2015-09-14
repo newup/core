@@ -123,6 +123,12 @@ class FilesystemVirtualizationTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(vfsStreamDirectory::class, $this->virtualSystem->getFileAtIndex(1));
     }
 
+    public function testGetContentsReturnsCorrectContents()
+    {
+        file_put_contents($this->virtualSystem->getPath('test.txt'), 'hi!');
+        $this->assertEquals('hi!', $this->virtualSystem->getContents('test.txt'));
+    }
+
 }
 
 class VirtualFilesystemStub

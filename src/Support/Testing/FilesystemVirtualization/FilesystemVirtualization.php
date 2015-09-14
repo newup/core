@@ -93,6 +93,18 @@ trait FilesystemVirtualization
     }
 
     /**
+     * Get contents of a given file.
+     *
+     * @param $file
+     *
+     * @return string
+     */
+    public function getContents($file)
+    {
+        return normalize_line_endings(file_get_contents($this->getPath($file)));
+    }
+
+    /**
      * Virtualizes an array of paths.
      *
      * @param $paths
