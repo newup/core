@@ -3,7 +3,9 @@
 namespace NewUp\Support\Testing\FilesystemVirtualization;
 
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamContent;
 use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamFile;
 
 trait FilesystemVirtualization
 {
@@ -51,7 +53,77 @@ trait FilesystemVirtualization
      */
     public function getPath($path)
     {
-        return vfsStream::url($this->virtualPath.'/'.$path);
+        return vfsStream::url($this->virtualPath . '/' . $path);
+    }
+
+    /**
+     * Gets the total number of virtual files.
+     *
+     * @return int
+     */
+    public function getFileCount()
+    {
+        $this->assertVfsHasBeenSetUp();
+
+        return count($this->vfs->getChildren());
+    }
+
+    /**
+     * Gets a virtual file at a specified index.
+     *
+     * @param $index
+     *
+     * @return \org\bovigo\vfs\vfsStreamContent
+     */
+    public function getFileAtIndex($index)
+    {
+        return $this->vfs->getChildren()[$index];
+    }
+
+    /**
+     * Gets a virtual file by name.
+     *
+     * @param $name
+     *
+     * @return \org\bovigo\vfs\vfsStreamContent
+     */
+    public function getFileByName($name)
+    {
+        return $this->vfs->getChild($name);
+    }
+
+    /**
+     * Virtualizes an array of paths.
+     *
+     * @param $paths
+     */
+    public function virtualize($paths)
+    {
+        $this->assertVfsHasBeenSetUp();
+
+        if (!is_array($paths)) {
+            $paths = (array)$paths;
+        }
+
+        foreach ($paths as $path) {
+            if (is_string($path)) {
+                $this->vfs->addChild(vfsStream::newFile($path));
+            } else if ($path instanceof vfsStreamContent) {
+                $this->vfs->addChild($path);
+            }
+        }
+    }
+
+    /**
+     * Asserts that the vfs instance has been created.
+     *
+     * @throws \RuntimeException
+     */
+    private function assertVfsHasBeenSetUp()
+    {
+        if ($this->vfs == null || ($this->vfs instanceof vfsStreamDirectory) == false) {
+            throw new \RuntimeException('You must call the setUpVfs() method before executing test methods.');
+        }
     }
 
 }
