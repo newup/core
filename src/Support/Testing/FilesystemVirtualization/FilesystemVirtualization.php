@@ -69,6 +69,21 @@ trait FilesystemVirtualization
     }
 
     /**
+     * Checkers whether the container contains
+     * a child with the given name
+     *
+     * @param   string $name
+     *
+     * @return  bool
+     */
+    public function hasChild($name)
+    {
+        $this->assertVfsHasBeenSetUp();
+
+        return $this->vfs->hasChild($name);
+    }
+
+    /**
      * Gets a virtual file at a specified index.
      *
      * @param $index
