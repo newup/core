@@ -1,0 +1,7 @@
+{% extends 'Test_Block_Base' %}
+
+{% block test %}
+{{ parent() }}
+
+This is from the child.
+{% endblock %}

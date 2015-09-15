@@ -1,0 +1,3 @@
+{% block test %}
+This is from the parent.
+{% endblock %}
