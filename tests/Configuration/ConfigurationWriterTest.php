@@ -1,52 +1,68 @@
 <?php
 
-namespace NewUp\Tests\Configuration;
-
 use NewUp\Configuration\ConfigurationWriter;
-use NewUp\Configuration\Parsers\YAMLParser;
+use NewUp\Support\Testing\FilesystemVirtualization\FilesystemVirtualization;
+use NewUp\Support\Testing\FilesystemVirtualization\AssertionsTrait;
 
-class ConfigurationWriterTest extends \PHPUnit_Framework_TestCase
+class ConfigurationWriterTest extends PHPUnit_Framework_TestCase
 {
 
-    protected $defaultConfigurationItems = [
-        'first'  => 'first-value',
-        'second' => 'second-value'
-    ];
-
-    public function testFirstReturnsFirstItemInCollection()
-    {
-        $w = new ConfigurationWriter($this->defaultConfigurationItems);
-        $this->assertEquals('first-value', $w->first());
+    use FilesystemVirtualization, AssertionsTrait {
+        FilesystemVirtualization::getPath insteadof AssertionsTrait;
     }
 
-    public function testWriterReturnsCorrectJson()
+    /**
+     * The ConfigurationWriter instance.
+     *
+     * @var ConfigurationWriter
+     */
+    private $writer;
+
+    protected $virtualPath = 'config';
+
+    public function setUp()
     {
-        $w = new ConfigurationWriter($this->defaultConfigurationItems);
-        $this->assertEquals(json_encode($this->defaultConfigurationItems), $w->toJson());
+        $this->writer = new ConfigurationWriter([
+            'first' => 'The First',
+            'second' => 'The Second',
+            'third' => 'The Third'
+        ]);
+        $this->setUpVfs();
     }
 
-    public function testWriterSavesJson()
+    public function tearDown()
     {
-        $w = new ConfigurationWriter($this->defaultConfigurationItems);
-        $w->save(__DIR__ . '/test/test.json');
-
-        $this->assertFileExists(__DIR__ . '/test/test.json');
-        $this->assertEquals(json_decode(file_get_contents(__DIR__ . '/test/test_expected.json')),
-            json_decode(file_get_contents(__DIR__ . '/test/test.json')));
-        @unlink(__DIR__ . '/test/test.json');
+        $this->tearDownVfs();
     }
 
-    public function testWriterSavesYaml()
+    public function testRestClearsConfigurationItems()
     {
-        $w = new ConfigurationWriter($this->defaultConfigurationItems);
-        $w->saveYaml(__DIR__ . '/test/test.yaml');
+        $this->writer->reset();
+        $this->assertEquals(0, $this->writer->count());
+    }
 
-        $yamlParser = new YAMLParser;
+    public function testSaveWritesFilesToSystem()
+    {
+        $this->writer->save($this->getPath('test.json'));
+        $this->assertVfsFileExists('test.json');
+    }
 
-        $this->assertFileExists(__DIR__ . '/test/test.yaml');
-        $this->assertEquals($yamlParser->parseFile(__DIR__ . '/test/test_expected.yaml'),
-            $yamlParser->parseFile(__DIR__ . '/test/test.yaml'));
-        @unlink(__DIR__ . '/test/test.yaml');
+    public function testSaveWritesCorrectJson()
+    {
+        $this->writer->save($this->getPath('test.json'));
+        $this->assertEquals(loadFixtureContent('Configuration/expected.json'), $this->getContents('test.json'));
+    }
+
+    public function testSaveYamlWritesFilesToSystem()
+    {
+        $this->writer->saveYaml($this->getPath('test.yaml'));
+        $this->assertVfsFileExists('test.yaml');
+    }
+
+    public function testSaveYamlWritesCorrectYaml()
+    {
+        $this->writer->saveYaml($this->getPath('test.yaml'));
+        $this->assertEquals(loadFixtureContent('Configuration/expected.yaml'), $this->getContents('test.yaml'));
     }
 
 }

@@ -69,11 +69,21 @@ class YAMLParser
     /**
      * Sets whether or not the parser trims array values.
      *
-     * @param bool $value
+     * @param bool|true $value
      */
-    public function trimArrayValues($value)
+    public function trimArrayValues($value= true)
     {
         $this->trimArrayValues = $value;
+    }
+
+    /**
+     * Gets whether or not the parser trims array values.
+     *
+     * @return bool
+     */
+    public function willTrimArrayValues()
+    {
+        return $this->trimArrayValues;
     }
 
     /**
@@ -107,7 +117,7 @@ class YAMLParser
      */
     public function toYaml($input, $inline = 2, $indent = 4, $exceptionOnInvalidType = false, $objectSupport = false)
     {
-        return Yaml::dump($input, $inline, $indent, $exceptionOnInvalidType, $objectSupport);
+        return normalize_line_endings(Yaml::dump($input, $inline, $indent, $exceptionOnInvalidType, $objectSupport));
     }
 
 }
