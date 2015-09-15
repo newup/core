@@ -19,6 +19,40 @@ trait AssertionsTrait
     }
 
     /**
+     * Asserts a virtual directory has a given child.
+     *
+     * @param        $name
+     * @param string $message
+     */
+    public function assertVfsHasChild($name, $message = '')
+    {
+        if (!is_array($name)) {
+            $name = (array)$name;
+        }
+
+        foreach ($name as $actualName) {
+            PHPUnit::assertTrue($this->vfs->hasChild($actualName), $message);
+        }
+    }
+
+    /**
+     * Asserts a virtual directory does not have a given child.
+     *
+     * @param        $name
+     * @param string $message
+     */
+    public function assertVfsDoesNotHaveChild($name, $message = '')
+    {
+        if (!is_array($name)) {
+            $name = (array)$name;
+        }
+
+        foreach ($name as $actualName) {
+            PHPUnit::assertFalse($this->vfs->hasChild($actualName), $message);
+        }
+    }
+
+    /**
      * Asserts that the contents of one vfs file is equal to the contents of another
      * vfs file.
      *
