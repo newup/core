@@ -3,24 +3,26 @@
 use NewUp\Filesystem\Filesystem;
 use NewUp\Filesystem\Generators\TreeGenerator;
 use NewUp\Filesystem\PathNormalizer;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
+use NewUp\Support\Testing\FilesystemVirtualization\FilesystemVirtualization;
+use NewUp\Support\Testing\FilesystemVirtualization\AssertionsTrait;
 
 class TreeGeneratorIOTest extends \PHPUnit_Framework_TestCase
 {
 
-    use PathNormalizer;
+    use PathNormalizer, FilesystemVirtualization, AssertionsTrait {
+        FilesystemVirtualization::getPath insteadof AssertionsTrait;
+    }
 
-    /**
-     * The vfsStreamDirectory instance.
-     *
-     * @var vfsStreamDirectory
-     */
-    private $vfs;
+    protected $virtualPath = 'fst';
 
     protected function setUp()
     {
-        $this->vfs = vfsStream::setup('fst');
+        $this->setUpVfs();
+    }
+
+    protected function tearDown()
+    {
+        $this->tearDownVfs();
     }
 
     private function getGenerator()
@@ -43,7 +45,7 @@ class TreeGeneratorIOTest extends \PHPUnit_Framework_TestCase
     {
         $g = $this->getGenerator();
 
-        $g->generate(vfsStream::url('fst'));
+        $g->generate($this->getPath());
 
         // These are the directories and files that should be created.
         $testChildren = [
@@ -57,7 +59,7 @@ class TreeGeneratorIOTest extends \PHPUnit_Framework_TestCase
         ];
 
         foreach ($testChildren as $child) {
-            $this->assertTrue($this->vfs->hasChild($child));
+            $this->assertVfsHasChild($child);
         }
 
     }
@@ -67,51 +69,47 @@ class TreeGeneratorIOTest extends \PHPUnit_Framework_TestCase
         $g = $this->getGenerator();
 
         $g->addIgnoredPath('*.gitignore');
-        $g->generate(vfsStream::url('fst'));
+        $g->generate($this->getPath());
 
-        $this->assertFalse($this->vfs->hasChild('.gitignore'));
+        $this->assertVfsDoesNotHaveChild('.gitignore');
     }
 
     public function testGeneratorRemovesSpecificFiles()
     {
         $g = $this->getGenerator();
         $g->addAutomaticallyRemovedPath('*.gitignore');
-        $g->generate(vfsStream::url('fst'));
-        $this->assertFalse($this->vfs->hasChild('.gitignore'));
+        $g->generate($this->getPath());
+        $this->assertVfsDoesNotHaveChild('.gitignore');
     }
 
     public function testGeneratorPreservesDirectoryStructureWhenRemovingNestedFiles()
     {
         $g = $this->getGenerator();
         $g->addAutomaticallyRemovedPath('*nested\file.txt');
-        $g->generate(vfsStream::url('fst'));
-        $this->assertFalse($this->vfs->hasChild('some/nested/file.txt'));
-        $this->assertTrue($this->vfs->hasChild('some/nested'));
+        $g->generate($this->getPath());
+        $this->assertVfsDoesNotHaveChild('some/nested/file.txt');
+        $this->assertVfsHasChild('some/nested');
     }
 
     public function testGeneratorIgnoresWithWildCard()
     {
         $g = $this->getGenerator();
         $g->addIgnoredPath('*some/*');
-        $g->generate(vfsStream::url('fst'));
-        $this->assertCount(2, $this->vfs->getChildren());
+        $g->generate($this->getPath());
+        $this->assertEquals(2, $this->getFileCount());
 
-        foreach ([
-                     'some',
-                     'some/file.txt',
-                     'some/nested',
-                     'some/dir',
-                     'some/nested/file.txt'
-                 ] as $path) {
-            $this->assertFalse($this->vfs->hasChild($path));
-        }
+        $this->assertVfsDoesNotHaveChild([
+            'some',
+            'some/file.txt',
+            'some/nested',
+            'some/dir',
+            'some/nested/file.txt'
+        ]);
 
-        foreach ([
-                     '.gitignore',
-                     'root.txt'
-                 ] as $path) {
-            $this->assertTrue($this->vfs->hasChild($path));
-        }
+        $this->assertVfsHasChild([
+           '.gitignore',
+            'root.txt'
+        ]);
 
     }
 
@@ -119,15 +117,18 @@ class TreeGeneratorIOTest extends \PHPUnit_Framework_TestCase
     {
         $g = $this->getGenerator();
         $g->addAutomaticallyRemovedPath('*nested*');
-        $g->generate(vfsStream::url('fst'));
-        $this->assertFalse($this->vfs->hasChild('some/nested/file.txt'));
-        $this->assertFalse($this->vfs->hasChild('some/nested'));
+        $g->generate($this->getPath());
+
+        $this->assertVfsDoesNotHaveChild([
+           'some/nested/file.txt',
+            'some/nested'
+        ]);
     }
 
     public function testFileSystemTreeGeneratorReturnsAnArrayOfTheFilesCreated()
     {
         $g     = $this->getGenerator();
-        $paths = $g->generate(vfsStream::url('fst'));
+        $paths = $g->generate($this->getPath());
 
         $this->assertCount(5, $paths);
 
