@@ -4,7 +4,7 @@ use NewUp\Tests\Templates\Renderers\TemplateRendererTestBase;
 use NewUp\Contracts\DataCollector;
 use NewUp\Templates\Renderers\Collectors\FileNameCollector;
 
-class RenderCollectionTest extends TemplateRendererTestBase
+class RenderDataCollectionTest extends TemplateRendererTestBase
 {
 
     public function testGetCollectorsReturnsArray()
