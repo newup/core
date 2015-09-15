@@ -1,0 +1,11 @@
+{
+  "name": "vendor/package",
+  "description": "An example",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "User",
+      "email": "user@example.com"
+    }
+  ]
+}

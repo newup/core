@@ -2,6 +2,7 @@
 
 use NewUp\Tests\Templates\Renderers\TemplateRendererTestBase;
 use NewUp\Foundation\Application;
+use Illuminate\Support\Str;
 
 class TemplateRendererTest extends TemplateRendererTestBase
 {
@@ -139,7 +140,8 @@ class TemplateRendererTest extends TemplateRendererTestBase
     {
         $r = $this->getRendererWithTestTemplates();
         $value = $r->render('Test_Block_Child');
-        $this->assertStringEqualsFile(getFixturePath('Templates/Test_Block_Child_Expected'), $value);
+        $this->assertTrue(Str::contains($value, 'This is from the parent'));
+        $this->assertTrue(Str::contains($value, 'This is from the child'));
     }
 
     public function testTemplatesCanIncludeSystemTemplates()

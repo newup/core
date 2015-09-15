@@ -1,0 +1,12 @@
+{
+  "name": "newup/test",
+  "description": "This is just a test package.",
+  "license": "MIT",
+  "homepage": "http://newup.io",
+  "authors": [
+    {
+      "name": "Johnathon Koster",
+      "email": "john@stillat.com"
+    }
+  ]
+}
