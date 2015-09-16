@@ -23,9 +23,3 @@ if (!function_exists('loadFixtureContent')) {
         return normalize_line_endings(file_get_contents(getFixturePath($file)));
     }
 }
-
-if (PHP_MAJOR_VERSION < 7) {
-    if (!class_exists('TypeError')) {
-        class TypeError { }
-    }
-}
