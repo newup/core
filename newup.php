@@ -22,8 +22,8 @@ $autoLoader = require __DIR__ . '/bootstrap/autoload.php';
 $app = require_once __DIR__ . '/bootstrap/app.php';
 
 Application::$loader = &$autoLoader;
-ConsoleApplication::$output = new ConsoleOutput;
-ConsoleApplication::$input = new \Symfony\Component\Console\Input\ArgvInput;
+ConsoleApplication::setOutput(new ConsoleOutput);
+ConsoleApplication::setInput(new \Symfony\Component\Console\Input\ArgvInput);
 
 /*
 |--------------------------------------------------------------------------
@@ -40,8 +40,8 @@ $kernel = $app->make('Illuminate\Contracts\Console\Kernel');
 $kernel->bootstrap();
 
 $status = $kernel->handle(
-    ConsoleApplication::$input,
-    ConsoleApplication::$output
+    ConsoleApplication::getInput(),
+    ConsoleApplication::getOutput()
 );
 
 /*
@@ -55,6 +55,6 @@ $status = $kernel->handle(
 |
 */
 
-$kernel->terminate(ConsoleApplication::$input, $status);
+$kernel->terminate(ConsoleApplication::getInput(), $status);
 
 exit($status);

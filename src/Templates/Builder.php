@@ -181,8 +181,8 @@ class Builder
     {
         $this->package->setRendererInstance($this->generator->getRenderer());
         $this->package->setApplication(app(Application::class));
-        $this->package->setOutputInstance(Application::$output);
-        $this->package->setInputInstance(Application::$input);
+        $this->package->setOutputInstance(Application::getOutput());
+        $this->package->setInputInstance(Application::getInput());
         $this->package->builderLoaded();
 
         if ($this->getCommonTemplateDirectory() !== null) {

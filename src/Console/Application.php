@@ -11,8 +11,9 @@ use Symfony\Component\Console\Input\ArrayInput;
 class Application extends LaravelConsoleApplication
 {
 
-    public static $output;
-    public static $input;
+    private static $output;
+
+    private static $input;
 
     /**
      * Create a new Artisan console application.
@@ -36,6 +37,26 @@ class Application extends LaravelConsoleApplication
         $parameters['command'] = $command;
 
         return $this->find($command)->run(new ArrayInput($parameters), self::$output);
+    }
+
+    public static function setInput($input)
+    {
+        self::$input = $input;
+    }
+
+    public static function setOutput($output)
+    {
+        self::$output = $output;
+    }
+
+    public static function getInput()
+    {
+        return self::$input;
+    }
+
+    public static function getOutput()
+    {
+        return self::$output;
     }
 
 }
