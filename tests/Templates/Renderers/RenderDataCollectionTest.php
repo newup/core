@@ -3,12 +3,9 @@
 use NewUp\Tests\Templates\Renderers\TemplateRendererTestBase;
 use NewUp\Contracts\DataCollector;
 use NewUp\Templates\Renderers\Collectors\FileNameCollector;
-use NewUp\Support\Testing\RequiredPhpVersionSkipTrait;
 
 class RenderDataCollectionTest extends TemplateRendererTestBase
 {
-
-    use RequiredPhpVersionSkipTrait;
 
     public function testGetCollectorsReturnsArray()
     {
@@ -56,18 +53,8 @@ class RenderDataCollectionTest extends TemplateRendererTestBase
      */
     public function testRenderOnlyAcceptsDataCollectors()
     {
-        $this->requirePhpVersion('<', '7');
         $r = $this->getRenderer();
         $r->addCollector((new \stdClass()));
-    }
-
-    /**
-     * @expectedException TypeError
-     */
-    public function testRenderOnlyAcceptsDataCollectorsAndThrowsTypeErrors()
-    {
-        $this->requirePhpVersion('>=', '7');
-        $this->testRenderOnlyAcceptsDataCollectors();
     }
 
 }
@@ -84,6 +71,5 @@ class DummyCollector implements DataCollector
     {
         return ['dummy' => 'data'];
     }
-
 
 }
