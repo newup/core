@@ -249,7 +249,6 @@ if (!function_exists('normalize_line_endings')) {
      * @param $string
      */
     function normalize_line_endings($string) {
-        // Normalize line endings using Global
         // Convert all line-endings to UNIX format
         $string = str_replace("\r\n", "\n", $string);
         $string = str_replace("\r", "\n", $string);
