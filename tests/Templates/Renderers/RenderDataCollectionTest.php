@@ -48,15 +48,6 @@ class RenderDataCollectionTest extends TemplateRendererTestBase
         $this->assertArrayHasKey('dummy', $data);
     }
 
-    /**
-     * @expectedException Exception
-     */
-    public function testRenderOnlyAcceptsDataCollectors()
-    {
-        $r = $this->getRenderer();
-        $r->addCollector((new \stdClass()));
-    }
-
 }
 
 class DummyCollector implements DataCollector
