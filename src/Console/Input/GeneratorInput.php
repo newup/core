@@ -141,14 +141,14 @@ class GeneratorInput extends ArgvInput
         $includePath = $this->getPackageClassPath();
 
         if (!file_exists($includePath)) {
-            Application::$output->writeln("<comment>{$this->getTemplateName()} is not installed. Attempting to install it now...</comment>");
+            Application::getOutput()->writeln("<comment>{$this->getTemplateName()} is not installed. Attempting to install it now...</comment>");
             $result = app(Kernel::class)->getApplication()->callWithSharedOutput('template:install', ['name' => $this->getTemplateName(), '--confirm' => true]);
 
             if ($result === Install::INSTALL_FAIL) {
                 // Fail angrily.
                 throw new TemplatePackageMissingException("The package template {$this->getTemplateName()} is not installed or it cannot be found. The package template must be installed before it can be built.");
             } else {
-                Application::$output->writeln('<comment>It looks like everything went well. We will continue building the package template...</comment>');
+                Application::getOutput()->writeln('<comment>It looks like everything went well. We will continue building the package template...</comment>');
             }
         }
 
