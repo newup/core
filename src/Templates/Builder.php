@@ -92,10 +92,10 @@ class Builder
         InputCollector $inputCollector,
         AutoLoaderManager $manager
     ) {
-        $this->generator         = $contentGenerator;
-        $this->files             = $files;
-        $this->packageLoader     = $loader;
-        $this->inputCollector    = $inputCollector;
+        $this->generator = $contentGenerator;
+        $this->files = $files;
+        $this->packageLoader = $loader;
+        $this->inputCollector = $inputCollector;
         $this->autoLoaderManager = $manager;
     }
 
@@ -179,10 +179,12 @@ class Builder
      */
     public function build()
     {
+        $output = Application::getOutput();
+        $input = Application::getInput();
         $this->package->setRendererInstance($this->generator->getRenderer());
         $this->package->setApplication(app(Application::class));
-        $this->package->setOutputInstance(Application::getOutput());
-        $this->package->setInputInstance(Application::getInput());
+        $this->package->setOutputInstance($output);
+        $this->package->setInputInstance($input);
         $this->package->builderLoaded();
 
         if ($this->getCommonTemplateDirectory() !== null) {
@@ -217,7 +219,7 @@ class Builder
     {
         $namespacedPackageClass = $this->packageLoader->loadPackage(realpath($directory));
         $this->autoLoaderManager->mergePackageLoader(realpath($directory));
-        $this->package          = app($namespacedPackageClass);
+        $this->package = app($namespacedPackageClass);
     }
 
     /**
