@@ -55,6 +55,7 @@ class Init extends Command
                 $createDirectory = $this->confirm("{$directory} does not exist. Would you like to create it? [YES/no]", true);
 
                 if ($createDirectory) {
+                    $this->line("{$directory} was created.");
                     $this->files->makeDirectory($directory);
                 }
             }
@@ -66,6 +67,7 @@ class Init extends Command
                     $removeFiles = $this->confirm("{$directory} is not empty. Would you like to remove the contents? [yes|NO]", false);
 
                     if ($removeFiles) {
+                        $this->line("The contents in '{$directory}' were cleared.");
                         $this->files->deleteDirectory($directory, true);
                     }
                 }
