@@ -2,7 +2,7 @@
 
 namespace NewUp\Templates;
 
-use Doctrine\Instantiator\Exception\InvalidArgumentException;
+use NewUp\Exceptions\InvalidArgumentException;
 use NewUp\Contracts\Packages\Package as PackageContract;
 use NewUp\Contracts\Packages\PackageFactory;
 
